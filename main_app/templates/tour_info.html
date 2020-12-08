@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START BREADCRUMB TOP BAR
+================================= -->
+<section class="breadcrumb-top-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-list breadcrumb-top-list">
+                    <ul class="list-items d-flex justify-content-start">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li>{% if tour_info.tour.es_internacional %}Internacional{% else %}Nacional{% endif %}</li>
+                        <li>{{ tour_info.tour.nombre }}</li>
+                    </ul>
+                </div><!-- end breadcrumb-list -->
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end breadcrumb-top-bar -->
+<!-- ================================
+    END BREADCRUMB TOP BAR
+================================= -->
+
+<!-- ================================
+    START BREADCRUMB AREA
+================================= -->
+<section class="breadcrumb-area bread-bg-2 py-0">
+    <div class="breadcrumb-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-btn">
+                        <div class="btn-box">
+                        </div>
+                    </div><!-- end breadcrumb-btn -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end breadcrumb-wrap -->
+</section><!-- end breadcrumb-area -->
+<!-- ================================
+    END BREADCRUMB AREA
+================================= -->
+
+<!-- ================================
+    START TOUR DETAIL AREA
+================================= -->
+<section class="tour-detail-area padding-bottom-90px">
+    <div class="single-content-navbar-wrap menu section-bg" id="single-content-navbar">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="single-content-nav" id="single-content-nav">
+                        <ul>
+                            <li><a data-scroll="description" href="#description" class="scroll-link active">Descripcion</a></li>
+                            <li><a data-scroll="photo" href="#photo" class="scroll-link">Fotografías</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end single-content-navbar-wrap -->
+    <div class="single-content-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-content-wrap padding-top-60px">
+                        <div id="description" class="page-scroll">
+                            <div class="single-content-item pb-4">
+                                <h3 class="title font-size-26">{{ tour_info.tour.nombre }}</h3>
+                                <div class="d-flex flex-wrap align-items-center pt-2">
+                                    <p class="mr-2">{{ tour_info.tour.ubicacion }}</p>
+                                </div>
+                            </div><!-- end single-content-item -->
+                            <div class="section-block"></div>
+                            <div class="single-content-item py-4">
+                                <div class="row">
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="single-tour-feature d-flex align-items-center mb-3">
+                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
+                                                <i class="la la-clock-o"></i>
+                                            </div>
+                                            <div class="single-feature-titles">
+                                                <h3 class="title font-size-15 font-weight-medium">Duracion</h3>
+                                                <span class="font-size-13">1 Día(s)</span>
+                                            </div>
+                                        </div><!-- end single-tour-feature -->
+                                    </div><!-- end col-lg-4 -->
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="single-tour-feature d-flex align-items-center mb-3">
+                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
+                                                <i class="la la-users"></i>
+                                            </div>
+                                            <div class="single-feature-titles">
+                                                <h3 class="title font-size-15 font-weight-medium">Tamaño del Grupo</h3>
+                                                <span class="font-size-13">{{ tour_info.tour.capacidad }} Personas</span>
+                                            </div>
+                                        </div><!-- end single-tour-feature -->
+                                    </div><!-- end col-lg-4 -->
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="single-tour-feature d-flex align-items-center mb-3">
+                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
+                                                <i class="la la-calendar"></i>
+                                            </div>
+                                            <div class="single-feature-titles">
+                                                <h3 class="title font-size-15 font-weight-medium">Próxima Salida</h3>
+                                                <span class="font-size-13">{{ tour_info.proximas_salidas.0.fecha_salida }}</span>
+                                            </div>
+                                        </div><!-- end single-tour-feature -->
+                                    </div><!-- end col-lg-4 -->
+
+                                </div><!-- end row -->
+                            </div><!-- end single-content-item -->
+                            <div class="section-block"></div>
+                            <div class="single-content-item padding-top-40px padding-bottom-40px">
+                                <h3 class="title font-size-20">Descripcion</h3>
+                                <p class="py-3" style="text-align: justify;">{{ tour_info.tour.descripcion }}</p>
+                                <div class="row">
+                                    <div class="col-lg-6 responsive-column">
+                                        <h3 class="title font-size-15 font-weight-medium pb-3">Incluye</h3>
+                                        <ul class="list-items">
+                                            {% for inc in tour_info.incluye %}<li><i class="la la-check text-success mr-2"></i>{{ inc }}</li>{% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-lg-6 responsive-column">
+                                        <h3 class="title font-size-15 font-weight-medium pb-3">No Incluye</h3>
+                                            {% for no_inc in tour_info.no_incluye %}<li><i class="la la-check text-success mr-2"></i>{{ no_inc }}</li>{% endfor %}
+                                        </ul>
+                                    </div>
+                                </div><!-- end row -->
+                            </div><!-- end single-content-item -->
+                            <div class="section-block"></div>
+                        </div><!-- end description -->
+                        <div id="photo" class="page-scroll">
+                            <div class="single-content-item padding-top-40px padding-bottom-40px">
+                                <h3 class="title font-size-20">Fotografías</h3>
+                                <div class="gallery-carousel carousel-action padding-top-30px">
+                                    <div class="card-item mb-0">
+                                        <div class="card-img">
+                                            <img src="https://cdn.getyourguide.com/img/tour/5d2cff88117f8.jpeg/146.jpg" alt="Destination-img" style="height: 500px">
+                                        </div>
+                                    </div><!-- end card-item -->
+                                    <div class="card-item mb-0">
+                                        <div class="card-img">
+                                            <img src="https://www.elcomercio.com/files/content_thumbnail/uploads/2014/08/29/54012f02c4774.jpg" alt="Destination-img" style="height: 500px">
+                                        </div>
+                                    </div><!-- end card-item -->
+                                </div><!-- end gallery-carousel -->
+                            </div><!-- end single-content-item -->
+                            <div class="section-block"></div>
+                        </div><!-- end photo -->
+                    </div><!-- end single-content-wrap -->
+                </div><!-- end col-lg-8 -->
+                <div class="col-lg-4">
+                    <div class="sidebar single-content-sidebar mb-0">
+                        <div class="sidebar-widget single-content-widget">
+                            <div class="sidebar-widget-item">
+                                <div class="sidebar-book-title-wrap mb-3">
+                                    <p><span class="text-value mr-1">$45.00</span> Por Persona</p>
+                                </div>
+                            </div><!-- end sidebar-widget-item -->
+                            <div class="sidebar-widget-item">
+                                <div class="contact-form-action">
+                                    <form action="#">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Seleccionar Fecha</label>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                {% for salida in tour_info.proximas_salidas %}<option>{{ salida.fecha_salida }}</option>{% endfor %}
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- end sidebar-widget-item -->
+                            <div class="sidebar-widget-item">
+                                <div class="qty-box mb-2 d-flex align-items-center justify-content-between">
+                                    <label class="font-size-16">Pasajeros</label>
+                                    <div class="qtyBtn d-flex align-items-center">
+                                        <input type="text" name="qtyInput" value="0">
+                                    </div>
+                                </div><!-- end qty-box -->
+                            </div><!-- end sidebar-widget-item -->
+                            <div class="btn-box pt-2">
+                                <a href="tour-booking.html" class="theme-btn text-center w-100 mb-2"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
+                            </div>
+                        </div><!-- end sidebar-widget -->
+                        <div class="sidebar-widget single-content-widget">
+                            <h3 class="title stroke-shape">Necesitas ayuda?</h3>
+                            <p class="font-size-14 line-height-24">No dude en comunicarte con nostros. Uno de nuestros agentes te atenderá de inmediato.</p>
+                            <div class="sidebar-list pt-3">
+                                <ul class="list-items">
+                                    <li><i class="la la-phone icon-element mr-2"></i><a href="#">+ 593 999537566</a></li>
+                                    <li><i class="la la-envelope icon-element mr-2"></i><a href="mailto:info@trizen.com">info@exploreit.com</a></li>
+                                </ul>
+                            </div><!-- end sidebar-list -->
+                        </div><!-- end sidebar-widget -->
+                    </div><!-- end sidebar -->
+                </div><!-- end col-lg-4 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end single-content-box -->
+</section><!-- end tour-detail-area -->
+<!-- ================================
+    END TOUR DETAIL AREA
+================================= -->
+
+<div class="section-block"></div>
+
+<!-- ================================
+    START RELATE TOUR AREA
+================================= -->
+<section class="related-tour-area section--padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading text-center">
+                    <h2 class="sec__title">Destinos Similares</h2>
+                </div><!-- end section-heading -->
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+        <div class="row padding-top-50px">
+            <div class="col-lg-4 responsive-column">
+                <div class="card-item mb-0">
+                            <div class="card-img">
+                                <a href="tour-details.html" class="d-block">
+                                    <img src="images/chimborazo.png" alt="hotel-img">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
+                                <p class="card-meta">Chimborazo, Ecuador</p>
+                                <div class="card-price d-flex align-items-center justify-content-between">
+                                    <p>
+                                        <span class="price__num">$45.00</span>
+                                        <span class="price__text">Por persona</span>
+                                    </p>
+                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                                </div>
+                            </div>
+                        </div><!-- end card-item -->
+            </div><!-- end col-lg-4 -->
+            <div class="col-lg-4 responsive-column">
+                <div class="card-item mb-0">
+                            <div class="card-img">
+                                <a href="tour-details.html" class="d-block">
+                                    <img src="images/chimborazo.png" alt="hotel-img">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
+                                <p class="card-meta">Chimborazo, Ecuador</p>
+                                <div class="card-price d-flex align-items-center justify-content-between">
+                                    <p>
+                                        <span class="price__num">$45.00</span>
+                                        <span class="price__text">Por persona</span>
+                                    </p>
+                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                                </div>
+                            </div>
+                        </div><!-- end card-item -->
+            </div><!-- end col-lg-4 -->
+            <div class="col-lg-4 responsive-column">
+                <div class="card-item mb-0">
+                            <div class="card-img">
+                                <a href="tour-details.html" class="d-block">
+                                    <img src="images/chimborazo.png" alt="hotel-img">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
+                                <p class="card-meta">Chimborazo, Ecuador</p>
+                                <div class="card-price d-flex align-items-center justify-content-between">
+                                    <p>
+                                        <span class="price__num">$45.00</span>
+                                        <span class="price__text">Por persona</span>
+                                    </p>
+                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                                </div>
+                            </div>
+                        </div><!-- end card-item -->
+                </div><!-- end card-item -->
+            </div><!-- end col-lg-4 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end related-tour-area -->
+<!-- ================================
+    END RELATE TOUR AREA
+================================= -->
+{% endblock %}
+{% block footer_code %}
+<style>
+    .card-item.destination-card .card-body{
+      display: none !important;
+    }
+
+    .section-heading{
+      height: 130px;
+    }
+
+    .section-heading h2{
+      text-align: center;
+    }
+
+    .contact-form-action .form-control {
+        padding: 10px 20px 10px 10px !important;
+    }
+
+    .bread-bg-2 {
+        background-image: url('{{settings.MEDIA_URL}}{{ tour_info.tour.imagen }}') !important;
+    }
+</style>
+{% endblock %}

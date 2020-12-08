@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    {% include 'includes/head.html' %}
+</head>
+{% block header_code %}
+{% endblock %}
+<body>
+    <!-- start cssload-loader -->
+    <div class="preloader" id="preloader">
+        <div class="loader">
+            <svg class="spinner" viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+            </svg>
+        </div>
+    </div>
+    <!-- end cssload-loader -->
+    {% include 'includes/header.html' %}
+
+    {% block main_content %}
+    {% endblock %}
+
+    {% include 'includes/footer.html' %}
+    {% include 'includes/footer_statics.html' %}
+</body>
+{% block footer_code %}
+{% endblock %}
+</html>
