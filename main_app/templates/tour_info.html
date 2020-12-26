@@ -121,12 +121,13 @@
                                     <div class="col-lg-6 responsive-column">
                                         <h3 class="title font-size-15 font-weight-medium pb-3">Incluye</h3>
                                         <ul class="list-items">
-                                            {% for inc in tour_info.incluye %}<li><i class="la la-check text-success mr-2"></i>{{ inc }}</li>{% endfor %}
+                                            {% for inc in tour_info.incluye %}<li><i class="la la-check text-success mr-2"></i>{{ inc.nombre }}</li>{% endfor %}
                                         </ul>
                                     </div>
                                     <div class="col-lg-6 responsive-column">
                                         <h3 class="title font-size-15 font-weight-medium pb-3">No Incluye</h3>
-                                            {% for no_inc in tour_info.no_incluye %}<li><i class="la la-check text-success mr-2"></i>{{ no_inc }}</li>{% endfor %}
+                                        <ul class="list-items">
+                                            {% for no_inc in tour_info.no_incluye %}<li><i class="la la-check text-success mr-2"></i>{{ no_inc.nombre }}</li>{% endfor %}
                                         </ul>
                                     </div>
                                 </div><!-- end row -->
@@ -165,9 +166,9 @@
                                 <div class="contact-form-action">
                                     <form action="#">
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Seleccionar Fecha</label>
-                                            <select class="form-control" id="exampleFormControlSelect1">
-                                                {% for salida in tour_info.proximas_salidas %}<option>{{ salida.fecha_salida }}</option>{% endfor %}
+                                            <label for="salida">Seleccionar Fecha</label>
+                                            <select class="form-control" id="salida">
+                                                {% for salida in tour_info.proximas_salidas %}<option value="{{ salida.id }}">{{ salida.fecha_salida }}</option>{% endfor %}
                                             </select>
                                         </div>
                                     </form>
@@ -177,12 +178,12 @@
                                 <div class="qty-box mb-2 d-flex align-items-center justify-content-between">
                                     <label class="font-size-16">Pasajeros</label>
                                     <div class="qtyBtn d-flex align-items-center">
-                                        <input type="text" name="qtyInput" value="0">
+                                        <input id="num_pasajeros" type="text" name="qtyInput" value="1">
                                     </div>
                                 </div><!-- end qty-box -->
                             </div><!-- end sidebar-widget-item -->
                             <div class="btn-box pt-2">
-                                <a href="tour-booking.html" class="theme-btn text-center w-100 mb-2"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
+                                <a href="#" onclick="goToBooking()" class="theme-btn text-center w-100 mb-2"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
                             </div>
                         </div><!-- end sidebar-widget -->
                         <div class="sidebar-widget single-content-widget">
@@ -222,63 +223,22 @@
         <div class="row padding-top-50px">
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
-                            <div class="card-img">
-                                <a href="tour-details.html" class="d-block">
-                                    <img src="images/chimborazo.png" alt="hotel-img">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
-                                <p class="card-meta">Chimborazo, Ecuador</p>
-                                <div class="card-price d-flex align-items-center justify-content-between">
-                                    <p>
-                                        <span class="price__num">$45.00</span>
-                                        <span class="price__text">Por persona</span>
-                                    </p>
-                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- end card-item -->
-            </div><!-- end col-lg-4 -->
-            <div class="col-lg-4 responsive-column">
-                <div class="card-item mb-0">
-                            <div class="card-img">
-                                <a href="tour-details.html" class="d-block">
-                                    <img src="images/chimborazo.png" alt="hotel-img">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
-                                <p class="card-meta">Chimborazo, Ecuador</p>
-                                <div class="card-price d-flex align-items-center justify-content-between">
-                                    <p>
-                                        <span class="price__num">$45.00</span>
-                                        <span class="price__text">Por persona</span>
-                                    </p>
-                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- end card-item -->
-            </div><!-- end col-lg-4 -->
-            <div class="col-lg-4 responsive-column">
-                <div class="card-item mb-0">
-                            <div class="card-img">
-                                <a href="tour-details.html" class="d-block">
-                                    <img src="images/chimborazo.png" alt="hotel-img">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
-                                <p class="card-meta">Chimborazo, Ecuador</p>
-                                <div class="card-price d-flex align-items-center justify-content-between">
-                                    <p>
-                                        <span class="price__num">$45.00</span>
-                                        <span class="price__text">Por persona</span>
-                                    </p>
-                                    <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- end card-item -->
+                    <div class="card-img">
+                        <a href="tour-details.html" class="d-block">
+                            <img src="images/chimborazo.png" alt="hotel-img">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="tour-details.html">Full Day Chimborazo</a></h3>
+                        <p class="card-meta">Chimborazo, Ecuador</p>
+                        <div class="card-price d-flex align-items-center justify-content-between">
+                            <p>
+                                <span class="price__num">$45.00</span>
+                                <span class="price__text">Por persona</span>
+                            </p>
+                            <a href="tour-details.html" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                        </div>
+                    </div>
                 </div><!-- end card-item -->
             </div><!-- end col-lg-4 -->
         </div><!-- end row -->
@@ -289,6 +249,14 @@
 ================================= -->
 {% endblock %}
 {% block footer_code %}
+<script>
+    function goToBooking(){
+        var num_pasajeros = document.getElementById('num_pasajeros').value
+        var salida = document.getElementById('salida').value
+        window.location.href = '{% url 'tour_booking' tour_info.incluye.0.tour.token %}'+'?sal='+String(salida)+'&pas='+String(num_pasajeros)
+    }
+</script>
+
 <style>
     .card-item.destination-card .card-body{
       display: none !important;

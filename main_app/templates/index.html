@@ -119,7 +119,7 @@
                                 </a>
                             </div>
                             <div class="card-body">
-                                <h3 class="card-title"><a href="tour-details.html">{{salida.tour.nombre}}</a></h3>
+                                <h3 class="card-title"><a href="{% url 'tour_info' salida.tour.token %}">{{salida.tour.nombre}}</a></h3>
                                 <p class="card-meta">{{salida.tour.ubicacion}}</p>
                                 <div class="card-price d-flex align-items-center justify-content-between">
                                     <p>

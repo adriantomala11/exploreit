@@ -20,6 +20,7 @@ class Tour(models.Model):
     es_internacional    = models.BooleanField(default=False)
     capacidad           = models.IntegerField(default=0)
     precio              = models.FloatField()
+    duracion            = models.IntegerField(default=0)
 
     def __str__(self):
         return self.nombre
@@ -38,7 +39,7 @@ class Itinerario(models.Model):
     dia             = models.IntegerField(null=True)
 
 class Incluye(models.Model):
-    descripcion     = models.CharField(max_length=150)
+    nombre     = models.CharField(max_length=150)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
 
 class NoIncluye(models.Model):

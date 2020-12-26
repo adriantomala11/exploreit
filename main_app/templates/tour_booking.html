@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+
+<!-- ================================
+    START BREADCRUMB AREA
+================================= -->
+<section class="breadcrumb-area bread-bg">
+    <div class="breadcrumb-wrap">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title">Realizar Reserva</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list">
+                        <ul class="list-items d-flex justify-content-end">
+                            <li><a href="index.html">Inicio</a></li>
+                            <li>Realizar Reserva</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end breadcrumb-wrap -->
+    <div class="bread-svg-box">
+        <svg class="bread-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><polygon points="100 0 50 10 0 0 0 10 100 10"></polygon></svg>
+    </div><!-- end bread-svg -->
+</section><!-- end breadcrumb-area -->
+<!-- ================================
+    END BREADCRUMB AREA
+================================= -->
+
+<!-- ================================
+    START BOOKING AREA
+================================= -->
+<section class="booking-area padding-top-100px padding-bottom-70px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                {% for pasajero in pasajeros %}
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title">Información de Pasajero {{ forloop.counter }}</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content ">
+                        <div class="contact-form-action">
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Nombres</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Nombres">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Apellidos</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Apellidos">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Número de Cédula</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Número de Cédula">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-12 -->
+                                </div>
+                            </form>
+                        </div><!-- end contact-form-action -->
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                {% endfor %}
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title">Información de Facturación</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content ">
+                        <div class="contact-form-action">
+                            <form method="post">
+                                <div class="row">
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Nombres</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Nombres">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Apellidos</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Apellidos">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Correo Electronico</label>
+                                            <div class="form-group">
+                                                <span class="la la-envelope-o form-icon"></span>
+                                                <input class="form-control" type="email" name="email" placeholder="Correo Electronico">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-6 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Numero de Telefono</label>
+                                            <div class="form-group">
+                                                <span class="la la-phone form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Numero de Telefono">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-6 -->
+                                    <div class="col-lg-12 responsive-column">
+                                        <div class="input-box">
+                                            <label class="label-text">Direccion de Domicilio</label>
+                                            <div class="form-group">
+                                                <span class="la la-map-marked form-icon"></span>
+                                                <input class="form-control" type="text" name="text" placeholder="Direccion de Domicilio">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-12 -->
+                                </div>
+                            </form>
+                        </div><!-- end contact-form-action -->
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title">Seleccione un Metodo de Pago</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content">
+                        <div class="section-tab check-mark-tab text-center pb-4">
+                            <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="credit-card-tab" data-toggle="tab" href="#credit-card" role="tab" aria-controls="credit-card" aria-selected="false">
+                                        <i class="la la-check icon-element"></i>
+                                        <i class="las la-credit-card" style="font-size: 45px;"></i>
+                                        <span class="d-block">Tarjeta de crédito</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="true">
+                                        <i class="la la-check icon-element"></i>
+                                        <i class="las la-money-check-alt" style="font-size: 45px;"></i>
+                                        <span class="d-block">Transfernecia o Depósito</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="payoneer-tab" data-toggle="tab" href="#payoneer" role="tab" aria-controls="payoneer" aria-selected="true">
+                                        <i class="la la-check icon-element"></i>
+                                        <i class="las la-money-bill" style="font-size: 45px;"></i>
+                                        <span class="d-block">Pago en persona</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div><!-- end section-tab -->
+                    </div><!-- end form-content -->
+                    <div class="btn-box pt-2" style="text-align: center;">
+                        <a href="payment-complete.html" class="theme-btn text-center w-25 mb-5">Confirmar Reserva</a>
+                    </div>
+                </div><!-- end form-box -->
+            </div><!-- end col-lg-8 -->
+            <div class="col-lg-4">
+                <div class="form-box booking-detail-form">
+                    <div class="form-title-wrap">
+                        <h3 class="title">Detalles de la Reserva</h3>
+                    </div><!-- end form-title-wrap -->
+                    <div class="form-content">
+                        <div class="card-item shadow-none radius-none mb-0">
+                            <div class="card-img pb-4">
+                                <a href="tour-details.html" class="d-block">
+                                    <img src="https://i.ytimg.com/vi/OaOQ_uO2VNE/maxresdefault.jpg" alt="tour-img">
+                                </a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h3 class="card-title">{{salida.tour.nombre}}</h3>
+                                        <p class="card-meta">{{salida.tour.ubicacion}}</p>
+                                    </div>
+                                </div>
+                                <div class="section-block"></div>
+                                <ul class="list-items list-items-2 list--items-2 py-2">
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-calendar mr-1 text-black font-size-17"></i>Fecha y Hora</span>{{ salida.fecha_salida }}</li>
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-clock-o mr-1 text-black font-size-17"></i>Duracion</span>{{ salida.tour.duracion }} Día(s)</li>
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-map-marker mr-1 text-black font-size-17"></i>Salida desde</span>{{ salida.tour.lugar_salida }}</li>
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-user mr-1 text-black font-size-17"></i># Pasajeros</span>{{ pasajeros|length }}</li>
+                                </ul>
+                                <ul class="list-items list-items-2 pt-3">
+                                    <li>
+                                        <div style="width: 100%; display: flex;">
+                                            <p style="width: 70%;"><span>Subtotal:</span></p>
+                                            <p style="width: 30%; text-align: right;">${{detalle_orden.subtotal | floatformat:2 }}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div style="width: 100%; display: flex;">
+                                            <p style="width: 70%;"><span>Impuestos:</span></p>
+                                            <p style="width: 30%; text-align: right;">${{detalle_orden.impuestos | floatformat:2 }}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div style="width: 100%; display: flex;">
+                                            <p style="width: 70%;"><span>Total:</span></p>
+                                            <p style="width: 30%; text-align: right;">${{detalle_orden.total | floatformat:2 }}</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div><!-- end card-item -->
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+            </div><!-- end col-lg-4 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end booking-area -->
+<!-- ================================
+    END BOOKING AREA
+================================= -->
+
+<div class="section-block"></div>
+{% endblock %}
+
+{% block footer_code %}
+<style>
+.card-item.destination-card .card-body{
+  display: none !important;
+}
+
+.bread-bg {
+    background-image: url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max) !important;
+}
+</style>
+{% endblock %}
