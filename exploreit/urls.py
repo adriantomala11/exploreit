@@ -26,6 +26,7 @@ urlpatterns = [
     path('', main_views.index, name='index'),
     path('tour-info/<slug:token>/', main_views.tour_info, name='tour_info'),
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
+    path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

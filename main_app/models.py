@@ -1,3 +1,6 @@
+import random
+import string
+
 from django.db import models
 
 # Create your models here.
@@ -67,13 +70,16 @@ class Reserva(models.Model):
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion     = models.CharField(max_length=10, null=True)
     correo          = models.CharField(max_length=40)
-    pagado          = models.BooleanField(null=False)
+    pagado          = models.BooleanField(default=False)
 
-class Pasajero(models.Model):
-    nombre          = models.CharField(max_length=100)
-    cedula          = models.CharField(max_length=12)
+    @classmethod
+    def generar_token(cls):
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        return x
 
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=10, null=True)
     reserva         = models.ForeignKey(Reserva, on_delete=models.PROTECT)
-    pasajero        = models.ForeignKey(Pasajero, on_delete=models.PROTECT)
+    nombres         = models.CharField(max_length=100, null=True)
+    apellidos       = models.CharField(max_length=100, null=True)
+    cedula          = models.CharField(max_length=12, null=True)

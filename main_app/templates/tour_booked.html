@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+
+<!-- ================================
+    START PAYMENT AREA
+================================= -->
+<section class="payment-area section-bg section-padding" style="padding-top: 50px !important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-box payment-received-wrap mb-0">
+                    <div class="form-content">
+                        <div class="payment-received-list">
+                            <div class="d-flex align-items-center">
+                                <i class="la la-check icon-element flex-shrink-0 mr-3 ml-0"></i>
+                                <div>
+                                    <h3 class="title pb-1">Gracias Luis!</h3>
+                                    <h3 class="title">Tu reserva para el tour Full Day Quilotoa ha sido procesada.</h3>
+                                </div>
+                            </div>
+                            <ul class="list-items py-4">
+                                <li><i class="la la-check text-success mr-2"></i>Tienes 24 horas para realizar el pago de esta orden.</li>
+                                <li><i class="la la-check text-success mr-2"></i>Si el pago no se realiza a tiempo, la reserva sera dada de baja automaticamente.</li>
+                                <li><i class="la la-check text-success mr-2"></i>Explore It no extendera el plazo para recibir el pago por ningun motivo.</li>
+                            </ul>
+                            <h3 class="title"><a href="#" class="text-black">Full Day Quilotoa</a></h3>
+                            <p>Cotopaxi, Ecuador</p>
+                            <p><strong class="text-black mr-1">Numero de Pasajeros: </strong>4</p>
+                            <ul class="list-items list-items-3 list-items-4 py-4">
+                                <li><span class="text-black font-weight-bold">Dia de Salida</span>Diciembre 5, 2020</li>
+                                <li><span class="text-black font-weight-bold">Hora de Slaida</span>06:30am</li>
+                                <li><span class="text-black font-weight-bold">Punto de Partida</span>Terminal Terrestre GYE, Angar 11</li>
+                            </ul>
+                            <div class="btn-box">
+                                <a href="#" class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
+                            </div>
+                        </div><!-- end card-item -->
+                    </div>
+                </div><!-- end payment-card -->
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section>
+<!-- ================================
+    END PAYMENT AREA
+================================= -->
+{% endblock %}
+
+{% block footer_code %}
+
+<style>
+.card-item.destination-card .card-body{
+  display: none !important;
+}
+
+.section-heading{
+  height: 130px;
+}
+
+.section-heading h2{
+  text-align: center;
+}
+</style>
+{% endblock %}

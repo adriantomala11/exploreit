@@ -9,7 +9,6 @@ admin.site.register(Itinerario)
 admin.site.register(ItinerarioVuelo)
 admin.site.register(Incluye)
 admin.site.register(NoIncluye)
-admin.site.register(Pasajero)
 admin.site.register(Importante)
 
 # Register your models here.

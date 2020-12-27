@@ -49,14 +49,14 @@
                     </div><!-- form-title-wrap -->
                     <div class="form-content ">
                         <div class="contact-form-action">
-                            <form method="post">
+                            <form id="pasajero{{forloop.counter}}" class="pasajero" method="post">
                                 <div class="row">
                                     <div class="col-lg-6 responsive-column">
                                         <div class="input-box">
                                             <label class="label-text">Nombres</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Nombres">
+                                                <input class="form-control" type="text" name="text" placeholder="Nombres" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -65,7 +65,7 @@
                                             <label class="label-text">Apellidos</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos">
+                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -74,7 +74,7 @@
                                             <label class="label-text">Número de Cédula</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Número de Cédula">
+                                                <input class="form-control" type="text" name="text" placeholder="Número de Cédula" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-12 -->
@@ -90,14 +90,14 @@
                     </div><!-- form-title-wrap -->
                     <div class="form-content ">
                         <div class="contact-form-action">
-                            <form method="post">
+                            <form id="facturacion">
                                 <div class="row">
                                     <div class="col-lg-6 responsive-column">
                                         <div class="input-box">
                                             <label class="label-text">Nombres</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Nombres">
+                                                <input class="form-control" type="text" name="text" placeholder="Nombres" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -106,7 +106,7 @@
                                             <label class="label-text">Apellidos</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos">
+                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -115,7 +115,7 @@
                                             <label class="label-text">Correo Electronico</label>
                                             <div class="form-group">
                                                 <span class="la la-envelope-o form-icon"></span>
-                                                <input class="form-control" type="email" name="email" placeholder="Correo Electronico">
+                                                <input class="form-control" type="email" name="email" placeholder="Correo Electronico" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -124,7 +124,7 @@
                                             <label class="label-text">Numero de Telefono</label>
                                             <div class="form-group">
                                                 <span class="la la-phone form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Numero de Telefono">
+                                                <input class="form-control" type="text" name="text" placeholder="Numero de Telefono" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -133,7 +133,7 @@
                                             <label class="label-text">Direccion de Domicilio</label>
                                             <div class="form-group">
                                                 <span class="la la-map-marked form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Direccion de Domicilio">
+                                                <input class="form-control" type="text" name="text" placeholder="Direccion de Domicilio" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-12 -->
@@ -174,7 +174,7 @@
                         </div><!-- end section-tab -->
                     </div><!-- end form-content -->
                     <div class="btn-box pt-2" style="text-align: center;">
-                        <a href="payment-complete.html" class="theme-btn text-center w-25 mb-5">Confirmar Reserva</a>
+                        <a href="#" onclick="confirmarReserva()" class="theme-btn text-center w-25 mb-5">Confirmar Reserva</a>
                     </div>
                 </div><!-- end form-box -->
             </div><!-- end col-lg-8 -->
@@ -241,12 +241,72 @@
 
 {% block footer_code %}
 <style>
-.card-item.destination-card .card-body{
-  display: none !important;
-}
+    .card-item.destination-card .card-body{
+      display: none !important;
+    }
 
-.bread-bg {
-    background-image: url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max) !important;
-}
+    .bread-bg {
+        background-image: url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max) !important;
+    }
+
+    input.error{
+        border-color: #f99595 !important;
+    }
 </style>
+
+<script>
+    function confirmarReserva(){
+        var noHayErrores = true
+        requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}'}
+        var allForms = document.forms
+        for(var i=0; i<allForms.length; i++){
+            var elements = allForms[i].elements
+
+            if(allForms[i].id == 'facturacion' || allForms[i].classList.contains('pasajero')){
+                var hayErrores = validarCampos(elements)
+                if(!hayErrores){
+                    noHayErrores = false
+                }
+            }
+
+            if(allForms[i].id == 'facturacion'){
+                var facturacion = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value, domicilio:elements[4].value}
+                requestDic.facturacion = facturacion
+            }else if(allForms[i].classList.contains('pasajero')){
+                var pasajero = {nombres: elements[0].value, apellidos: elements[1].value, cedula: elements[2].value}
+                requestDic.pasajeros.push(pasajero)
+            }
+        }
+        if(!noHayErrores){
+            alert('Revise los datos ingresados')
+        }else{
+            console.log('ejecuta ajax')
+            $.ajax({
+              type: "POST",
+              url: "{% url 'tour_booking' salida.tour.token %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', booking_data: JSON.stringify(requestDic)},
+              success:function(response){
+                if(response.status == 200){
+                    window.location.href = '{{settings.URL}}'+response.url
+                }else{}
+              },
+            });
+        }
+    }
+
+    function validarCampos(elements){
+        var returnValue = true
+        for(var j=0; j<elements.length; j++){
+            if(!elements[j].checkValidity()){
+                returnValue = false
+                elements[j].classList.add('error')
+            }else{
+                try{
+                    elements[j].classList.remove('error')
+                }catch{}
+            }
+        }
+        return returnValue
+    }
+</script>
 {% endblock %}
