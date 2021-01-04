@@ -114,8 +114,8 @@
                         {% for salida in salidas_proximas %}
                         <div class="card-item mb-0">
                             <div class="card-img">
-                                <a href="tour-details.html" class="d-block">
-                                    <img src="{{settings.MEDIA_URL}}{{salida.tour.imagen}}" alt="hotel-img">
+                                <a href="{% url 'tour_info' salida.tour.token %}" class="d-block">
+                                    <img src="{{salida.tour.imagen.url}}" alt="hotel-img">
                                 </a>
                             </div>
                             <div class="card-body">

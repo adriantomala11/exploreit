@@ -20,6 +20,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from exploreit import settings
 from main_app import views as main_views
+from admin_app import views as admin_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,11 @@ urlpatterns = [
     path('tour-info/<slug:token>/', main_views.tour_info, name='tour_info'),
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
+    path('administrador/', admin_views.dashboard, name='admin_dashboard'),
+    path('administrador/salidas-programadas/', admin_views.salidas_programadas, name='salidas_programadas'),
+    path('administrador/salidas-programadas/<slug:token>/listado-pasajeros/', admin_views.obtener_listado_pasajeros, name='listado_pasajeros'),
+    path('administrador/salidas-programadas/<slug:token>/listado-reservas/', admin_views.obtener_listado_reservas,name='listado_reservas'),
+    path('administrador/programar-salida/', admin_views.programar_salida, name='programar_salida'),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

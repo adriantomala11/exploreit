@@ -56,9 +56,15 @@ class Importante(models.Model):
 class Salida(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.PROTECT)
     fecha_salida    = models.DateField()
+    token           = models.CharField(max_length=30, null=True)
 
     def __str__(self):
         return str(self.tour.nombre)+' ('+str(self.fecha_salida)+')'
+
+    @classmethod
+    def generar_token(cls):
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        return x
 
 class ItinerarioVuelo(models.Model):
     fecha_ida       = models.DateTimeField()
@@ -70,7 +76,9 @@ class Reserva(models.Model):
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion     = models.CharField(max_length=10, null=True)
     correo          = models.CharField(max_length=40)
+
     pagado          = models.BooleanField(default=False)
+    de_baja         = models.BooleanField(default=False)
 
     @classmethod
     def generar_token(cls):

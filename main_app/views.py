@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-
+from django.core.mail import send_mail
 from exploreit import settings
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero
 
@@ -49,6 +49,21 @@ def tour_booking(request, token):
         for pasajero in pasajeros:
             pasajero = ReservaPasajero(reserva=reserva, nombres=pasajero['nombres'], apellidos=pasajero['apellidos'], cedula=pasajero['cedula'])
             pasajero.save()
+
+        #ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
+        subject = 'Explore It: Instrucciones de Pago para Reserva '+ reserva.token
+        message = """
+            Para confirmar su reserva deberá:\n
+            1. Ir al banco\n
+            2. Realizar el deposito\n
+            3. Responder a este correo con la foto del comprobante\n\n
+            Att. Explore It\n
+        """
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [reserva.correo, ]
+        send_mail(subject, message, email_from, recipient_list)
+
+        #RETORNO
         response_url = '/tour-booked/'+reserva.token+'/'
         response = JsonResponse({'status':200, 'url': response_url})
         return response

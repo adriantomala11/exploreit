@@ -1,0 +1,52 @@
+
+<!-- ================================
+       START DASHBOARD NAV
+================================= -->
+<div class="sidebar-nav sidebar--nav">
+    <div class="sidebar-nav-body">
+        <div class="side-menu-close">
+            <i class="la la-times"></i>
+        </div><!-- end menu-toggler -->
+        <div class="author-content">
+            <div class="d-flex align-items-center">
+                <div class="author-img avatar-sm">
+                    <img src="images/team9.jpg" alt="img">
+                </div>
+                <div class="author-bio">
+                    <h4 class="author__title">Fernando Tomala</h4>
+                    <span class="author__meta">Administrador</span>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-menu-wrap">
+            <ul class="sidebar-menu toggle-menu list-items">
+                <li id="nav_dashboard"><a href="{% url 'admin_dashboard' %}" style="padding-left: 0px;"><i class="la la-dashboard mr-2"></i>Dashboard</a></li>
+                <p class="nav_title"><i class="las la-passport"></i> Tours</p>
+                <li id="nav_tours_registrados"><a href="tours-registrados.html">Tours Registrados</a></li>
+                <li id="nav_registrar_tour"><a href="tours-registrados.html">Registrar Tour</a></li>
+                <p class="nav_title"><i class="las la-shuttle-van"></i> Salidas</p>
+                <li id="nav_salidas_programadas"><a href="{% url 'salidas_programadas' %}">Salidas Programadas</a></li>
+                <li id="nav_programar_salida"><a href="{% url 'programar_salida' %}">Programar Salida</a></li>
+                <li id="nav_historial_salidas"><a href="programar-salida.html">Historial de Salidas</a></li>
+                <p id="nav_cerrar_sesion" style="border-top: 1px solid #5d646d;"><a href="/" style="color: red;"><i class="la la-power-off mr-2 text-color-11"></i>Cerrar Sesion</a></p>
+            </ul>
+        </div><!-- end sidebar-menu-wrap -->
+    </div>
+</div><!-- end sidebar-nav -->
+<style>
+    .nav_title{
+        border-top: 1px solid #5d646d;
+        margin-top: 10px;
+        font-weight: 500;
+        padding: 10px 0px 5px 0px;
+        color: #5d646d;
+    }
+
+    .sidebar-menu p a{
+        color: #5d646d;
+        font-weight: 500;
+    }
+</style>
+<!-- ================================
+       END DASHBOARD NAV
+================================= -->

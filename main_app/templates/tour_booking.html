@@ -280,7 +280,6 @@
         if(!noHayErrores){
             alert('Revise los datos ingresados')
         }else{
-            console.log('ejecuta ajax')
             $.ajax({
               type: "POST",
               url: "{% url 'tour_booking' salida.tour.token %}",

@@ -1937,7 +1937,7 @@ body {
     color: #0d233e;
     cursor: pointer; }
     .select-wrap-form .form-control:focus {
-      border-color: #7b00ff;
+      border-color: #7b00ff !important;
       -webkit-box-shadow: 0 0 0 0;
       -moz-box-shadow: 0 0 0 0;
       box-shadow: 0 0 0 0; }
