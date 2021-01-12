@@ -9,8 +9,8 @@ from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserv
 
 
 def index(request):
-    salidas_proximas = Salida.objects.all()
-    context = {'salidas_proximas': salidas_proximas, 'settings': settings}
+    tours = Tour.objects.all()
+    context = {'tours': tours, 'settings': settings}
     return render(request, 'index.html', context)
 
 def tour_info(request, token):

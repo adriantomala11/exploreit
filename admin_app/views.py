@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 
 from exploreit import settings
-from main_app.models import Salida, ReservaPasajero, Tour, Reserva
+from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario
 
 
 def dashboard(request):
@@ -16,6 +16,11 @@ def salidas_programadas(request):
     salidas_proximas = Salida.objects.all()
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'salidas_programadas.html', context)
+
+def tours_registrados(request):
+    tours = Tour.objects.all()
+    context = {'tours': tours, 'settings': settings}
+    return render(request, 'tours_registrados.html', context)
 
 def obtener_listado_pasajeros(request, token):
     salida = get_object_or_404(Salida, token=token)
@@ -42,5 +47,43 @@ def programar_salida(request):
         nueva_salida = Salida(tour=tour, fecha_salida=fecha, token=Salida.generar_token())
         nueva_salida.save()
         response_url = '/administrador/salidas-programadas/'
+        response = JsonResponse({'status':200, 'url': response_url})
+        return response
+
+def registrar_tour(request):
+    if request.method == 'GET':
+        context = {}
+        return render(request, 'registrar_tour.html', context)
+
+    elif request.method == 'POST':
+        data = json.loads(request.POST['tour_data'])
+        nuevo_tour = Tour(nombre=data['nombre'],
+                          descripcion=data['descripcion'],
+                          ubicacion=data['ubicacion'],
+                          tipo=data['tipo'],
+                          hora_checkin=data['hora_checkin'],
+                          hora_salida=data['hora_salida'],
+                          hora_retorno=data['hora_retorno'],
+                          lugar_salida=data['lugar_salida'],
+                          es_internacional=True if data['es_internacional']=='INT' else False,
+                          capacidad=int(data['capacidad']),
+                          precio=float(data['precio']),
+                          duracion=int(data['duracion']),
+                          token=Salida.generar_token())
+        nuevo_tour.save()
+
+        for inc in data['incluye']:
+            incluye = Incluye(tour=nuevo_tour, nombre=inc)
+            incluye.save()
+
+        for ninc in data['no_incluye']:
+            no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc)
+            no_incluye.save()
+
+        for iti in data['itinerario']:
+            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti)
+            itinerario.save()
+
+        response_url = '/administrador/tours-registrados/'
         response = JsonResponse({'status':200, 'url': response_url})
         return response

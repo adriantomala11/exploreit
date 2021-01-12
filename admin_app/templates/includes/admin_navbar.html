@@ -2,18 +2,18 @@
 <!-- ================================
        START DASHBOARD NAV
 ================================= -->
-<div class="sidebar-nav sidebar--nav">
+<div class="sidebar-nav sidebar--nav" style="background-color: white; box-shadow: 5px 10px 18px #88888861; border-top: none;">
     <div class="sidebar-nav-body">
         <div class="side-menu-close">
             <i class="la la-times"></i>
         </div><!-- end menu-toggler -->
-        <div class="author-content">
+        <div class="author-content" style="background-color: #7b00ff17;">
             <div class="d-flex align-items-center">
                 <div class="author-img avatar-sm">
                     <img src="images/team9.jpg" alt="img">
                 </div>
                 <div class="author-bio">
-                    <h4 class="author__title">Fernando Tomala</h4>
+                    <h4 class="author__title">{{request.user}}</h4>
                     <span class="author__meta">Administrador</span>
                 </div>
             </div>
@@ -23,7 +23,7 @@
                 <li id="nav_dashboard"><a href="{% url 'admin_dashboard' %}" style="padding-left: 0px;"><i class="la la-dashboard mr-2"></i>Dashboard</a></li>
                 <p class="nav_title"><i class="las la-passport"></i> Tours</p>
                 <li id="nav_tours_registrados"><a href="tours-registrados.html">Tours Registrados</a></li>
-                <li id="nav_registrar_tour"><a href="tours-registrados.html">Registrar Tour</a></li>
+                <li id="nav_registrar_tour"><a href="{% url 'registrar_tour' %}">Registrar Tour</a></li>
                 <p class="nav_title"><i class="las la-shuttle-van"></i> Salidas</p>
                 <li id="nav_salidas_programadas"><a href="{% url 'salidas_programadas' %}">Salidas Programadas</a></li>
                 <li id="nav_programar_salida"><a href="{% url 'programar_salida' %}">Programar Salida</a></li>

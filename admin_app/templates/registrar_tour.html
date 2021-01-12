@@ -1,0 +1,289 @@
+{% extends "admin_base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START DASHBOARD AREA
+================================= -->
+<section class="dashboard-area" id="app">
+    <div style="padding: 30px">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="listing-header pb-4">
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title"><i class="la la-gear mr-2 text-gray"></i>Informacion General</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content contact-form-action">
+                        <form method="post" class="row">
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Nombre del Tour</label>
+                                    <div class="form-group">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input id="nombre" class="form-control" type="text" name="nombre_tour" placeholder="Ingresar nombre del tour">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Ubicacion del Destino</label>
+                                    <div class="form-group">
+                                        <span class="la la-map form-icon"></span>
+                                        <input id="ubicacion" class="form-control" type="text" name="text" placeholder="Pais, Provincia, Ciudad">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Tipo de Tour</label>
+                                    <div class="form-group select-contain w-100">
+                                        <select id="es_internacional" class="select-contain-select">
+                                            <option value="NAC">Nacional</option>
+                                            <option value="INT">Internacional</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Categoría</label>
+                                    <div class="form-group select-contain w-100">
+                                        <select id="tipo" class="select-contain-select">
+                                            <option value="FDY">Full Day</option>
+                                            <option value="CAM">Campers</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Lugar de Salida</label>
+                                    <div class="form-group">
+                                        <span class="la la-map form-icon"></span>
+                                        <input id="lugar_salida" class="form-control" type="text" name="text" placeholder="Dirección de Salida, Ciudad">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Hora de Checkin</label>
+                                    <div class="form-group">
+                                        <span class="la la-clock form-icon"></span>
+                                        <input id="hora_checkin" class="form-control" type="text" name="text" placeholder="Ingrese la hora de checkin">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Hora de Salida</label>
+                                    <div class="form-group">
+                                        <span class="la la-clock form-icon"></span>
+                                        <input id="hora_salida" class="form-control" type="text" name="text" placeholder="Ingrese la hora de salida">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Hora de Retorno</label>
+                                    <div class="form-group">
+                                        <span class="la la-clock form-icon"></span>
+                                        <input id="hora_retorno" class="form-control" type="text" name="text" placeholder="Ingrese la hora de retorno">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Capacidad</label>
+                                    <div class="form-group">
+                                        <span class="la la-users form-icon"></span>
+                                        <input id="capacidad" class="form-control" type="text" name="text" placeholder="Ingrese la capacidad de pasajeros">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Precio</label>
+                                    <div class="form-group">
+                                        <span class="la la-dollar-sign form-icon"></span>
+                                        <input id="precio" class="form-control" type="number" placeholder="Ingrese el precio por persona (Incluir IVA)">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Duración (Días)</label>
+                                    <div class="form-group">
+                                        <span class="la la-sun form-icon"></span>
+                                        <input id="duracion" class="form-control" type="text" name="text" placeholder="Ingrese la duración (en días) del tour">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-12">
+                                <div class="input-box">
+                                    <label class="label-text mb-0 line-height-20">Descripcion del tour</label>
+                                    <p class="font-size-13 mb-3 line-height-20">Maximo 400 caracteres</p>
+                                    <div class="form-group">
+                                        <span class="la la-pencil form-icon"></span>
+                                        <textarea id="descripcion" class="message-control form-control" name="message" placeholder="Ingrese la descripción del tour aquí    "></textarea>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-12 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Incluye</label>
+                                    <div class="form-group" v-for="inc in incluye">
+                                        <span class="la la-map form-icon"></span>
+                                        <input class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                    </div>
+                                    <div style="width: fit-content; margin: auto;">
+                                        <a v-on:click="agregarIncluye()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">No Incluye</label>
+                                    <div class="form-group" v-for="ninc in no_incluye">
+                                        <span class="la la-map form-icon"></span>
+                                        <input class="form-control no_incluye_input" type="text" name="text" placeholder="Ej: Comidas, Tickets adicionales, etc.">
+                                    </div>
+                                    <div style="width: fit-content; margin: auto;">
+                                        <a v-on:click="agregarNoIncluye()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                        </form>
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title"><i class="la la-clock mr-2 text-gray"></i>Itinerario</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content contact-form-action">
+                        <form method="post" class="row">
+                            <div class="col-lg-12">
+                                <div class="input-box">
+                                    <label class="label-text">Actividades</label>
+                                    <div class="form-group" v-for="iti in itinerario">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input class="form-control itinerario_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí    ">
+                                    </div>
+                                </div>
+                                <div style="width: fit-content; margin: auto;">
+                                    <a v-on:click="agregarItinerario()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                </div>
+                            </div><!-- end col-lg-12 -->
+                        </form>
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title"><i class="la la-photo mr-2 text-gray"></i>Elegir una imagen representativa del tour</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content contact-form-action">
+                        <form method="post" class="row">
+                            <div class="col-lg-12">
+                                <div class="file-upload-wrap">
+                                    <input type="file" name="files[]" class="multi file-upload-input with-preview" multiple maxlength="3">
+                                    <span class="file-upload-text"><i class="la la-upload mr-2"></i>Arrastre su imagen hasta aqui</span>
+                                </div>
+                            </div><!-- end col-lg-12 -->
+                        </form>
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                <div class="submit-box">
+                    <div class="btn-box pt-3">
+                        <a onclick="guardarTour()" class="theme-btn" style="color: white;">Guardar <i class="la la-arrow-right ml-1"></i></a>
+                    </div>
+                </div><!-- end submit-box -->
+            </div><!-- end col-lg-9 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end dashboard-area -->
+<!-- ================================
+    END DASHBOARD AREA
+================================= -->
+{% endblock %}
+{% block footer_code %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script>
+    document.getElementById('nav_registrar_tour').classList.add('page-active')
+
+    var vm = new Vue({
+        el: '#app',
+        selectors:['[[',']]'] ,
+        data:{
+            incluye:[
+                {},
+            ],
+            no_incluye:[
+                {},
+            ],
+            itinerario:[
+                {},
+            ]
+        },
+        methods:{
+            agregarIncluye: function(){
+                console.log('entra')
+                this.incluye.push({});
+            },
+            agregarNoIncluye: function(){
+                this.no_incluye.push({});
+            },
+            agregarItinerario: function(){
+                this.itinerario.push({});
+            }
+        }
+    })
+
+    function guardarTour(){
+        var incluyes = document.getElementsByClassName('incluye_input')
+        var incluye_ls = []
+        for(var i=0; i<incluyes.length; i++){
+            incluye_ls.push(incluyes[i].value)
+        }
+
+        var no_incluyes = document.getElementsByClassName('no_incluye_input')
+        var no_incluye_ls = []
+        for(var i=0; i<no_incluyes.length; i++){
+            no_incluye_ls.push(no_incluyes[i].value)
+        }
+
+        var itinerarios = document.getElementsByClassName('itinerario_input')
+        var itinerario_ls = []
+        for(var i=0; i<itinerarios.length; i++){
+            itinerario_ls.push(itinerarios[i].value)
+        }
+
+        var dataTour ={
+            nombre: document.getElementById('nombre').value,
+            ubicacion: document.getElementById('ubicacion').value,
+            tipo: document.getElementById('tipo').value,
+            hora_checkin: document.getElementById('hora_checkin').value,
+            hora_salida: document.getElementById('hora_salida').value,
+            hora_retorno: document.getElementById('nombre').value,
+            es_internacional: document.getElementById('es_internacional').value,
+            capacidad: document.getElementById('capacidad').value,
+            precio: document.getElementById('precio').value,
+            descripcion: document.getElementById('descripcion').value,
+            duracion: document.getElementById('duracion').value,
+            lugar_salida: document.getElementById('lugar_salida').value,
+            incluye: incluye_ls,
+            no_incluye: no_incluye_ls,
+            itinerario: itinerario_ls
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "{% url 'registrar_tour' %}",
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_data: JSON.stringify(dataTour)},
+          success:function(response){
+            if(response.status == 200){
+                window.location.href = '{{settings.URL}}'+response.url
+            }else{}
+          },
+        });
+    }
+</script>
+{% endblock %}

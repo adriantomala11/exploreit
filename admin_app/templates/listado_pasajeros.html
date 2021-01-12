@@ -60,7 +60,7 @@
                                         <tbody>
                                         {% for pasajero in pasajeros %}
                                         <tr>
-                                            <th scope="row">1</th>
+                                            <th scope="row">{{forloop.counter}}</th>
                                             <td>
                                                 <div class="table-content">
                                                     <h3 class="title">{{pasajero.apellidos}} {{pasajero.nombres}}</h3>
@@ -133,7 +133,5 @@
 {% block footer_code %}
 <script>
     document.getElementById('nav_salidas_programadas').classList.add('page-active')
-
-    function cambiarListado()
 </script>
 {% endblock %}
