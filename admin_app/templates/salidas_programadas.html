@@ -38,7 +38,7 @@
                     <div class="card-item card-item-list ">
                     <div class="card-img">
                         <a href="{% url 'listado_pasajeros' salida.token %}" class="d-block">
-                            <img src="{{salida.tour.imagen.url}}" alt="Destination-img">
+                            <img src="{% if tour.imagen %}{{tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img">
                         </a>
                     </div>
                     <div class="card-body">

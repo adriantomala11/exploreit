@@ -32,8 +32,9 @@ class Tour(models.Model):
         incluye = Incluye.objects.filter(tour=self)
         no_incluye = NoIncluye.objects.filter(tour=self)
         importante = Importante.objects.filter(tour=self)
+        itinerario = Itinerario.objects.filter(tour=self)
         proximas_salidas = Salida.objects.filter(tour=self).order_by('fecha_salida')
-        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas}
+        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario}
 
 class Itinerario(models.Model):
     descripcion     = models.TextField()
