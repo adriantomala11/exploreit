@@ -35,10 +35,10 @@
             <div class="container-fluid">
                 <div class="row">
                     {% for salida in salidas_proximas %}
-                    <div class="card-item card-item-list ">
-                    <div class="card-img">
+                    <div class="card-item card-item-list" style="width: 100%;">
+                    <div class="card-img" style="width: 25%;">
                         <a href="{% url 'listado_pasajeros' salida.token %}" class="d-block">
-                            <img src="{% if tour.imagen %}{{tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img">
+                            <img src="{% if tour.imagen %}{{tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img" style="width: 100%;">
                         </a>
                     </div>
                     <div class="card-body">
