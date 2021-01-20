@@ -72,3 +72,8 @@ def tour_booked(request, token):
     context = {'settings':settings}
     reserva = get_object_or_404(Reserva, token=token)
     return render(request, 'tour_booked.html', context)
+
+def tours(request):
+    salidas = Salida.objects.all()
+    context = {'salidas':salidas,'settings':settings}
+    return render(request,'tour_grid.html',context)
