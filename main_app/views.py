@@ -92,6 +92,11 @@ def reserva_persona(request):
     print(request)
 
     reserva = get_object_or_404(Reserva, token=request.POST['token'])
+
+    users = ReservaPasajero.objects.filter(reserva=reserva.id)
+
     context['reserva'] = reserva
+
+    context['pasajeros']=users
     
     return render(request, 'reserva_especifica.html', context)

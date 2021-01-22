@@ -35,6 +35,9 @@
                                     <p class="font-size-14">Acomodacion {{ reserva.acomodacion }}.</p>
                                     <p class="font-size-14">Correo de contacto {{ reserva.correo }}.</p>
                                     <p class="font-size-14">Pagada: {{ reserva.pagado }}.</p>
+                                    {% for pasajero in pasajeros %}
+                                    <p class="font-size-14"> {{ pasajero.nombres }}.</p>
+                                    {% endfor %}
                                 </div>    
                             </div>
 
