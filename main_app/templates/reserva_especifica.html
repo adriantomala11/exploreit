@@ -28,16 +28,76 @@
                         <div class="form-box">
                             <div class="form-title-wrap" style="display: flex !important;">
                                 <div style="width: 70%;">
-                                    <h3 class="title">Su reserva es</h3>
-                                    <p class="font-size-14">Me falta describirla {{ reserva.token }}.</p>
-                                    <p class="font-size-14">Fecha de creacion {{ reserva.fecha_creacion }}.</p>
-                                    <p class="font-size-14">Salida {{ reserva.salida }}.</p>
-                                    <p class="font-size-14">Acomodacion {{ reserva.acomodacion }}.</p>
-                                    <p class="font-size-14">Correo de contacto {{ reserva.correo }}.</p>
-                                    <p class="font-size-14">Pagada: {{ reserva.pagado }}.</p>
+                                    {% if reserva != null %}
+
+                                    <h2 class="title">Datos de la reserva</h2>
+                                    <p class="w-auto d-block mb-n1">Código de la reserva: {{ reserva.token }}.</p>
+                                    <p class="la la-calendar mr-1 text-black font-size-17">Fecha de creación: {{ reserva.fecha_creacion }}.</p>
+                                    <p class="la la-map-marker mr-1 text-black font-size-17">Salida hacia: {{ reserva.salida }}.</p>
+                                    {% if reserva.acomodacion != null or reserva.acomodacion == '' %}
+                                    <p class="form-control">Acomodación {{ reserva.acomodacion }}.</p>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <p class="la la-envelope-o form-icon" class="form-control">Correo de contacto: {{ reserva.correo }}.</p>        
+                                    </div>
+                                    {% if reserva.pagado %}
+                                    <p class="w-auto d-block mb-n1">Pagada: Si.</p>
+                                    {% else %}
+                                    <p class="w-auto d-block mb-n1">Pagada: No.</p>
+                                    {% endif %}
+
+
                                     {% for pasajero in pasajeros %}
-                                    <p class="font-size-14"> {{ pasajero.nombres }}.</p>
+                                    <div class="form-box">
+                                        <div class="form-title-wrap">
+                                            <h3 class="title">Información de Pasajero {{ forloop.counter }}</h3>
+                                        </div><!-- form-title-wrap -->
+                                        <div class="form-content ">
+                                            <div class="contact-form-action">
+                                                <form id="pasajero{{forloop.counter}}" class="pasajero" method="post">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 responsive-column">
+                                                            <div class="input-box">
+                                                                <label class="label-text">Nombres</label>
+                                                                <div class="form-group">
+                                                                    <span class="la la-user form-icon"></span>
+                                                                    <p class="form-control">{{ pasajero.nombres }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- end col-lg-6 -->
+                                                        <div class="col-lg-6 responsive-column">
+                                                            <div class="input-box">
+                                                                <label class="label-text">Apellidos</label>
+                                                                <div class="form-group">
+                                                                    <span class="la la-user form-icon"></span>
+                                                                    <p class="form-control">{{ pasajero.apellidos }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- end col-lg-6 -->
+                                                        <div class="col-lg-6 responsive-column">
+                                                            <div class="input-box">
+                                                                <label class="label-text">Número de Cédula</label>
+                                                                <div class="form-group">
+                                                                    <span class="la la-user form-icon"></span>
+                                                                    <p class="form-control">{{ pasajero.cedula }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div><!-- end col-lg-12 -->
+                                                    </div>
+                                                </form>
+                                            </div><!-- end contact-form-action -->
+                                        </div><!-- end form-content -->
+                                    </div><!-- end form-box -->
                                     {% endfor %}
+
+
+
+
+
+
+                                    {% else %}
+                                    <p>Nada encontrada con los datos proporcionados. </p>
+                                    {% endif %}
                                 </div>    
                             </div>
 

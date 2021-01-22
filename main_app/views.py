@@ -89,14 +89,18 @@ def ver_reserva(request):
 @csrf_exempt
 def reserva_persona(request):
     context = {'settings':settings}
-    print(request)
+    reserva = Reserva.objects.filter(token=request.POST['token'])
+    if reserva.exists():
+        prueba = ReservaPasajero.objects.filter(reserva=reserva.id , nombres=request.POST['firstName'], apellidos=request.POST['lastName'])
+        
+        if prueba.exists():
+            users = ReservaPasajero.objects.filter(reserva=reserva.id)
+            context['reserva'] = reserva
 
-    reserva = get_object_or_404(Reserva, token=request.POST['token'])
-
-    users = ReservaPasajero.objects.filter(reserva=reserva.id)
-
-    context['reserva'] = reserva
-
-    context['pasajeros']=users
+            context['pasajeros']=users
+            return render(request, 'reserva_especifica.html', context)
+        else:    
+            return render(request, 'reserva_especifica.html', context)
+    else:    
+        return render(request, 'reserva_especifica.html', context)
     
-    return render(request, 'reserva_especifica.html', context)
