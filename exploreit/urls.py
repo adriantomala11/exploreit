@@ -25,10 +25,13 @@ from admin_app import views as admin_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.index, name='index'),
+    path('verReserva/', main_views.ver_reserva, name='verReserva'),
+    path('verReserva/view', main_views.reserva_persona, name='verReserva'),
     path('tour-info/<slug:token>/', main_views.tour_info, name='tour_info'),
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
     path('tours/', main_views.tours, name='tours'),
+    
     path('administrador/', admin_views.dashboard, name='admin_dashboard'),
     path('administrador/salidas-programadas/', admin_views.salidas_programadas, name='salidas_programadas'),
     path('administrador/salidas-programadas/<slug:token>/listado-pasajeros/', admin_views.obtener_listado_pasajeros, name='listado_pasajeros'),

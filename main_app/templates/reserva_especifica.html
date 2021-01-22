@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START DASHBOARD AREA
+================================= -->
+<section class="dashboard-area">
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2" style="background-color: #7b00ff !important;">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <!--<h2 class="sec__title font-size-30"><a href="{% url 'salidas_programadas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Pasajeros</h2>
+                                -->
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap" style="display: flex !important;">
+                                <div style="width: 70%;">
+                                    <h3 class="title">Su reserva es</h3>
+                                    <p class="font-size-14">Me falta describirla {{ reserva.token }}.</p>
+                                    <p class="font-size-14">Fecha de creacion {{ reserva.fecha_creacion }}.</p>
+                                    <p class="font-size-14">Salida {{ reserva.salida }}.</p>
+                                    <p class="font-size-14">Acomodacion {{ reserva.acomodacion }}.</p>
+                                    <p class="font-size-14">Correo de contacto {{ reserva.correo }}.</p>
+                                    <p class="font-size-14">Pagada: {{ reserva.pagado }}.</p>
+                                </div>    
+                            </div>
+
+
+
+
+
+
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                {% comment %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="la la-angle-left"></i></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">1</a></li>
+                                <li class="page-item active">
+                                    <a class="page-link page-link-nav" href="#">2 <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Next">
+                                        <span aria-hidden="true"><i class="la la-angle-right"></i></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endcomment %}
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Exploreit 2020. Todos los derechos reservados.
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+</section><!-- end dashboard-area -->
+<!-- ================================
+    END DASHBOARD AREA
+================================= -->
+{% endblock %}
+{% block footer_code %}
+<script>
+    document.getElementById('nav_salidas_programadas').classList.add('page-active')
+</script>
+{% endblock %}>

@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from exploreit import settings
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     tours = Tour.objects.all()
@@ -77,3 +77,21 @@ def tours(request):
     salidas = Salida.objects.all()
     context = {'salidas':salidas,'settings':settings}
     return render(request,'tour_grid.html',context)
+
+
+
+def ver_reserva(request):
+    if request.method == 'GET':
+        reservas = Reserva.objects.all()
+        context = {'verReserva': reservas}
+        return render(request, 'ver_reserva.html', context)
+
+@csrf_exempt
+def reserva_persona(request):
+    context = {'settings':settings}
+    print(request)
+
+    reserva = get_object_or_404(Reserva, token=request.POST['token'])
+    context['reserva'] = reserva
+    
+    return render(request, 'reserva_especifica.html', context)
