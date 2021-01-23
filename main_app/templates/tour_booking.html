@@ -256,7 +256,7 @@
                         <div class="card-item shadow-none radius-none mb-0">
                             <div class="card-img pb-4">
                                 <a href="tour-details.html" class="d-block">
-                                    <img src="{{salida.tour.imagen.url}}" alt="tour-img">
+                                    <img src="{% if tour_info.tour.imagen %}{{settings.MEDIA_URL}}{{ tour_info.tour.imagen }}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="tour-img">
                                 </a>
                             </div>
                             <div class="card-body p-0">
