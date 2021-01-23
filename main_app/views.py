@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
 from exploreit import settings
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero
-
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     tours = Tour.objects.all()
@@ -72,3 +72,35 @@ def tour_booked(request, token):
     context = {'settings':settings}
     reserva = get_object_or_404(Reserva, token=token)
     return render(request, 'tour_booked.html', context)
+
+def tours(request):
+    salidas = Salida.objects.all()
+    context = {'salidas':salidas,'settings':settings}
+    return render(request,'tour_grid.html',context)
+
+
+
+def ver_reserva(request):
+    if request.method == 'GET':
+        reservas = Reserva.objects.all()
+        context = {'verReserva': reservas}
+        return render(request, 'ver_reserva.html', context)
+
+@csrf_exempt
+def reserva_persona(request):
+    context = {'settings':settings}
+    reserva = Reserva.objects.filter(token=request.POST['token'])
+    if reserva.exists():
+        prueba = ReservaPasajero.objects.filter(reserva=reserva.id , nombres=request.POST['firstName'], apellidos=request.POST['lastName'])
+        
+        if prueba.exists():
+            users = ReservaPasajero.objects.filter(reserva=reserva.id)
+            context['reserva'] = reserva
+
+            context['pasajeros']=users
+            return render(request, 'reserva_especifica.html', context)
+        else:    
+            return render(request, 'reserva_especifica.html', context)
+    else:    
+        return render(request, 'reserva_especifica.html', context)
+    

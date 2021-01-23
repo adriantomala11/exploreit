@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START DASHBOARD AREA
+================================= -->
+<section class="dashboard-area">
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2" style="background-color: #7b00ff !important;">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <!--<h2 class="sec__title font-size-30"><a href="{% url 'salidas_programadas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Pasajeros</h2>
+                                -->
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap" style="display: flex !important;">
+                                <div style="width: 70%;">
+                                    <h3 class="title">Escriba los datos de su reserva</h3>
+                                    
+                                </div>    
+                            </div>
+
+
+                            <form id="findReservationForm" novalidate="true" action="/verReserva/view" method="post" autocomplete="off">{% csrf_token %}{{form.as_p}}
+                                <div id="aa-viewReservationsUnsecure">
+                                    <div class="row-form">
+                                        <div class="span4">
+                                            <label for="findReservationForm.firstName" class="zeta">
+                                                Nombre del pasajero
+                                                <span class="icon-required" aria-hidden="true"></span><span class="hidden-accessible">, campo obligatorio.</span>
+                                                <input type="text" name="firstName" maxlength="30" value="" id="findReservationForm.firstName">
+                                            </label>
+                                        </div>
+                                        <div class="span4">
+                                            <label for="findReservationForm.lastName" class="zeta">
+                                                Apellido(s) del pasajero
+                                                <span class="icon-required" aria-hidden="true"></span><span class="hidden-accessible">, campo obligatorio.</span>
+                                                <input type="text" name="lastName" maxlength="30" value="" id="findReservationForm.lastName">
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-form">
+                                        <div class="span4">
+                                            <div class="tooltip-container">
+                                                <label for="findReservationForm.token" class="zeta">
+                                                    Código de reserva
+                                                    <span id="recordLocatorRequiredIcon"><span class="icon-required" aria-hidden="true"></span><span class="hidden-accessible">, campo obligatorio.</span></span>
+                                                    <input type="text" name="token" maxlength="9" value="" id="findReservationForm.token" placeholder="ex. JCQNHD">
+                                                </label>
+                                                <a href="#checkInMyTripsRecordLocatorTooltipContent" data-tooltip-title="Código de reservación" data-behavior="tooltip" id="recordLocatorTooltip">
+                                                    <span class="icon-info" aria-hidden="true"></span>
+                                                    <span class="hidden-accessible">Verá una nueva ventana con información sobre el código de reservación</span>
+                                                </a>
+                                                <div id="checkInMyTripsRecordLocatorTooltipContent" class="is-hidden">El código de su reservación, o código de confirmación, es un código de 9 caracteres.</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="span4 offset8 find-trip-button">
+                                            <input type="submit" value="Busque su viaje" id="findReservationForm.submit" class="btn btn-fullWidth no-margin-top">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                            <!---
+                            <div class="form-content">
+                                <div class="table-form table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Telefono</th>
+                                            <th scope="col"># Reserva</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Estado</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for reserva in reservas %}
+                                        <tr>
+                                            <th scope="row">{{forloop.counter}}</th>
+                                            <td>
+                                                <div class="table-content">
+                                                    <h3 class="title">{{reserva.correo}}</h3>
+                                                </div>
+                                            </td>
+                                            <td>{{reserva.telefono}}</td>
+                                            <td style="text-align: center;">{{reserva.token}}</td>
+                                            <td>{{reserva.de_baja}}</td>
+                                            <td><span class="badge badge-success py-1 px-2">{{pasajero.reserva.pagado}}</span></td>
+                                            <td>
+                                                <div class="table-content">
+                                                    {% if reserva.de_baja %}
+                                                    <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Cancelada</a>
+                                                    {% else %}
+                                                        {% if reserva.pagado%}
+                                                        <a style="background-color: green; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Pagado</a>
+                                                        {% else %}
+                                                        <a style="background-color: green; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar"><i class="lar la-check-circle"></i></a>
+                                                        <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small" data-toggle="tooltip" data-placement="top" title="Dar de Baja"><i class="las la-ban"></i></a>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        -->
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                {% comment %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="la la-angle-left"></i></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">1</a></li>
+                                <li class="page-item active">
+                                    <a class="page-link page-link-nav" href="#">2 <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Next">
+                                        <span aria-hidden="true"><i class="la la-angle-right"></i></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endcomment %}
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Exploreit 2020. Todos los derechos reservados.
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+</section><!-- end dashboard-area -->
+<!-- ================================
+    END DASHBOARD AREA
+================================= -->
+{% endblock %}
+{% block footer_code %}
+<script>
+    document.getElementById('nav_salidas_programadas').classList.add('page-active')
+</script>
+{% endblock %}>
