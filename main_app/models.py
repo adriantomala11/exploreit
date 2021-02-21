@@ -77,6 +77,10 @@ class Reserva(models.Model):
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion     = models.CharField(max_length=10, null=True)
     correo          = models.CharField(max_length=40)
+    nombre          = models.CharField(max_length=40)
+    apellido        = models.CharField(max_length=40)
+    cedula          = models.CharField(max_length=15)
+    telefono        = models.CharField(max_length=20, null=True)
 
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)
@@ -86,9 +90,18 @@ class Reserva(models.Model):
         x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
         return x
 
+    def get_num_pasajeros(self):
+        return ReservaPasajero.objects.filter(reserva=self).count()
+
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=10, null=True)
-    reserva         = models.ForeignKey(Reserva, on_delete=models.PROTECT)
+    reserva         = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     nombres         = models.CharField(max_length=100, null=True)
     apellidos       = models.CharField(max_length=100, null=True)
+    edad            = models.IntegerField(null=True)
     cedula          = models.CharField(max_length=12, null=True)
+
+    @classmethod
+    def generar_token(self):
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        return str(self.id) + x

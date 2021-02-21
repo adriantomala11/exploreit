@@ -47,39 +47,35 @@
                                 <div class="table-form table-responsive">
                                     <table class="table">
                                         <thead>
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Telefono</th>
-                                            <th scope="col"># Reserva</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Estado</th>
-                                            <th scope="col">Acciones</th>
-                                        </tr>
+                                            <tr>
+                                                <th scope="col">Nombre y Apellido</th>
+                                                <th scope="col">Telefono</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Pasajeros</th>
+                                                <th scope="col">Salida</th>
+                                                <th scope="col">Codigo</th>
+                                                <th scope="col">Estado</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         {% for reserva in reservas %}
                                         <tr>
-                                            <th scope="row">{{forloop.counter}}</th>
-                                            <td>
-                                                <div class="table-content">
-                                                    <h3 class="title">{{reserva.correo}}</h3>
-                                                </div>
-                                            </td>
+                                            <td>{{reserva.nombre}} {{reserva.apellido}}</td>
                                             <td>{{reserva.telefono}}</td>
-                                            <td style="text-align: center;">{{reserva.token}}</td>
-                                            <td>{{reserva.de_baja}}</td>
-                                            <td><span class="badge badge-success py-1 px-2">{{pasajero.reserva.pagado}}</span></td>
+                                            <td>{{reserva.correo}}</td>
+                                            <td>{{reserva.get_num_pasajeros}}</td>
+                                            <td>{{reserva.salida}}</td>
+                                            <td>{{reserva.token}}</td>
                                             <td>
-                                                <div class="table-content">
+                                                <div class="">
                                                     {% if reserva.de_baja %}
                                                     <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Cancelada</a>
                                                     {% else %}
                                                         {% if reserva.pagado%}
-                                                        <a style="background-color: green; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Pagado</a>
+                                                        <a style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Pagado</a>
                                                         {% else %}
-                                                        <a style="background-color: green; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar"><i class="lar la-check-circle"></i></a>
-                                                        <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small" data-toggle="tooltip" data-placement="top" title="Dar de Baja"><i class="las la-ban"></i></a>
+                                                        <a onclick="javascript:reserva_aprobar('{{reserva.token}}')" style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Aprobar"><i class="lar la-check-circle"></i></a>
+                                                        <a style="background-color: red; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Dar de Baja"><i class="las la-ban"></i></a>
                                                         {% endif %}
                                                     {% endif %}
                                                 </div>
@@ -141,5 +137,31 @@
 {% block footer_code %}
 <script>
     document.getElementById('nav_salidas_programadas').classList.add('page-active')
+
+    function reserva_aprobar(reserva_token){
+        $.ajax({
+          type: "POST",
+          url: "{% url 'reserva_aprobar' %}",
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}', reserva_token: reserva_token},
+          success:function(response){
+            if(response.status == 200){
+                window.location.reload();
+            }else{}
+          },
+        });
+    }
 </script>
+
+<style>
+    .table-form th, .table-form td {
+        font-size: 13px !important;
+    }
+
+    .table tbody tr td{
+        border: solid 1px lightgray;
+    }
+    .table thead tr th{
+        border: solid 1px white;
+    }
+</style>
 {% endblock %}

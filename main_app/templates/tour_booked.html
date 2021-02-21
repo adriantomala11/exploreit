@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load qr_code %}
 {% block main_content %}
-
 <!-- ================================
     START PAYMENT AREA
 ================================= -->
@@ -13,29 +13,37 @@
                     <div class="form-content">
                         <div class="payment-received-list">
                             <div class="d-flex align-items-center">
-                                <i class="la la-check icon-element flex-shrink-0 mr-3 ml-0"></i>
-                                <div>
-                                    <h3 class="title pb-1">Gracias Luis!</h3>
-                                    <h3 class="title">Tu reserva para el tour Full Day Quilotoa ha sido procesada.</h3>
-                                </div>
+                                    <h3 class="title" style="margin: auto;">Detalles de la Reserva</h3>
                             </div>
-                            <ul class="list-items py-4">
-                                <li><i class="la la-check text-success mr-2"></i>Tienes 24 horas para realizar el pago de esta orden.</li>
-                                <li><i class="la la-check text-success mr-2"></i>Si el pago no se realiza a tiempo, la reserva sera dada de baja automaticamente.</li>
-                                <li><i class="la la-check text-success mr-2"></i>Explore It no extendera el plazo para recibir el pago por ningun motivo.</li>
+                            <ul class="list-items pt-4" style="width: 50%; margin: auto;">
+                                <li style="font-weight: bold;">Codigo de Reserva<p style="float: right;font-weight: 300;">{{reserva.token}}</p></li>
+                                <li style="font-weight: bold;">Tour<p style="float: right;font-weight: 300;">{{reserva.salida.tour.nombre}}</p></li>
+                                <li style="font-weight: bold;">Fecha de Salida<p style="float: right;font-weight: 300;">{{reserva.salida.fecha_salida}}</p></li>
+                                <li style="font-weight: bold;">Hora Checkin<p style="float: right;font-weight: 300;">{{reserva.salida.tour.hora_checkin}}</p></li>
+                                <li style="font-weight: bold;">Pagar antes de<p style="float: right;font-weight: 300;">{{ fecha_pago }}</p></li>
+                                <li style="font-weight: bold;">Estado de la Reserva{% if reserva.de_baja %}<p style="float: right;font-weight: 300; color: red;">Anulada</p>{% else %}{% if reserva.pagado %}<p style="float: right;font-weight: 300; color: green;">Aprobada</p>{% else %}<p style="float: right;font-weight: 300;">Pendiente</p>{% endif %}{% endif %}</li>
                             </ul>
-                            <h3 class="title"><a href="#" class="text-black">Full Day Quilotoa</a></h3>
-                            <p>Cotopaxi, Ecuador</p>
-                            <p><strong class="text-black mr-1">Numero de Pasajeros: </strong>4</p>
-                            <ul class="list-items list-items-3 list-items-4 py-4">
-                                <li><span class="text-black font-weight-bold">Dia de Salida</span>Diciembre 5, 2020</li>
-                                <li><span class="text-black font-weight-bold">Hora de Slaida</span>06:30am</li>
-                                <li><span class="text-black font-weight-bold">Punto de Partida</span>Terminal Terrestre GYE, Angar 11</li>
-                            </ul>
-                            <div class="btn-box">
-                                <a href="#" class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
+
+                            <div class="pb-5" style="text-align: center;">
+                                <p style="font-weight: bold;">Lugar Salida</p>
+                                <p style="font-weight: 300;">{{reserva.salida.tour.lugar_salida}}</p>
                             </div>
-                        </div><!-- end card-item -->
+                        </div>
+                        <div class="d-flex align-items-center pb-4">
+                                <h3 class="title" style="margin: auto;">Información de Pasajeros</h3>
+                        </div>
+                        {% for pasajero in pasajeros %}
+                        <div class="mb-3" style="width: 50%; margin: auto; padding: 1rem; border: solid 1px lightgrey; border-radius: 5px;">
+                            <ul class="list-items">
+                                <li style="font-weight: bold;">Cedula del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.cedula}}</p></li>
+                                <li style="font-weight: bold;">Nombre del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.nombres}}</p></li>
+                                <li style="font-weight: bold;">Apellido del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.apellidos}}</p></li>
+                            </ul>
+                        </div>
+                        {% endfor %}
+                        <div class="btn-box" style="width: fit-content; margin: auto;">
+                            <a href="#" class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
+                        </div>
                     </div>
                 </div><!-- end payment-card -->
             </div><!-- end col-lg-12 -->

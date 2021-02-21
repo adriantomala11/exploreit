@@ -157,8 +157,10 @@
                     </div><!-- form-title-wrap -->
                     <div class="form-content ">
                         <div class="contact-form-action">
+                            {% comment %}
                             <input type="checkbox" id="contacto_input" name="contacto_input" value="false">
                             <label for="contacto_input"> Usar los mismos datos de facturación</label><br>
+                            {% endcomment %}
                             <form id="contacto">
                                 <div class="row">
                                     <div class="col-lg-6 responsive-column">
@@ -197,15 +199,6 @@
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
-                                    <div class="col-lg-12 responsive-column">
-                                        <div class="input-box">
-                                            <label class="label-text">Direccion de Domicilio</label>
-                                            <div class="form-group">
-                                                <span class="la la-map-marked form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Direccion de Domicilio" required>
-                                            </div>
-                                        </div>
-                                    </div><!-- end col-lg-12 -->
                                 </div>
                             </form>
                         </div><!-- end contact-form-action -->
@@ -230,13 +223,6 @@
                                         <i class="la la-check icon-element"></i>
                                         <i class="las la-money-check-alt" style="font-size: 45px;"></i>
                                         <span class="d-block">Transfernecia o Depósito</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="payoneer-tab" data-toggle="tab" href="#payoneer" role="tab" aria-controls="payoneer" aria-selected="true">
-                                        <i class="la la-check icon-element"></i>
-                                        <i class="las la-money-bill" style="font-size: 45px;"></i>
-                                        <span class="d-block">Pago en persona</span>
                                     </a>
                                 </li>
                             </ul>
@@ -339,8 +325,11 @@
             }
 
             if(allForms[i].id == 'facturacion'){
-                var facturacion = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value, domicilio:elements[4].value}
+                var facturacion = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value, domicilio:elements[4].value, cedula: elements[5].value}
                 requestDic.facturacion = facturacion
+            }else if(allForms[i].id == 'contacto'){
+                var contacto = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                requestDic.contacto = contacto
             }else if(allForms[i].classList.contains('pasajero')){
                 var pasajero = {nombres: elements[0].value, apellidos: elements[1].value, cedula: elements[2].value}
                 requestDic.pasajeros.push(pasajero)

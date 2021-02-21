@@ -6,35 +6,166 @@
     START HERO-WRAPPER AREA
 ================================= -->
 <section class="hero-wrapper">
-    <div class="hero-box hero-bg">
-        <span class="line-bg line-bg1"></span>
-        <span class="line-bg line-bg2"></span>
-        <span class="line-bg line-bg3"></span>
-        <span class="line-bg line-bg4"></span>
-        <span class="line-bg line-bg5"></span>
-        <span class="line-bg line-bg6"></span>
+    <div class="hero-box hero-bg" style="height: 95vh;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mx-auto responsive--column-l">
                     <div class="hero-content pb-5">
                         <div class="section-heading">
-                            <h2 class="sec__title cd-headline zoom">
-                                Los Mejores <span class="cd-words-wrapper">
-                                <b class="is-visible">Destinos</b>
-                                <b>Campings</b>
-                                <b>Aventuras</b>
-                                <b>Experiencias</b>
-                                <b>Viajes</b>
-                                <b>Paisajes</b>
-                                </span>
-                                Te están esperando
-                            </h2>
+                            <h3 class="sec__title cd-headline zoom">
+                                Descubre los mejores destinos nacionales e internacionales
+                            </h3>
                         </div>
                     </div><!-- end hero-content -->
                 </div><!-- end col-lg-12 -->
             </div><!-- end row -->
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="search-fields-container">
+                        <div class="section-tab section-tab-2 pb-3">
+                            <ul class="nav nav-tabs" id="myTab3" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="one-way-tab" data-toggle="tab" href="#one-way" role="tab" aria-controls="one-way" aria-selected="true">
+                                        Nacional
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="round-trip-tab" data-toggle="tab" href="#round-trip" role="tab" aria-controls="round-trip" aria-selected="false">
+                                        Internacional
+                                    </a>
+                                </li>
+                            </ul>
+                        </div><!-- end section-tab -->
+                        <div class="tab-content" id="myTabContent3">
+                            <div class="tab-pane fade show active" id="one-way" role="tabpanel" aria-labelledby="one-way-tab">
+                                <div class="contact-form-action">
+                                    <form action="{% url 'tours' %}" class="row align-items-center">
+                                        <input name="tipo" value="NAC" hidden>
+                                        {%comment%}
+                                        <div class="col-lg-6 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Flying from</label>
+                                                <div class="form-group">
+                                                    <span class="la la-map-marker form-icon"></span>
+                                                    <input class="form-control" type="text" placeholder="City or airport">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-6">
+                                            <div class="input-box">
+                                                <label class="label-text">Flying to</label>
+                                                <div class="form-group">
+                                                    <span class="la la-map-marker form-icon"></span>
+                                                    <input class="form-control" type="text" placeholder="City or airport">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        {%endcomment%}
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de fechas</label>
+                                                <div class="form-group">
+                                                    <span class="la la-calendar form-icon"></span>
+                                                    <input class="date-range form-control" type="text" name="daterange" value="04/28/2020">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Categoria</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto">
+                                                    <select name="categoria" class="select-contain-select">
+                                                        <option value="1">Todo</option>
+                                                        <option value="2" selected>Full Day</option>
+                                                        <option value="3">Campers</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de Precio</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto" style="display: flex;">
+                                                    <input name="precio-min" class="form-control" type="number" id="min-price-nac" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Min.">
+                                                    <div style="width: 6%;"></div>
+                                                    <input name="precio-max" class="form-control" type="number" id="max-price-nac" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Max.">
+                                                </div><!-- end price-slider-amount -->
+                                            </div><!-- end slider-range-wrap -->
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3">
+                                            <button type="submit" class="theme-btn w-100 text-center margin-top-20px">Buscar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- end tab-pane -->
+                            <div class="tab-pane fade" id="round-trip" role="tabpanel" aria-labelledby="round-trip-tab">
+                                <div class="contact-form-action">
+                                    <form action="{% url 'tours' %}" class="row align-items-center">
+                                        <input name="tipo" value="INT" hidden>
+                                        {%comment%}
+                                        <div class="col-lg-6 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Flying from</label>
+                                                <div class="form-group">
+                                                    <span class="la la-map-marker form-icon"></span>
+                                                    <input class="form-control" type="text" placeholder="City or airport">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-6">
+                                            <div class="input-box">
+                                                <label class="label-text">Flying to</label>
+                                                <div class="form-group">
+                                                    <span class="la la-map-marker form-icon"></span>
+                                                    <input class="form-control" type="text" placeholder="City or airport">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        {%endcomment%}
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de fechas</label>
+                                                <div class="form-group">
+                                                    <span class="la la-calendar form-icon"></span>
+                                                    <input class="date-range form-control" type="text" name="daterange" value="04/28/2020">
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Continente</label>
+                                                <div class="form-group">
+                                                    <div class="select-contain select-contain-shadow w-auto">
+                                                        <select name="continente" class="select-contain-select">
+                                                            <option value="1" selected>Todo</option>
+                                                            <option value="2">América</option>
+                                                            <option value="3">Europa</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3 pr-0">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de Precio</label>
+                                                <div class="form-group" style="display: flex;">
+                                                    <input name="precio-min" class="form-control" type="number" id="min-price" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Min.">
+                                                    <div style="width: 6%;"></div>
+                                                    <input name="precio-max" class="form-control" type="number" id="max-price" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Max.">
+                                                </div><!-- end price-slider-amount -->
+                                            </div><!-- end slider-range-wrap -->
+                                        </div><!-- end col-lg-3 -->
+                                        <div class="col-lg-3">
+                                            <button type="submit" class="theme-btn w-100 text-center margin-top-20px">Buscar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!-- end tab-pane -->
+                        </div>
+                    </div><!-- end main-search-input -->
+                </div>
+            </div><!-- end row -->
         </div><!-- end container -->
-        <svg class="hero-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 10 0 0 A 90 59, 0, 0, 0, 100 0 L 100 10 Z"></path></svg>
     </div>
 </section><!-- end hero-wrapper -->
 <!-- ================================
@@ -44,7 +175,7 @@
 <!-- ================================
     START INFO AREA
 ================================= -->
-<section class="info-area info-bg padding-top-50px padding-bottom-50px text-center">
+<section class="info-area info-bg padding-bottom-50px text-center" style="display: none !important;">
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
@@ -108,7 +239,7 @@
                 </div><!-- end section-heading -->
             </div><!-- end col-lg-12 -->
         </div><!-- end row -->
-        <div class="row padding-top-50px">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="hotel-card-wrap">
                     <div class="hotel-card-carousel carousel-action">
@@ -138,8 +269,8 @@
         </div><!-- end row -->
         <div class="row">
             <div class="col-lg-12">
-                <div class="btn-box mt-3 text-center">
-                    <a href="/tour-grid.html" class="theme-btn">Ver Mas</a>
+                <div class="btn-box mt-4 text-center">
+                    <a href="{% url 'tours' %}" class="theme-btn">Ver Mas</a>
                 </div><!-- end btn-box
                 -->
             </div><!-- end col-lg-12 -->
@@ -189,13 +320,7 @@
 <!-- ================================
     START CTA AREA
 ================================= -->
-<section class="cta-area padding-top-100px padding-bottom-180px text-center">
-    <div class="video-bg">
-        <video autoplay loop>
-            <source src="video/video-bg.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+<section class="cta-area padding-top-100px padding-bottom-180px text-center" style="background: url(https://ec.viajandox.com/uploads_2/image_275.jpg); background-repeat: no-repeat; background-size: cover;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -208,7 +333,6 @@
             </div><!-- end col-lg-12 -->
         </div><!-- end row -->
     </div><!-- end container -->
-    <svg class="cta-svg" viewBox="0 0 500 150" preserveAspectRatio="none"><path d="M-31.31,170.22 C164.50,33.05 334.36,-32.06 547.11,196.88 L500.00,150.00 L0.00,150.00 Z"></path></svg>
 </section><!-- end cta-area -->
 <!-- ================================
     END CTA AREA
@@ -216,7 +340,7 @@
 <!-- ================================
     START MOBILE AREA
 ================================= -->
-<section class="mobile-app padding-top-100px padding-bottom-50px section-bg" style="background-color: white !important;">
+<section class="mobile-app padding-top-70px padding-bottom-70px section-bg" style="background-color: white !important;">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">

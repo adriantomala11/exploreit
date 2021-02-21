@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_app',
-    'exploreit'
+    'exploreit',
+    'qr_code',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,5 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'exploreit.ecuador@gmail.com'
 EMAIL_HOST_PASSWORD = 'Software1'
+
+DEFAULT_FROM_EMAIL = 'exploreit.ecuador@gmail.com'

@@ -25,8 +25,7 @@ from admin_app import views as admin_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.index, name='index'),
-    path('verReserva/', main_views.ver_reserva, name='verReserva'),
-    path('verReserva/view', main_views.reserva_persona, name='verReserva'),
+    path('ver-reserva/', main_views.ver_reserva, name='ver_reserva'),
     path('tour-info/<slug:token>/', main_views.tour_info, name='tour_info'),
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
@@ -39,6 +38,9 @@ urlpatterns = [
     path('administrador/programar-salida/', admin_views.programar_salida, name='programar_salida'),
     path('administrador/registrar_tour/', admin_views.registrar_tour, name='registrar_tour'),
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
+    path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
+
+    path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

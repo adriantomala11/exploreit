@@ -1,9 +1,11 @@
 import json
 
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 
 from exploreit import settings
+from exploreit.helpers import send_html_email
 from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario
 
 
@@ -87,3 +89,29 @@ def registrar_tour(request):
         response_url = '/administrador/tours-registrados/'
         response = JsonResponse({'status':200, 'url': response_url})
         return response
+
+def reserva_aprobar(request):
+    transaction.set_autocommit(False)
+    try:
+        reserva_token = request.POST['reserva_token']
+        reserva = get_object_or_404(Reserva, token=reserva_token)
+        pasajeros = ReservaPasajero.objects.filter(reserva=reserva)
+        for pasajero in pasajeros:
+            pasajero.token = pasajero.generar_token()
+            pasajero.save()
+        reserva.pagado = True
+        reserva.save()
+        recipient_list = [reserva.correo,]
+        context = {'url': settings.URL,'link': settings.URL+'/ver-reserva/?tok='+reserva.token, 'reserva':reserva}
+        send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
+        transaction.commit()
+        response = JsonResponse({'status': 200, 'msg': 'Todo Bien'})
+    except Exception as e:
+        print('Exception: ', e)
+        transaction.rollback()
+        response = JsonResponse({'status': 200, 'msg': 'Error'})
+    return response
+
+def reserva_dar_de_baja(request):
+    response = JsonResponse({'status': 200})
+    return response

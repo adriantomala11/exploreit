@@ -14,7 +14,7 @@
                         <h3 class="title"><i class="la la-gear mr-2 text-gray"></i>Informacion General</h3>
                     </div><!-- form-title-wrap -->
                     <div class="form-content contact-form-action">
-                        <form method="post" class="row">
+                        <form method="post" class="row" autocomplete="off">
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
                                     <label class="label-text">Nombre del Tour</label>
@@ -37,9 +37,9 @@
                                 <div class="input-box">
                                     <label class="label-text">Tipo de Tour</label>
                                     <div class="form-group select-contain w-100">
-                                        <select id="es_internacional" class="select-contain-select">
-                                            <option value="NAC">Nacional</option>
-                                            <option value="INT">Internacional</option>
+                                        <select v-model="tipo" id="es_internacional" class="select-contain-select">
+                                            <option class="tipo-option" value="NAC">Nacional</option>
+                                            <option class="tipo-option" value="INT">Internacional</option>
                                         </select>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                 <div class="input-box">
                                     <label class="label-text">Categoría</label>
                                     <div class="form-group select-contain w-100">
-                                        <select id="tipo" class="select-contain-select">
+                                        <select v-model="categoria" id="tipo" class="select-contain-select">
                                             <option value="FDY">Full Day</option>
                                             <option value="CAM">Campers</option>
                                         </select>
@@ -131,9 +131,14 @@
                             <div class="col-lg-6">
                                 <div class="input-box">
                                     <label class="label-text">Incluye</label>
-                                    <div class="form-group" v-for="inc in incluye">
-                                        <span class="la la-map form-icon"></span>
-                                        <input class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                    <div style="display: flex;"  v-for="inc in incluye" :id="inc.id">
+                                        <div class="form-group" style="width:90%">
+                                            <span class="la la-map form-icon"></span>
+                                            <input v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                        </div>
+                                        <div @click="eliminarIncluye(inc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
+                                            <span class="la la-trash"></span>
+                                        </div>
                                     </div>
                                     <div style="width: fit-content; margin: auto;">
                                         <a v-on:click="agregarIncluye()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
@@ -143,9 +148,14 @@
                             <div class="col-lg-6">
                                 <div class="input-box">
                                     <label class="label-text">No Incluye</label>
-                                    <div class="form-group" v-for="ninc in no_incluye">
-                                        <span class="la la-map form-icon"></span>
-                                        <input class="form-control no_incluye_input" type="text" name="text" placeholder="Ej: Comidas, Tickets adicionales, etc.">
+                                    <div style="display: flex;"  v-for="ninc in no_incluye" :id="ninc.id">
+                                        <div class="form-group" style="width:90%">
+                                            <span class="la la-map form-icon"></span>
+                                            <input v-model="ninc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                        </div>
+                                        <div @click="eliminarNoIncluye(ninc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
+                                            <span class="la la-trash"></span>
+                                        </div>
                                     </div>
                                     <div style="width: fit-content; margin: auto;">
                                         <a v-on:click="agregarNoIncluye()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
@@ -162,11 +172,13 @@
                     <div class="form-content contact-form-action">
                         <form method="post" class="row">
                             <div class="col-lg-12">
-                                <div class="input-box">
-                                    <label class="label-text">Actividades</label>
-                                    <div class="form-group" v-for="iti in itinerario">
-                                        <span class="la la-briefcase form-icon"></span>
-                                        <input class="form-control itinerario_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí    ">
+                                <div style="display: flex;"  v-for="iti in itinerario" :id="iti.id">
+                                    <div class="form-group" style="width:90%">
+                                        <span class="la la-map form-icon"></span>
+                                        <input v-model="iti.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí.">
+                                    </div>
+                                    <div @click="eliminarItinerario(iti.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
+                                        <span class="la la-trash"></span>
                                     </div>
                                 </div>
                                 <div style="width: fit-content; margin: auto;">
@@ -197,6 +209,7 @@
                     </div>
                 </div><!-- end submit-box -->
             </div><!-- end col-lg-9 -->
+        </div>
         </div><!-- end row -->
     </div><!-- end container -->
 </section><!-- end dashboard-area -->
@@ -206,34 +219,68 @@
 {% endblock %}
 {% block footer_code %}
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
 <script>
     document.getElementById('nav_registrar_tour').classList.add('page-active')
 
     var vm = new Vue({
         el: '#app',
-        selectors:['[[',']]'] ,
+        delimiters:['[[',']]'] ,
         data:{
+            nombre: '',
+            ubicacion: '',
+            tipo: '',
+            categoria: '',
+            lugar_salida: '',
+            hora_checkin: '',
+            hora_salida: '',
+            hora_retorno: '',
+            capacidad: '',
+            precio: '',
+            duracion: '',
+            descripcion: '',
             incluye:[
-                {},
             ],
             no_incluye:[
-                {},
             ],
             itinerario:[
-                {},
             ]
         },
         methods:{
             agregarIncluye: function(){
-                console.log('entra')
-                this.incluye.push({});
+                this.incluye.push({id: Date.now(), nombre: ''});
+                console.log(this.incluye)
             },
             agregarNoIncluye: function(){
-                this.no_incluye.push({});
+                this.no_incluye.push({id: Date.now(), nombre: ''});
             },
             agregarItinerario: function(){
-                this.itinerario.push({});
-            }
+                this.itinerario.push({id: Date.now(), nombre: ''});
+            },
+            eliminarIncluye: function(id){
+                for(var i=0; i<this.incluye.length; i++){
+                    if(this.incluye[i].id == id){
+                        this.incluye.splice(i,1)
+                    }
+                }
+            },
+            eliminarNoIncluye: function(id){
+                for(var i=0; i<this.no_incluye.length; i++){
+                    if(this.no_incluye[i].id == id){
+                        this.no_incluye.splice(i,1)
+                    }
+                }
+            },
+            eliminarItinerario: function(id){
+                for(var i=0; i<this.itinerario.length; i++){
+                    if(this.itinerario[i].id == id){
+                        this.itinerario.splice(i,1)
+                    }
+                }
+            },
+        },
+        components:{
+
         }
     })
 
