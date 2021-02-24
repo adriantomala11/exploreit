@@ -40,166 +40,127 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="filter-wrap margin-bottom-30px">
+                    {% comment %}
                     <div class="filter-top d-flex align-items-center justify-content-between pb-4">
                         <div>
                             <h3 class="title font-size-24">22 Salidas Encontradas</h3>
                             <p class="font-size-14 line-height-20 pt-1">No se cobran tarifas adicionales por reservar<p>
                         </div>
-                        {% comment %}
+
                         <div class="layout-view d-flex align-items-center">
                             <a href="tour-grid.html" data-toggle="tooltip" data-placement="top" title="Grid View" class="active"><i class="la la-th-large"></i></a>
                             <a href="tour-list.html" data-toggle="tooltip" data-placement="top" title="List View"><i class="la la-th-list"></i></a>
                         </div>
-                        {% endcomment %}
                     </div><!-- end filter-top -->
-                    <form>
-                        <div class="filter-bar d-flex align-items-center justify-content-between">
-                                <div class="filter-bar-filter d-flex flex-wrap align-items-center">
-                                    <div class="filter-option">
-                                        <h3 class="title font-size-16">Filtros:</h3>
-                                    </div>
-                                    <div class="filter-option">
-                                        <div class="dropdown dropdown-contain">
-                                            <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                                Precio
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap">
-                                                <div class="dropdown-item">
-                                                    <div class="slider-range-wrap">
-                                                        <div class="price-slider-amount padding-bottom-20px">
-                                                            <label for="amount" class="filter__label">Price:</label>
-                                                            <input type="text" id="amount" class="amounts">
-                                                        </div><!-- end price-slider-amount -->
-                                                        <div id="slider-range"></div><!-- end slider-range -->
-                                                    </div><!-- end slider-range-wrap -->
-                                                    <div class="btn-box pt-4">
-                                                        <button class="theme-btn theme-btn-small theme-btn-transparent" type="button">Apply</button>
-                                                    </div>
-                                                </div><!-- end dropdown-item -->
-                                            </div><!-- end dropdown-menu -->
-                                        </div><!-- end dropdown -->
-                                    </div>
-                                    <div class="filter-option">
-                                        <div class="dropdown dropdown-contain">
-                                            <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                                Tipo
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap">
-                                                <div class="dropdown-item">
-                                                    <div class="checkbox-wrap">
-                                                        <div class="custom-checkbox">
-                                                            <input type="checkbox" id="r1">
-                                                            <label for="r1">
-                                                                <span class="ratings d-flex align-items-center">
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <span class="color-text-3 font-size-13 ml-1">(55.590)</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="custom-checkbox">
-                                                            <input type="checkbox" id="r2">
-                                                            <label for="r2">
-                                                                <span class="ratings d-flex align-items-center">
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <span class="color-text-3 font-size-13 ml-1">(40.590)</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="custom-checkbox">
-                                                            <input type="checkbox" id="r3">
-                                                            <label for="r3">
-                                                                <span class="ratings d-flex align-items-center">
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <span class="color-text-3 font-size-13 ml-1">(23.590)</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="custom-checkbox">
-                                                            <input type="checkbox" id="r4">
-                                                            <label for="r4">
-                                                                <span class="ratings d-flex align-items-center">
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <span class="color-text-3 font-size-13 ml-1">(12.590)</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                        <div class="custom-checkbox">
-                                                            <input type="checkbox" id="r5">
-                                                            <label for="r5">
-                                                                <span class="ratings d-flex align-items-center">
-                                                                    <i class="la la-star"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <i class="la la-star-o"></i>
-                                                                    <span class="color-text-3 font-size-13 ml-1">(590)</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div><!-- end dropdown-item -->
-                                            </div><!-- end dropdown-menu -->
-                                        </div><!-- end dropdown -->
-                                    </div>
-                                    <div class="filter-option">
-                                        <div class="dropdown dropdown-contain">
-                                            <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                                Fecha Salida
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap">
-                                                <div class="dropdown-item">
-                                                </div><!-- end dropdown-item -->
-                                            </div><!-- end dropdown-menu -->
-                                        </div><!-- end dropdown -->
-                                    </div>
-                                    <div class="filter-option">
-                                        <div class="dropdown dropdown-contain">
-                                            <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                                Categoría
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap">
-                                                <div class="dropdown-item">
-                                                </div><!-- end dropdown-item -->
-                                            </div><!-- end dropdown-menu -->
-                                        </div><!-- end dropdown -->
-                                    </div>
-                                    <div class="filter-option">
-                                        <div class="dropdown dropdown-contain">
-                                            <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                                Continente
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap">
-                                                <div class="dropdown-item">
-                                                </div><!-- end dropdown-item -->
-                                            </div><!-- end dropdown-menu -->
-                                        </div><!-- end dropdown -->
-                                    </div>
-                                </div><!-- end filter-bar-filter -->
-                                <div class="select-contain">
-                                    <button type="submit" class="theme-btn w-100 text-center">Aplicar</button>
-                                </div><!-- end select-contain -->
-                        </div><!-- end filter-bar -->
-                    </form>
+                    {% endcomment %}
+                    <div class="filter-bar d-flex align-items-center justify-content-between">
+                        <div class="filter-bar-filter d-flex flex-wrap align-items-center">
+                            <div class="filter-option">
+                                <h3 class="title font-size-16">Filtros:</h3>
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                        Precio
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de Precio</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto" style="display: flex;">
+                                                    <input name="precio-min" class="form-control" type="number" id="precio-min" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Min.">
+                                                    <div style="width: 6%;"></div>
+                                                    <input name="precio-max" class="form-control" type="number" id="precio-max" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Max.">
+                                                </div><!-- end price-slider-amount -->
+                                            </div><!-- end slider-range-wrap -->
+                                            <button onclick="aplicarFiltros(['precio-min', 'precio-max'])" class="theme-btn w-100 text-center">Aplicar</button>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                        Tipo
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="form-check">
+                                              <input value="NAC" class="form-check-input" type="radio" name="tipo" id="tiponac" style="margin-top: 6px;">
+                                              <label class="form-check-label" for="tiponac">
+                                                Nacional
+                                              </label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input value="INT" class="form-check-input" type="radio" name="tipo" id="tipoint" style="margin-top: 6px;">
+                                              <label class="form-check-label" for="tipoint">
+                                                Internacional
+                                              </label>
+                                            </div>
+                                            <button onclick="aplicarFiltros(['tipo'])" class="theme-btn w-100 text-center mt-2">Aplicar</button>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                        Fecha Salida
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de fechas</label>
+                                                <div class="form-group">
+                                                    <input class="date-range form-control" type="text" name="daterange">
+                                                </div>
+                                            </div>
+                                            <button class="theme-btn w-100 text-center">Aplicar</button>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            {% if tags.tipo.valor == 'INT' %}
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                        Continente
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            {% else %}
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                        Categoría
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            {% endif %}
+                        </div><!-- end filter-bar-filter -->
+                    </div><!-- end filter-bar -->
+                    <div style="display: flex; padding: 10px 5px; width: 100%; overflow: auto;">
+                        {% for key,tag in tags.items %}
+                        <div class="tags-section" style="display: flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
+                            <p style="font-weight: bold;">{{tag.nombre}}:</p>
+                            <p style="padding-left: 5px;">{{tag.valor_string}}</p>
+                            <p onclick="eliminarFiltro('{{key}}')" style="cursor: pointer; padding-left: 7px; font-weight: bold;"><i style="font-weight: bold;" class="las la-times"></i></p>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div><!-- end filter-wrap -->
             </div><!-- end col-lg-12 -->
         </div><!-- end row -->
         <div class="row">
+            {% if salidas %}
             {% for salida in salidas %}
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
@@ -222,12 +183,19 @@
                 </div><!-- end card-item -->
             </div>
             {% endfor %}
+            {% else %}
+            <div class="p-5" style="width: 100%; text-align: center;">
+                <h4>Lo sentimos, no se han encontrado coincidencias de Salidas :(</h4>
+            </div>
+            {% endif %}
         </div><!-- end row -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="btn-box mt-3 text-center">
                     <button type="button" class="theme-btn"><i class="la la-refresh mr-1"></i>Cargar Mas</button>
+                    {%comment%}
                     <p class="font-size-13 pt-2">Mostrando 1 - 9 de 22 Salidas</p>
+                    {%endcomment%}
                 </div><!-- end btn-box -->
             </div><!-- end col-lg-12 -->
         </div><!-- end row -->
@@ -237,5 +205,53 @@
     END CARD AREA
 ================================= -->
 {% endblock %}
+
+
 {% block footer_code %}
+<script>
+    var filtros = {{tags|safe}}
+    console.log(filtros)
+    function aplicarFiltros(filtros_ls){
+        var new_url = ''
+        for(var i=0; i<filtros_ls.length; i++){
+            if(filtros_ls[i] == 'tipo'){
+                try{
+                    filtros[filtros_ls[i]].valor = document.querySelector('input[name="tipo"]:checked').value;
+                }catch{
+                    filtros[filtros_ls[i]] = { valor : document.querySelector('input[name="tipo"]:checked').value};
+                }
+            }else{
+                try{
+                    filtros[filtros_ls[i]].valor = document.getElementById(filtros_ls[i]).value;
+                }catch{
+                    filtros[filtros_ls[i]] = {valor: document.getElementById(filtros_ls[i]).value};
+                }
+            }
+        }
+        window.location.href = '{% url 'tours' %}'+ cambiarURL();
+    }
+
+    function cambiarURL(){
+        var new_url = '?'
+        let keys = Object.keys(filtros)
+        for(var i=0; i<keys.length; i++){
+            new_url = new_url + String(keys[i]) + '=' + String(filtros[keys[i]].valor)
+            if(i!=keys.length-1){
+                new_url = new_url + '&'
+            }
+        }
+        return (new_url.replaceAll("/", "%2F").replaceAll(" - ", "+-+"));
+    }
+
+    function eliminarFiltro(key){
+        delete filtros[key]
+        window.location.href = '{% url 'tours' %}'+ cambiarURL();
+    }
+</script>
+
+<style>
+    .tags-section p{
+        font-size: 13px;
+    }
+</style>
 {% endblock %}
