@@ -73,17 +73,19 @@ def registrar_tour(request):
                           duracion=int(data['duracion']),
                           token=Salida.generar_token())
         nuevo_tour.save()
-
+        print(data['incluye'])
+        print(data['no_incluye'])
+        print(data['itinerario'])
         for inc in data['incluye']:
-            incluye = Incluye(tour=nuevo_tour, nombre=inc)
+            incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
             incluye.save()
 
         for ninc in data['no_incluye']:
-            no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc)
+            no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
             no_incluye.save()
 
         for iti in data['itinerario']:
-            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti)
+            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['nombre'])
             itinerario.save()
 
         response_url = '/administrador/tours-registrados/'

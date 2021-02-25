@@ -316,9 +316,9 @@
             descripcion: document.getElementById('descripcion').value,
             duracion: document.getElementById('duracion').value,
             lugar_salida: document.getElementById('lugar_salida').value,
-            incluye: incluye_ls,
-            no_incluye: no_incluye_ls,
-            itinerario: itinerario_ls
+            incluye: vm.incluye,
+            no_incluye: vm.no_incluye,
+            itinerario: vm.itinerario
         }
 
         $.ajax({

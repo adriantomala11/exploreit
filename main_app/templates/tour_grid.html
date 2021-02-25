@@ -104,7 +104,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                    <a onclick="addCalendarListener()" class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
                                         Fecha Salida
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -112,7 +112,7 @@
                                             <div class="input-box">
                                                 <label class="label-text">Rango de fechas</label>
                                                 <div class="form-group">
-                                                    <input class="date-range form-control" type="text" name="daterange">
+                                                    <input class="date-range form-control" type="text" name="daterange" id="daterange">
                                                 </div>
                                             </div>
                                             <button class="theme-btn w-100 text-center">Aplicar</button>
@@ -210,25 +210,26 @@
 {% block footer_code %}
 <script>
     var filtros = {{tags|safe}}
-    console.log(filtros)
     function aplicarFiltros(filtros_ls){
-        var new_url = ''
-        for(var i=0; i<filtros_ls.length; i++){
-            if(filtros_ls[i] == 'tipo'){
-                try{
-                    filtros[filtros_ls[i]].valor = document.querySelector('input[name="tipo"]:checked').value;
-                }catch{
-                    filtros[filtros_ls[i]] = { valor : document.querySelector('input[name="tipo"]:checked').value};
-                }
-            }else{
-                try{
-                    filtros[filtros_ls[i]].valor = document.getElementById(filtros_ls[i]).value;
-                }catch{
-                    filtros[filtros_ls[i]] = {valor: document.getElementById(filtros_ls[i]).value};
+        setTimeout(function () {
+            var new_url = ''
+            for(var i=0; i<filtros_ls.length; i++){
+                if(filtros_ls[i] == 'tipo'){
+                    try{
+                        filtros[filtros_ls[i]].valor = document.querySelector('input[name="tipo"]:checked').value;
+                    }catch{
+                        filtros[filtros_ls[i]] = { valor : document.querySelector('input[name="tipo"]:checked').value};
+                    }
+                }else{
+                    try{
+                        filtros[filtros_ls[i]].valor = document.getElementById(filtros_ls[i]).value;
+                    }catch{
+                        filtros[filtros_ls[i]] = {valor: document.getElementById(filtros_ls[i]).value};
+                    }
                 }
             }
-        }
-        window.location.href = '{% url 'tours' %}'+ cambiarURL();
+            window.location.href = '{% url 'tours' %}'+ cambiarURL();
+        }, 200);
     }
 
     function cambiarURL(){
@@ -247,8 +248,12 @@
         delete filtros[key]
         window.location.href = '{% url 'tours' %}'+ cambiarURL();
     }
-</script>
 
+    function addCalendarListener(){
+        let button = document.querySelector('.applyBtn.btn.btn-sm.btn-primary')
+        button.addEventListener("click", function(){ aplicarFiltros(['daterange']), false})
+    }
+</script>
 <style>
     .tags-section p{
         font-size: 13px;
