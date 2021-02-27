@@ -198,8 +198,8 @@
                 </div><!-- end form-box -->
                 <div class="submit-box">
                     <div class="btn-box pt-3">
-                        <a onclick="guardarTour()" class="theme-btn" style="color: white;">Guardar <i class="la la-arrow-right ml-1"></i></a>
-                        <a onclick="getImageData()" class="theme-btn" style="color: white;">Obtener Data <i class="la la-arrow-right ml-1"></i></a>
+                        <a href="{% url 'tours_registrados' %}" class="theme-btn" style="color: gray; background-color: lightgray; border-color: gray; cursor: pointer;">Cancelar</a>
+                        <a onclick="guardarTour()" class="theme-btn" style="cursor: pointer; color: white;">Guardar <i class="la la-arrow-right ml-1"></i></a>
                     </div>
                 </div><!-- end submit-box -->
             </div><!-- end col-lg-9 -->
@@ -320,7 +320,7 @@
           data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_data: JSON.stringify(dataTour)},
           success:function(response){
             if(response.status == 200){
-                //window.location.href = '{{settings.URL}}'+response.url
+                window.location.href = '{{settings.URL}}'+response.url
             }else{}
           },
         });

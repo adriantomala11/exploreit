@@ -152,8 +152,8 @@ def editar_tour(request, slug):
             filename = data['imagen']['nombre']
             tour.imagen = filename
             ruta= os.path.join(settings.BASE_DIR,'media','tours',str(tour.id))
-            print(ruta)
-            os.mkdir(ruta)
+            if not (os.path.exists(ruta)):
+                os.mkdir(ruta)
             ruta = os.path.join(ruta, filename)
             with open(ruta, 'wb+') as f:
                 f.write(imgdata)

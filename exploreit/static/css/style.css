@@ -754,7 +754,8 @@ body {
   font-weight: 500; }
   .theme-btn:hover {
     background-color: #fff;
-    color: #7b00ff; }
+    color: #7b00ff !important;
+  }
 
 /*=== theme-btn-small ====*/
 .theme-btn-small {
