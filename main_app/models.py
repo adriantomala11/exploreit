@@ -1,5 +1,7 @@
+import os
 import random
 import string
+import datetime
 
 from django.db import models
 
@@ -19,7 +21,7 @@ class Tour(models.Model):
     hora_retorno        = models.CharField(max_length=10)
     lugar_salida        = models.CharField(max_length=150)
     token               = models.CharField(max_length=30, null=True)
-    imagen              = models.ImageField(upload_to='tours')
+    imagen              = models.ImageField(upload_to=os.path.join('tours',str(id)))
     es_internacional    = models.BooleanField(default=False)
     capacidad           = models.IntegerField(default=0)
     precio              = models.FloatField()
@@ -33,22 +35,79 @@ class Tour(models.Model):
         no_incluye = NoIncluye.objects.filter(tour=self)
         importante = Importante.objects.filter(tour=self)
         itinerario = Itinerario.objects.filter(tour=self)
-        proximas_salidas = Salida.objects.filter(tour=self).order_by('fecha_salida')
+        proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).order_by('fecha_salida')
         return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario}
 
+    def eliminar_incluyes(self):
+        items = Incluye.objects.filter(tour=self)
+        items.delete()
+
+    def eliminar_no_incluyes(self):
+        items = NoIncluye.objects.filter(tour=self)
+        items.delete()
+
+    def eliminar_itinerarios(self):
+        items = Itinerario.objects.filter(tour=self)
+        items.delete()
+
+    def imagen_url(self):
+        return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), str(self.imagen))
+
 class Itinerario(models.Model):
-    descripcion     = models.TextField()
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
-    siguiente       = models.ForeignKey("self", on_delete=models.PROTECT, null=True)
     dia             = models.IntegerField(null=True)
+    descripcion     = models.CharField(max_length=300, null=True)
+
+    @classmethod
+    def queryset_to_dict(cls, queryset):
+        dict = {}
+        for item in queryset:
+            dict[str(item.id)] = {'descripcion': item.descripcion}
+        return dict
+
+    @classmethod
+    def queryset_to_list(cls, queryset):
+        list = []
+        for item in queryset:
+            list.append({'id':item.id, 'descripcion': item.descripcion})
+        return list
+
 
 class Incluye(models.Model):
     nombre     = models.CharField(max_length=150)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
 
+    @classmethod
+    def queryset_to_dict(cls, queryset):
+        dict = {}
+        for item in queryset:
+            dict[str(item.id)] = {'nombre': item.nombre}
+        return dict
+
+    @classmethod
+    def queryset_to_list(cls, queryset):
+        list = []
+        for item in queryset:
+            list.append({'id':item.id,'nombre': item.nombre})
+        return list
+
 class NoIncluye(models.Model):
     nombre          = models.CharField(max_length=150)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
+
+    @classmethod
+    def queryset_to_dict(cls, queryset):
+        dict = {}
+        for item in queryset:
+            dict[str(item.id)] = {'nombre': item.nombre}
+        return dict
+
+    @classmethod
+    def queryset_to_list(cls, queryset):
+        list = []
+        for item in queryset:
+            list.append({'id':item.id,'nombre': item.nombre})
+        return list
 
 class Importante(models.Model):
     descripcion     = models.CharField(max_length=300)

@@ -1,8 +1,11 @@
 import json
+import base64
+import os
 
 from django.db import transaction
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 
 from exploreit import settings
 from exploreit.helpers import send_html_email
@@ -82,12 +85,87 @@ def registrar_tour(request):
             no_incluye.save()
 
         for iti in data['itinerario']:
-            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['nombre'])
+            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'])
             itinerario.save()
 
         response_url = '/administrador/tours-registrados/'
         response = JsonResponse({'status':200, 'url': response_url})
         return response
+
+def editar_tour(request, slug):
+    if request.method == 'GET':
+        try:
+            tour = Tour.objects.get(token=slug)
+
+            incluye = Incluye.objects.filter(tour=tour)
+            incluye = Incluye.queryset_to_list(incluye)
+
+            no_incluye = NoIncluye.objects.filter(tour=tour)
+            no_incluye = NoIncluye.queryset_to_list(no_incluye)
+
+            itinerario = Itinerario.objects.filter(tour=tour)
+            itinerario = Itinerario.queryset_to_list(itinerario)
+
+            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario, 'tour': tour}
+
+            return render(request, 'editar_tour.html', context)
+        except Exception as e:
+            print(e)
+            redirect('/administrador/registrar-tour/')
+
+    elif request.method == 'POST':
+        try:
+            tour = Tour.objects.get(token=slug)
+            data = json.loads(request.POST['tour_data'])
+            tour.nombre=data['nombre']
+            tour.descripcion=data['descripcion']
+            tour.ubicacion=data['ubicacion']
+            tour.tipo=data['tipo']
+            tour.hora_checkin=data['hora_checkin']
+            tour.hora_salida=data['hora_salida']
+            tour.hora_retorno=data['hora_retorno']
+            tour.lugar_salida=data['lugar_salida']
+            tour.es_internacional=True if data['es_internacional']=='INT' else False
+            tour.capacidad=int(data['capacidad'])
+            tour.precio=float(data['precio'])
+            tour.duracion=int(data['duracion'])
+
+
+            tour.eliminar_incluyes()
+            tour.eliminar_no_incluyes()
+            tour.eliminar_itinerarios()
+
+            for inc in data['incluye']:
+                incluye = Incluye(tour=tour, nombre=inc['nombre'])
+                incluye.save()
+
+            for ninc in data['no_incluye']:
+                no_incluye = NoIncluye(tour=tour, nombre=ninc['nombre'])
+                no_incluye.save()
+
+            for iti in data['itinerario']:
+                itinerario = Itinerario(tour=tour, descripcion=iti['descripcion'])
+                itinerario.save()
+
+            imagen = data['imagen']['data']
+            imgdata = base64.b64decode(imagen.split(',')[1])
+            filename = data['imagen']['nombre']
+            tour.imagen = filename
+            ruta= os.path.join(settings.BASE_DIR,'media','tours',str(tour.id))
+            print(ruta)
+            os.mkdir(ruta)
+            ruta = os.path.join(ruta, filename)
+            with open(ruta, 'wb+') as f:
+                f.write(imgdata)
+            tour.save()
+            response_url = '/administrador/tours-registrados/'
+            response = JsonResponse({'status':200, 'url': response_url})
+            return response
+
+        except Exception as e:
+            print(e)
+            response = JsonResponse({'status': 200, 'url': '/administrador/editar-tour/'+slug+'/'})
+            return response
 
 def reserva_aprobar(request):
     transaction.set_autocommit(False)

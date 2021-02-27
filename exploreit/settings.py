@@ -136,3 +136,5 @@ EMAIL_HOST_USER = 'exploreit.ecuador@gmail.com'
 EMAIL_HOST_PASSWORD = 'Software1'
 
 DEFAULT_FROM_EMAIL = 'exploreit.ecuador@gmail.com'
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880

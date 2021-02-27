@@ -38,11 +38,11 @@
                     <div class="card-item card-item-list" style="width: 100%;">
                     <div class="card-img" style="width: 25%;">
                         <a class="d-block">
-                            <img src="{% if tour.imagen %}{{tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img">
+                            <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img">
                         </a>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title"><a href="tour-details.html">{{tour.nombre}}</a></h3>
+                        <h3 class="card-title"><a href="{% url 'editar_tour' tour.token %}">{{tour.nombre}}</a></h3>
                         <p class="card-meta">{{tour.ubicacion}}</p>
                         <p class="card-meta">{{fecha_salida}}</p>
                         <div class="card-price d-flex align-items-center justify-content-between">

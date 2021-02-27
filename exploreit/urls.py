@@ -36,7 +36,8 @@ urlpatterns = [
     path('administrador/salidas-programadas/<slug:token>/listado-pasajeros/', admin_views.obtener_listado_pasajeros, name='listado_pasajeros'),
     path('administrador/salidas-programadas/<slug:token>/listado-reservas/', admin_views.obtener_listado_reservas,name='listado_reservas'),
     path('administrador/programar-salida/', admin_views.programar_salida, name='programar_salida'),
-    path('administrador/registrar_tour/', admin_views.registrar_tour, name='registrar_tour'),
+    path('administrador/registrar-tour/', admin_views.registrar_tour, name='registrar_tour'),
+    path('administrador/editar-tour/<slug:slug>/', admin_views.editar_tour, name='editar_tour'),
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
 
