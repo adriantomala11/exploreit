@@ -126,6 +126,9 @@ class Salida(models.Model):
         x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
         return x
 
+    def get_num_pasajeros(self):
+        return ReservaPasajero.objects.filter(reserva__pagado=True, reserva__salida=self).count()
+
 class ItinerarioVuelo(models.Model):
     fecha_ida       = models.DateTimeField()
     fecha_regreso   = models.DateTimeField()

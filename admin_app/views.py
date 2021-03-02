@@ -1,3 +1,4 @@
+import datetime
 import json
 import base64
 import os
@@ -18,13 +19,49 @@ def dashboard(request):
     return render(request, 'admin_dashboard.html', context)
 
 def salidas_programadas(request):
-    salidas_proximas = Salida.objects.all()
+    hoy = datetime.date.today()
+    salidas_proximas = Salida.objects.filter(fecha_salida__range=[hoy, '2030-12-31'])
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'salidas_programadas.html', context)
 
 def tours_registrados(request):
     tours = Tour.objects.all()
-    context = {'tours': tours, 'settings': settings}
+    params = request.GET
+    fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
+    tags = {}
+
+    #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
+    if params.__contains__('tipo'):
+        tipo = params['tipo']
+        if tipo == 'INT':
+            tours = Tour.objects.filter(es_internacional=True)
+            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
+        elif tipo == 'NAC':
+            tours = Tour.objects.filter(es_internacional=False)
+            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+        else:
+            tours = Tour.objects.all()
+    else:
+        tours = Tour.objects.all()
+
+    #FILTRO POR NOMBRE
+    if params.__contains__('nombre'):
+        tours = tours.filter(nombre__icontains=params['nombre'])
+        tags['nombre'] = {'nombre': 'Nombre', 'valor': params['nombre'], 'valor_string': 'Nombre'}
+
+    #FILTRO POR PRECIO
+    if params.__contains__('precio-min'):
+        if params['precio-min'] != '' and params['precio-min'] != '0':
+            precio_min = int(params['precio-min'])
+            tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
+    if params.__contains__('precio-max'):
+        if params['precio-max'] != '' and params['precio-max'] != '0':
+            precio_max = int(params['precio-max'])
+            tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
+    if params.__contains__('precio-max') or params.__contains__('precio-min'):
+        tours = tours.filter(precio__range=[precio_min, precio_max])
+
+    context = {'tours': tours, 'tags': tags, 'settings': settings}
     return render(request, 'tours_registrados.html', context)
 
 def obtener_listado_pasajeros(request, token):
@@ -75,7 +112,6 @@ def registrar_tour(request):
                           precio=float(data['precio']),
                           duracion=int(data['duracion']),
                           token=Salida.generar_token())
-        nuevo_tour.save()
         for inc in data['incluye']:
             incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
             incluye.save()
@@ -87,6 +123,18 @@ def registrar_tour(request):
         for iti in data['itinerario']:
             itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'])
             itinerario.save()
+
+        imagen = data['imagen']['data']
+        imgdata = base64.b64decode(imagen.split(',')[1])
+        filename = data['imagen']['nombre']
+        nuevo_tour.imagen = filename
+        ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
+        if not (os.path.exists(ruta)):
+            os.mkdir(ruta)
+        ruta = os.path.join(ruta, filename)
+        with open(ruta, 'wb+') as f:
+            f.write(imgdata)
+        nuevo_tour.save()
 
         response_url = '/administrador/tours-registrados/'
         response = JsonResponse({'status':200, 'url': response_url})
@@ -129,7 +177,6 @@ def editar_tour(request, slug):
             tour.capacidad=int(data['capacidad'])
             tour.precio=float(data['precio'])
             tour.duracion=int(data['duracion'])
-
 
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
@@ -192,3 +239,10 @@ def reserva_aprobar(request):
 def reserva_dar_de_baja(request):
     response = JsonResponse({'status': 200})
     return response
+
+def historial_salidas(request):
+    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    print(yesterday)
+    salidas = Salida.objects.filter(fecha_salida__range=['2021-01-01', yesterday])
+    context = {'salidas': salidas}
+    return render(request, 'historial_salidas.html', context)

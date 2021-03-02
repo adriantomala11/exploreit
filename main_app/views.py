@@ -100,8 +100,6 @@ def tours(request):
     else:
         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
 
-    params = request.GET
-
     #FILTRO POR RANGO DE FECHAS
     if params.__contains__('daterange'):
         fechas = params['daterange'].split(' - ')

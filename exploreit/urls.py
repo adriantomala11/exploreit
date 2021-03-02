@@ -39,6 +39,7 @@ urlpatterns = [
     path('administrador/registrar-tour/', admin_views.registrar_tour, name='registrar_tour'),
     path('administrador/editar-tour/<slug:slug>/', admin_views.editar_tour, name='editar_tour'),
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
+    path('administrador/historial-salidas/', admin_views.historial_salidas, name='historial_salidas'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')

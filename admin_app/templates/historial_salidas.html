@@ -12,7 +12,7 @@
                     <div class="col-lg-6">
                         <div class="breadcrumb-content">
                             <div class="section-heading">
-                                <h2 class="sec__title font-size-30"><a href="{% url 'salidas_programadas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Pasajeros</h2>
+                                <h2 class="sec__title font-size-30"><a href="{% url 'historial_salidas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Pasajeros</h2>
                             </div>
                         </div><!-- end breadcrumb-content -->
                     </div><!-- end col-lg-6 -->
@@ -21,8 +21,7 @@
                             <ul class="list-items d-flex justify-content-end">
                                 <li><a href="index.html" class="text-white">Admin</a></li>
                                 <li>Salidas</li>
-                                <li>Salidas Programadas</li>
-                                <li>Listado</li>
+                                <li>Historial de Salidas</li>
                             </ul>
                         </div><!-- end breadcrumb-list -->
                     </div><!-- end col-lg-6 -->
@@ -40,7 +39,7 @@
                                     <p class="font-size-14">Se registran {{ reservas|length }} reservas hasta el momento.</p>
                                 </div>
                                 <div style="width:30%; text-align: right;">
-                                    <a href="{% url 'listado_pasajeros' salida.token %}">Ver Listado de Pasajeros</a>
+                                    <a href="">Ver Listado de Pasajeros</a>
                                 </div>
                             </div>
                             <div class="form-content">
@@ -48,38 +47,25 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Nombre y Apellido</th>
-                                                <th scope="col">Telefono</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Pasajeros</th>
                                                 <th scope="col">Salida</th>
+                                                <th scope="col">Tour</th>
+                                                <th scope="col">Fecha</th>
+                                                <th scope="col">Capacidad</th>
+                                                <th scope="col">Pasajeros</th>
                                                 <th scope="col">Codigo</th>
                                                 <th scope="col">Estado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {% for reserva in reservas %}
+                                        {% for salida in salidas %}
                                         <tr>
-                                            <td>{{reserva.nombre}} {{reserva.apellido}}</td>
-                                            <td>{{reserva.telefono}}</td>
-                                            <td>{{reserva.correo}}</td>
-                                            <td>{{reserva.get_num_pasajeros}}</td>
-                                            <td>{{reserva.salida}}</td>
-                                            <td><a href="{% url 'ver_reserva' %}?tok={{reserva.token}}">{{reserva.token}}</a></td>
-                                            <td>
-                                                <div class="">
-                                                    {% if reserva.de_baja %}
-                                                    <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Cancelada</a>
-                                                    {% else %}
-                                                        {% if reserva.pagado%}
-                                                        <a style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Pagado</a>
-                                                        {% else %}
-                                                        <a onclick="javascript:reserva_aprobar('{{reserva.token}}')" style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Aprobar"><i class="lar la-check-circle"></i></a>
-                                                        <a style="background-color: red; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Dar de Baja"><i class="las la-ban"></i></a>
-                                                        {% endif %}
-                                                    {% endif %}
-                                                </div>
-                                            </td>
+                                            <td><a target="_blank" href="{% url 'listado_reservas' salida.token %}">{{salida.token}}</a></td>
+                                            <td>{{salida.tour}}</td>
+                                            <td>{{salida.fecha_salida}}</td>
+                                            <td>{{salida.tour.capacidad}}</td>
+                                            <td>{{salida.get_num_pasajeros}}</td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                         {% endfor %}
                                         </tbody>
@@ -135,23 +121,6 @@
 ================================= -->
 {% endblock %}
 {% block footer_code %}
-<script>
-    document.getElementById('nav_salidas_programadas').classList.add('page-active')
-
-    function reserva_aprobar(reserva_token){
-        $.ajax({
-          type: "POST",
-          url: "{% url 'reserva_aprobar' %}",
-          data: {csrfmiddlewaretoken: '{{ csrf_token }}', reserva_token: reserva_token},
-          success:function(response){
-            if(response.status == 200){
-                window.location.reload();
-            }else{}
-          },
-        });
-    }
-</script>
-
 <style>
     .table-form th, .table-form td {
         font-size: 13px !important;
