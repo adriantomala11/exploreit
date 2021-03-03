@@ -183,7 +183,7 @@
                                 <div style="display: flex;"  v-for="iti in itinerario" :id="iti.id">
                                     <div class="form-group" style="width:90%">
                                         <span class="la la-map form-icon"></span>
-                                        <input v-model="iti.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí.">
+                                        <input v-model="iti.descripcion" class="form-control incluye_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí.">
                                     </div>
                                     <div @click="eliminarItinerario(iti.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                         <span class="la la-trash"></span>

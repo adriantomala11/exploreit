@@ -130,7 +130,12 @@ def tours(request):
     if params.__contains__('continente'):
         continente = params['continente']
 
-    context = {'salidas':salidas, 'settings':settings, 'tags': tags}
+    tours = {}
+    for salida in salidas:
+        if not tours.__contains__(str(salida.tour.id)):
+            tours[str(salida.tour.id)] = salida.tour
+
+    context = {'salidas':salidas, 'settings':settings, 'tags': tags, 'tours': tours}
     return render(request,'tour_grid.html',context)
 
 def ver_reserva(request):

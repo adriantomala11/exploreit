@@ -98,43 +98,50 @@ def registrar_tour(request):
         return render(request, 'registrar_tour.html', context)
 
     elif request.method == 'POST':
-        data = json.loads(request.POST['tour_data'])
-        nuevo_tour = Tour(nombre=data['nombre'],
-                          descripcion=data['descripcion'],
-                          ubicacion=data['ubicacion'],
-                          tipo=data['tipo'],
-                          hora_checkin=data['hora_checkin'],
-                          hora_salida=data['hora_salida'],
-                          hora_retorno=data['hora_retorno'],
-                          lugar_salida=data['lugar_salida'],
-                          es_internacional=True if data['es_internacional']=='INT' else False,
-                          capacidad=int(data['capacidad']),
-                          precio=float(data['precio']),
-                          duracion=int(data['duracion']),
-                          token=Salida.generar_token())
-        for inc in data['incluye']:
-            incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
-            incluye.save()
+        try:
+            data = json.loads(request.POST['tour_data'])
+            nuevo_tour = Tour(nombre=data['nombre'],
+                              descripcion=data['descripcion'],
+                              ubicacion=data['ubicacion'],
+                              tipo=data['tipo'],
+                              hora_checkin=data['hora_checkin'],
+                              hora_salida=data['hora_salida'],
+                              hora_retorno=data['hora_retorno'],
+                              lugar_salida=data['lugar_salida'],
+                              es_internacional=True if data['es_internacional']=='INT' else False,
+                              capacidad=int(data['capacidad']),
+                              precio=float(data['precio']),
+                              duracion=int(data['duracion']),
+                              token=Salida.generar_token())
+            nuevo_tour.save()
 
-        for ninc in data['no_incluye']:
-            no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
-            no_incluye.save()
+            for inc in data['incluye']:
+                incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
+                incluye.save()
 
-        for iti in data['itinerario']:
-            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'])
-            itinerario.save()
+            for ninc in data['no_incluye']:
+                no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
+                no_incluye.save()
 
-        imagen = data['imagen']['data']
-        imgdata = base64.b64decode(imagen.split(',')[1])
-        filename = data['imagen']['nombre']
-        nuevo_tour.imagen = filename
-        ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
-        if not (os.path.exists(ruta)):
-            os.mkdir(ruta)
-        ruta = os.path.join(ruta, filename)
-        with open(ruta, 'wb+') as f:
-            f.write(imgdata)
-        nuevo_tour.save()
+            for iti in data['itinerario']:
+                itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'])
+                itinerario.save()
+
+            imagen = data['imagen']['data']
+            imgdata = base64.b64decode(imagen.split(',')[1])
+            filename = data['imagen']['nombre']
+            nuevo_tour.imagen = filename
+            ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
+
+            print('EXISTE: ', os.path.exists(ruta))
+            if not (os.path.exists(ruta)):
+                os.makedirs(ruta)
+            ruta = os.path.join(ruta, filename)
+            with open(ruta, 'wb+') as f:
+                f.write(imgdata)
+            nuevo_tour.save()
+        except Exception as e:
+            print(e)
 
         response_url = '/administrador/tours-registrados/'
         response = JsonResponse({'status':200, 'url': response_url})
@@ -198,13 +205,15 @@ def editar_tour(request, slug):
             imgdata = base64.b64decode(imagen.split(',')[1])
             filename = data['imagen']['nombre']
             tour.imagen = filename
-            ruta= os.path.join(settings.BASE_DIR,'media','tours',str(tour.id))
+            ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(tour.id))
+
             if not (os.path.exists(ruta)):
-                os.mkdir(ruta)
+                os.makedirs(ruta)
             ruta = os.path.join(ruta, filename)
             with open(ruta, 'wb+') as f:
                 f.write(imgdata)
             tour.save()
+
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             return response

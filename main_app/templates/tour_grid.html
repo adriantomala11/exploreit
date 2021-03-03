@@ -161,23 +161,23 @@
         </div><!-- end row -->
         <div class="row">
             {% if salidas %}
-            {% for salida in salidas %}
+            {% for key, tour in tours.items %}
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
                     <div class="card-img">
-                        <a href="{% url 'tour_info' salida.tour.token %}" class="d-block">
-                            <img src="{% if salida.tour.imagen %}{{salida.tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
+                        <a href="{% url 'tour_info' tour.token %}" class="d-block">
+                            <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
                         </a>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title"><a href="{% url 'tour_info' salida.tour.token %}">{{salida.tour.nombre}}</a></h3>
-                        <p class="card-meta">{{salida.tour.ubicacion}}</p>
+                        <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
+                        <p class="card-meta">{{tour.ubicacion}}</p>
                         <div class="card-price d-flex align-items-center justify-content-between">
                             <p>
-                                <span class="price__num">${{salida.tour.precio|floatformat:2}}</span>
+                                <span class="price__num">${{tour.precio|floatformat:2}}</span>
                                 <span class="price__text">Por persona</span>
                             </p>
-                            <a href="{% url 'tour_info' salida.tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                            <a href="{% url 'tour_info' tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
                         </div>
                     </div>
                 </div><!-- end card-item -->
