@@ -133,19 +133,21 @@ def registrar_tour(request):
             nuevo_tour.imagen = filename
             ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
 
-            print('EXISTE: ', os.path.exists(ruta))
             if not (os.path.exists(ruta)):
                 os.makedirs(ruta)
             ruta = os.path.join(ruta, filename)
             with open(ruta, 'wb+') as f:
                 f.write(imgdata)
             nuevo_tour.save()
+            response_url = '/administrador/tours-registrados/'
+            response = JsonResponse({'status': 200, 'url': response_url})
+            return response
         except Exception as e:
-            print(e)
+            msg = e
+            response = JsonResponse({'status': 201, 'msg': msg})
+            return response
 
-        response_url = '/administrador/tours-registrados/'
-        response = JsonResponse({'status':200, 'url': response_url})
-        return response
+
 
 def editar_tour(request, slug):
     if request.method == 'GET':
