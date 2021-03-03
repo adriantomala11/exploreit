@@ -167,3 +167,13 @@ class ReservaPasajero(models.Model):
     def generar_token(self):
         x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
         return str(self.id) + x
+
+
+class Tipo(models.Model):
+    nombre          = models.CharField(max_length=10, null=True)
+
+class Categoria(models.Model):
+    nombre          = models.CharField(max_length=10, null=True)
+
+class Continente(models.Model):
+    nombre          = models.CharField(max_length=10, null=True)
