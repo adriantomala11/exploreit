@@ -247,7 +247,7 @@
                         <div class="card-item mb-0">
                             <div class="card-img">
                                 <a href="{% url 'tour_info' tour.token %}" class="d-block">
-                                    <img src="{% if tour.imagen %}{{tour.imagen.url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
+                                    <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
                                 </a>
                             </div>
                             <div class="card-body">
