@@ -114,7 +114,7 @@
                                     <label class="label-text">Duración (Días)</label>
                                     <div class="form-group">
                                         <span class="la la-sun form-icon"></span>
-                                        <input id="duracion" class="form-control" type="text" name="text" placeholder="Ingrese la duración (en días) del tour">
+                                        <input v-model="duracion" id="duracion" class="form-control" type="number" name="duracion" placeholder="Ingrese la duración (en días) del tour">
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -173,9 +173,9 @@
                         </form>
                     </div><!-- end form-content -->
                 </div><!-- end form-box -->
-                <div class="form-box">
-                    <div class="form-title-wrap">
-                        <h3 class="title"><i class="la la-clock mr-2 text-gray"></i>Itinerario</h3>
+                <div class="form-box" v-for="obj, index in duracionInt">
+                    <div class="form-title-wrap" >
+                        <h3 class="title"><i class="la la-clock mr-2 text-gray"></i>Itinerario Dia [[index+1]]</h3>
                     </div><!-- form-title-wrap -->
                     <div class="form-content contact-form-action">
                         <form method="post" class="row">
@@ -190,7 +190,7 @@
                                     </div>
                                 </div>
                                 <div style="width: fit-content; margin: auto;">
-                                    <a v-on:click="agregarItinerario()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                    <a v-on:click="agregarItinerario(index)" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
                                 </div>
                             </div><!-- end col-lg-12 -->
                         </form>
@@ -230,7 +230,7 @@
             hora_retorno: '',
             capacidad: '',
             precio: '',
-            duracion: '',
+            duracion: 0,
             descripcion: '',
             incluye:[
             ],
@@ -248,8 +248,8 @@
             agregarNoIncluye: function(){
                 this.no_incluye.push({id: Date.now(), nombre: ''});
             },
-            agregarItinerario: function(){
-                this.itinerario.push({id: Date.now(), descripcion: ''});
+            agregarItinerario: function(dia){
+                this.itinerario.push({id: Date.now(), descripcion: '', dia: dia});
             },
             eliminarIncluye: function(id){
                 for(var i=0; i<this.incluye.length; i++){
@@ -275,6 +275,11 @@
         },
         components:{
 
+        },
+        computed: {
+            duracionInt() {
+                return new Array(parseInt(this.duracion));
+            }
         }
     })
 
@@ -343,6 +348,10 @@
         reader.onerror = function (error) {
             console.log('Error: ', error);
         };
+    }
+
+    function actualizaItinerario(){
+
     }
 </script>
 {% endblock %}
