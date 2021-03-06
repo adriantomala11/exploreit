@@ -7,6 +7,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import get_template, render_to_string
+from rest_framework.decorators import api_view
+
 from exploreit import settings
 from exploreit.helpers import send_html_email
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero
@@ -82,6 +84,7 @@ def tour_booked(request, token):
     context['fecha_pago'] = reserva.fecha_creacion + timedelta(days=1)
     return render(request, 'tour_booked.html', context)
 
+@api_view()
 def tours(request):
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
@@ -135,8 +138,15 @@ def tours(request):
         if not tours.__contains__(str(salida.tour.id)):
             tours[str(salida.tour.id)] = salida.tour
 
-    context = {'salidas':salidas, 'settings':settings, 'tags': tags, 'tours': tours}
-    return render(request,'tour_grid.html',context)
+    context = {'settings':settings, 'tags': tags, 'tours': tours}
+
+    if params.__contains__('mobile'):
+        tipo = params['mobile']
+        if tipo == 'true':
+            tours = Tour.to_response_dict(tours.values())
+            return JsonResponse(data={'tags': tags, 'tours': tours})
+    else:
+        return render(request,'tour_grid.html',context)
 
 def ver_reserva(request):
     if request.method == 'GET':

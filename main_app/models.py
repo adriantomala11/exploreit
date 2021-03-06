@@ -7,6 +7,7 @@ from django.db import models
 
 # Create your models here.
 from django.utils import timezone
+from rest_framework.decorators import api_view
 
 from exploreit import settings
 
@@ -27,8 +28,8 @@ class Tour(models.Model):
     precio              = models.FloatField()
     duracion            = models.IntegerField(default=0)
 
-    def __str__(self):
-        return self.nombre
+    # def __str__(self):
+    #     return self.nombre
 
     def obtener_info(self):
         incluye = Incluye.objects.filter(tour=self)
@@ -52,6 +53,21 @@ class Tour(models.Model):
 
     def imagen_url(self):
         return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), str(self.imagen))
+
+    @classmethod
+    def to_response_dict(cls, tours):
+        response_dict = []
+        for tour in tours:
+            tour_dict = {
+                'id': tour.id,
+                'nombre': tour.nombre,
+                'precio': tour.precio,
+                'descripcion': tour.descripcion,
+                'imagen': tour.imagen_url(),
+                'ubicacion': tour.ubicacion
+            }
+            response_dict.append(tour_dict)
+        return response_dict
 
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
