@@ -142,7 +142,7 @@ def tours(request):
 
     if params.__contains__('mobile'):
         tipo = params['mobile']
-        if tipo == 'true':
+        if tipo == settings.MOBILE_KEY:
             tours = Tour.to_response_dict(tours.values())
             return JsonResponse(data={'tags': tags, 'tours': tours})
     else:

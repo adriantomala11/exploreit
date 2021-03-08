@@ -123,9 +123,10 @@ def registrar_tour(request):
                 no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
                 no_incluye.save()
 
-            for iti in data['itinerario']:
-                itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'])
-                itinerario.save()
+            for dia in data['itinerario']:
+                for iti in dia['actividades']:
+                    itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=dia['dia'])
+                    itinerario.save()
 
             imagen = data['imagen']['data']
             imgdata = base64.b64decode(imagen.split(',')[1])

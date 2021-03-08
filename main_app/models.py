@@ -35,9 +35,17 @@ class Tour(models.Model):
         incluye = Incluye.objects.filter(tour=self)
         no_incluye = NoIncluye.objects.filter(tour=self)
         importante = Importante.objects.filter(tour=self)
-        itinerario = Itinerario.objects.filter(tour=self)
+        itinerario = Itinerario.objects.filter(tour=self).order_by('dia')
+        itinerario_dict = {}
+        for iti in itinerario:
+            try:
+                itinerario_dict[str(iti.dia)].append(iti.descripcion)
+            except:
+                itinerario_dict[str(iti.dia)] = []
+                itinerario_dict[str(iti.dia)].append(iti.descripcion)
+        print(itinerario_dict)
         proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).order_by('fecha_salida')
-        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario}
+        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario_dict}
 
     def eliminar_incluyes(self):
         items = Incluye.objects.filter(tour=self)
