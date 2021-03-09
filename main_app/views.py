@@ -23,7 +23,9 @@ def tour_info(request, token):
     context = {'settings':settings}
     tour = get_object_or_404(Tour, token=token)
     tour_info = tour.obtener_info()
+    similares = tour.obtener_similares()
     context['tour_info'] = tour_info
+    context['similares'] = similares
     return render(request, 'tour_info.html', context)
 
 def tour_booking(request, token):

@@ -76,6 +76,9 @@ class Tour(models.Model):
             response_dict.append(tour_dict)
         return response_dict
 
+    def obtener_similares(self):
+        return Tour.objects.filter(es_internacional=self.es_internacional).exclude(pk=self.pk).order_by('?')[:3]
+
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
     dia             = models.IntegerField(null=True)
