@@ -43,7 +43,6 @@ class Tour(models.Model):
             except:
                 itinerario_dict[str(iti.dia)] = []
                 itinerario_dict[str(iti.dia)].append(iti.descripcion)
-        print(itinerario_dict)
         proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).order_by('fecha_salida')
         return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario_dict}
 

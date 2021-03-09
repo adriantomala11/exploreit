@@ -98,6 +98,7 @@ def registrar_tour(request):
         return render(request, 'registrar_tour.html', context)
 
     elif request.method == 'POST':
+        transaction.set_autocommit(False)
         try:
             data = json.loads(request.POST['tour_data'])
             nuevo_tour = Tour(nombre=data['nombre'],
@@ -110,8 +111,8 @@ def registrar_tour(request):
                               lugar_salida=data['lugar_salida'],
                               es_internacional=True if data['es_internacional']=='INT' else False,
                               capacidad=int(data['capacidad']),
+                              duracion=len(data['itinerario']),
                               precio=float(data['precio']),
-                              duracion=int(data['duracion']),
                               token=Salida.generar_token())
             nuevo_tour.save()
 
@@ -122,12 +123,12 @@ def registrar_tour(request):
             for ninc in data['no_incluye']:
                 no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
                 no_incluye.save()
-
+            counter = 0
             for dia in data['itinerario']:
-                for iti in dia['actividades']:
-                    itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=dia['dia'])
+                counter += 1
+                for iti in dia:
+                    itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=counter)
                     itinerario.save()
-
             imagen = data['imagen']['data']
             imgdata = base64.b64decode(imagen.split(',')[1])
             filename = data['imagen']['nombre']
@@ -142,10 +143,12 @@ def registrar_tour(request):
             nuevo_tour.save()
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status': 200, 'url': response_url})
+            transaction.commit()
             return response
         except Exception as e:
-            msg = e
-            response = JsonResponse({'status': 201, 'msg': msg})
+            transaction.rollback()
+            msg = str(e)
+            response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
 
@@ -161,17 +164,23 @@ def editar_tour(request, slug):
             no_incluye = NoIncluye.objects.filter(tour=tour)
             no_incluye = NoIncluye.queryset_to_list(no_incluye)
 
-            itinerario = Itinerario.objects.filter(tour=tour)
-            itinerario = Itinerario.queryset_to_list(itinerario)
-
-            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario, 'tour': tour}
-
-            return render(request, 'editar_tour.html', context)
+            itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
+            itinerario_ls = [[]]
+            for iti in itinerario:
+                if iti.dia == len(itinerario_ls):
+                    itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
+                else:
+                    itinerario_ls.append([])
+                    itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
+            print(itinerario_ls)
+            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour}
+            return render(request, 'registrar_tour.html', context)
         except Exception as e:
-            print(e)
+            print('Exception: ',e)
             redirect('/administrador/registrar-tour/')
 
     elif request.method == 'POST':
+        transaction.set_autocommit(False)
         try:
             tour = Tour.objects.get(token=slug)
             data = json.loads(request.POST['tour_data'])
@@ -186,7 +195,7 @@ def editar_tour(request, slug):
             tour.es_internacional=True if data['es_internacional']=='INT' else False
             tour.capacidad=int(data['capacidad'])
             tour.precio=float(data['precio'])
-            tour.duracion=int(data['duracion'])
+            tour.duracion=len(data['itinerario'])
 
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
@@ -200,30 +209,39 @@ def editar_tour(request, slug):
                 no_incluye = NoIncluye(tour=tour, nombre=ninc['nombre'])
                 no_incluye.save()
 
-            for iti in data['itinerario']:
-                itinerario = Itinerario(tour=tour, descripcion=iti['descripcion'])
-                itinerario.save()
+            counter = 0
+            for dia in data['itinerario']:
+                counter += 1
+                for iti in dia:
+                    itinerario = Itinerario(tour=tour, descripcion=iti['descripcion'], dia=counter)
+                    itinerario.save()
 
-            imagen = data['imagen']['data']
-            imgdata = base64.b64decode(imagen.split(',')[1])
-            filename = data['imagen']['nombre']
-            tour.imagen = filename
-            ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(tour.id))
+            try:
+                imagen = data['imagen']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen']['nombre']
+                tour.imagen = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(tour.id))
 
-            if not (os.path.exists(ruta)):
-                os.makedirs(ruta)
-            ruta = os.path.join(ruta, filename)
-            with open(ruta, 'wb+') as f:
-                f.write(imgdata)
-            tour.save()
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                tour.save()
+            except Exception as e:
+                print(e)
+
 
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
+            transaction.commit()
             return response
 
         except Exception as e:
-            print(e)
-            response = JsonResponse({'status': 200, 'url': '/administrador/editar-tour/'+slug+'/'})
+            transaction.rollback()
+            msg = str(e)
+            response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
 def reserva_aprobar(request):

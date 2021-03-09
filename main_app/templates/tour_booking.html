@@ -304,8 +304,9 @@
         background-image: url(https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max) !important;
     }
 
-    input.error{
-        border-color: #f99595 !important;
+    .form-error{
+        background-color: #ffeaea !important;
+        border-color: #cc5d5d !important;
     }
 </style>
 
@@ -356,10 +357,10 @@
         for(var j=0; j<elements.length; j++){
             if(!elements[j].checkValidity()){
                 returnValue = false
-                elements[j].classList.add('error')
+                elements[j].classList.add('form-error')
             }else{
                 try{
-                    elements[j].classList.remove('error')
+                    elements[j].classList.remove('form-error')
                 }catch{}
             }
         }

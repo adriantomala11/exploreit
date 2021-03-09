@@ -20,7 +20,7 @@
                                     <label class="label-text">Nombre del Tour</label>
                                     <div class="form-group">
                                         <span class="la la-briefcase form-icon"></span>
-                                        <input id="nombre" class="form-control" type="text" name="nombre_tour" placeholder="Ingresar nombre del tour">
+                                        <input v-model="nombre" id="nombre" class="form-control" type="text" name="nombre_tour" placeholder="Ingresar nombre del tour" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -29,7 +29,7 @@
                                     <label class="label-text">Ubicacion del Destino</label>
                                     <div class="form-group">
                                         <span class="la la-map form-icon"></span>
-                                        <input id="ubicacion" class="form-control" type="text" name="text" placeholder="Pais, Provincia, Ciudad">
+                                        <input v-model="ubicacion" id="ubicacion" class="form-control" type="text" name="text" placeholder="Pais, Provincia, Ciudad" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -37,7 +37,7 @@
                                 <div class="input-box">
                                     <label class="label-text">Tipo de Tour</label>
                                     <div class="form-group select-contain w-100">
-                                        <select v-model="tipo" id="es_internacional" class="select-contain-select">
+                                        <select v-model="tipo" id="es_internacional" class="select-contain-select" required>
                                             <option class="tipo-option" value="NAC">Nacional</option>
                                             <option class="tipo-option" value="INT">Internacional</option>
                                         </select>
@@ -48,7 +48,7 @@
                                 <div class="input-box">
                                     <label class="label-text">Categoría</label>
                                     <div class="form-group select-contain w-100">
-                                        <select v-model="categoria" id="tipo" class="select-contain-select">
+                                        <select v-model="categoria" id="tipo" class="select-contain-select" required>
                                             <option value="FDY">Full Day</option>
                                             <option value="CAM">Campers</option>
                                         </select>
@@ -60,7 +60,7 @@
                                     <label class="label-text">Lugar de Salida</label>
                                     <div class="form-group">
                                         <span class="la la-map form-icon"></span>
-                                        <input id="lugar_salida" class="form-control" type="text" name="text" placeholder="Dirección de Salida, Ciudad">
+                                        <input v-model="lugar_salida" id="lugar_salida" class="form-control" type="text" name="text" placeholder="Dirección de Salida, Ciudad" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -69,7 +69,7 @@
                                     <label class="label-text">Hora de Checkin</label>
                                     <div class="form-group">
                                         <span class="la la-clock form-icon"></span>
-                                        <input id="hora_checkin" class="form-control" type="text" name="text" placeholder="Ingrese la hora de checkin">
+                                        <input v-model="hora_checkin" id="hora_checkin" class="form-control" type="time" name="text" placeholder="Ingrese la hora de checkin" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -78,7 +78,7 @@
                                     <label class="label-text">Hora de Salida</label>
                                     <div class="form-group">
                                         <span class="la la-clock form-icon"></span>
-                                        <input id="hora_salida" class="form-control" type="text" name="text" placeholder="Ingrese la hora de salida">
+                                        <input v-model="hora_salida" id="hora_salida" class="form-control" type="time" name="text" placeholder="Ingrese la hora de salida" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -87,7 +87,7 @@
                                     <label class="label-text">Hora de Retorno</label>
                                     <div class="form-group">
                                         <span class="la la-clock form-icon"></span>
-                                        <input id="hora_retorno" class="form-control" type="text" name="text" placeholder="Ingrese la hora de retorno">
+                                        <input v-model="hora_retorno" id="hora_retorno" class="form-control" type="time" name="text" placeholder="Ingrese la hora de retorno" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -96,7 +96,7 @@
                                     <label class="label-text">Capacidad</label>
                                     <div class="form-group">
                                         <span class="la la-users form-icon"></span>
-                                        <input id="capacidad" class="form-control" type="number" name="text" placeholder="Ingrese la capacidad de pasajeros">
+                                        <input v-model="capacidad" id="capacidad" class="form-control" type="number" name="text" placeholder="Ingrese la capacidad de pasajeros" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -105,22 +105,13 @@
                                     <label class="label-text">Precio</label>
                                     <div class="form-group">
                                         <span class="la la-dollar-sign form-icon"></span>
-                                        <input id="precio" class="form-control" type="number" placeholder="Ingrese el precio por persona (Incluir IVA)">
+                                        <input v-model="precio" id="precio" class="form-control" type="number" step="0.01" placeholder="Ingrese el precio por persona (Incluir IVA)" required>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
-                                    <label class="label-text">Duración (Días)</label>
-                                    <div class="form-group">
-                                        <span class="la la-sun form-icon"></span>
-                                        <input v-on:input="cambiarItinerario()" v-model="duracion" id="duracion" class="form-control" type="number" name="duracion" placeholder="Ingrese la duración (en días) del tour">
-                                    </div>
-                                </div>
-                            </div><!-- end col-lg-6 -->
-                            <div class="col-lg-6 responsive-column">
-                                <div class="input-box">
-                                    <label class="label-text">Imagen</label>
+                                    <label class="label-text">Image </label>
                                     <div class="form-group">
                                         <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
                                     </div>
@@ -132,7 +123,7 @@
                                     <p class="font-size-13 mb-3 line-height-20">Maximo 400 caracteres</p>
                                     <div class="form-group">
                                         <span class="la la-pencil form-icon"></span>
-                                        <textarea id="descripcion" class="message-control form-control" name="message" placeholder="Ingrese la descripción del tour aquí    "></textarea>
+                                        <textarea v-model="descripcion" id="descripcion" class="message-control form-control" name="message" placeholder="Ingrese la descripción del tour aquí    " required></textarea>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-12 -->
@@ -142,7 +133,7 @@
                                     <div style="display: flex;"  v-for="inc in incluye" :id="inc.id">
                                         <div class="form-group" style="width:90%">
                                             <span class="la la-map form-icon"></span>
-                                            <input v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                            <input v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc." required>
                                         </div>
                                         <div @click="eliminarIncluye(inc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                             <span class="la la-trash"></span>
@@ -159,7 +150,7 @@
                                     <div style="display: flex;"  v-for="ninc in no_incluye" :id="ninc.id">
                                         <div class="form-group" style="width:90%">
                                             <span class="la la-map form-icon"></span>
-                                            <input v-model="ninc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc.">
+                                            <input v-model="ninc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc." required>
                                         </div>
                                         <div @click="eliminarNoIncluye(ninc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                             <span class="la la-trash"></span>
@@ -175,27 +166,30 @@
                 </div><!-- end form-box -->
                 <div class="form-box" v-for="obj, index in itinerario">
                     <div class="form-title-wrap" >
-                        <h3 class="title"><i class="la la-clock mr-2 text-gray"></i>Itinerario Dia [[index+1]]</h3>
+                        <h3 class="title"><i class="la la-clock mr-2 text-gray"></i>Itinerario Dia [[index+1]] <span v-on:click="eliminarDia(index)" class="la la-trash" style="color: white;padding: 5px; margin-left: 5px; background: #e04545; border-radius: 5px; text-align: center; cursor: pointer;"></span></h3>
                     </div><!-- form-title-wrap -->
                     <div class="form-content contact-form-action">
                         <form method="post" class="row">
                             <div class="col-lg-12">
-                                <div style="display: flex;"  v-for="iti in obj.actividades" :id="iti.id" :key="iti.id">
+                                <div style="display: flex;"  v-for="iti in obj" :id="iti.id" :key="iti.id">
                                     <div class="form-group" style="width:90%">
                                         <span class="la la-map form-icon"></span>
-                                        <input v-model="iti.descripcion" class="form-control incluye_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí.">
+                                        <input v-model="iti.descripcion" class="form-control incluye_input" type="text" name="text" placeholder="Ingrese la descripción de la actividad aquí." required>
                                     </div>
                                     <div @click="eliminarItinerario(index, iti.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                         <span class="la la-trash"></span>
                                     </div>
                                 </div>
                                 <div style="width: fit-content; margin: auto;">
-                                    <a v-on:click="agregarItinerario(index)" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                    <a v-on:click="agregarItinerario(index)" class="btn" style="background-color: #7b00ff; color: white;"><i class="las la-plus"></i> Agregar Actividad</a>
                                 </div>
                             </div><!-- end col-lg-12 -->
                         </form>
                     </div><!-- end form-content -->
                 </div><!-- end form-box -->
+                <div style="width: fit-content; margin: auto;">
+                    <a v-on:click="agregarDia()" class="btn" style="background-color: #7b00ff; color: white;"><i class="las la-plus"></i>Agregar Dia</a>
+                </div>
                 <div class="submit-box">
                     <div class="btn-box pt-3">
                         <a onclick="guardarTour()" class="theme-btn" style="color: white; cursor: pointer;">Guardar</a>
@@ -211,15 +205,23 @@
 ================================= -->
 {% endblock %}
 {% block footer_code %}
+<style>
+    .form-error{
+        background-color: #ffeaea !important;
+        border-color: #cc5d5d !important;
+    }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="{% static 'js/notify.min.js' %}"></script>
 <script>
     document.getElementById('nav_registrar_tour').classList.add('page-active')
-
     var vm = new Vue({
         el: '#app',
         delimiters:['[[',']]'] ,
         data:{
+            {% if not tour %}
+
             nombre: '',
             ubicacion: '',
             tipo: '',
@@ -230,14 +232,35 @@
             hora_retorno: '',
             capacidad: '',
             precio: '',
-            duracion: 0,
+            duracion: 1,
             descripcion: '',
             incluye:[
             ],
             no_incluye:[
             ],
-            itinerario: [],
+            itinerario: [[],],
             imagen: {nombre: '', data: ''}
+
+            {% else %}
+
+            nombre: '{{tour.nombre}}',
+            ubicacion: '{{tour.ubicacion}}',
+            tipo: '{{tour.tipo}}',
+            categoria: '{{tour.categoria}}',
+            lugar_salida: '{{tour.lugar_salida}}',
+            hora_checkin: '{{tour.hora_checkin}}',
+            hora_salida: '{{tour.hora_salida}}',
+            hora_retorno: '{{tour.hora_retorno}}',
+            capacidad: {{tour.capacidad}},
+            precio: parseFloat('{{tour.precio}}'),
+            duracion: {{tour.duracion}},
+            descripcion: '{{tour.descripcion}}',
+            incluye:{{incluye|safe}},
+            no_incluye:{{no_incluye|safe}},
+            itinerario:{{itinerario|safe}},
+            imagen: {nombre: '', data: ''}
+
+            {% endif %}
         },
         methods:{
             agregarIncluye: function(){
@@ -248,11 +271,17 @@
             },
             agregarItinerario: function(dia){
                 try{
-                    this.itinerario[dia].actividades.push({id: Date.now(), descripcion: ''});
+                    this.itinerario[dia].push({id: Date.now(), descripcion: ''});
                 }catch{
-                    this.itinerario[dia].actividades = []
-                    this.itinerario[dia].actividades.push({id: Date.now(), descripcion: ''});
+                    this.itinerario[dia] = []
+                    this.itinerario[dia].push({id: Date.now(), descripcion: ''});
                 }
+            },
+            agregarDia: function(){
+                this.itinerario.push([])
+            },
+            eliminarDia: function(index){
+                this.itinerario.splice(index,1)
             },
             eliminarIncluye: function(id){
                 for(var i=0; i<this.incluye.length; i++){
@@ -269,24 +298,12 @@
                 }
             },
             eliminarItinerario: function(dia, id){
-                for(var i=0; i<this.itinerario[dia].actividades.length; i++){
-                    if(this.itinerario[dia].actividades[i].id == id){
-                        this.itinerario[dia].actividades.splice(i,1)
+                for(var i=0; i<this.itinerario[dia].length; i++){
+                    if(this.itinerario[dia][i].id == id){
+                        this.itinerario[dia].splice(i,1)
                     }
                 }
             },
-            cambiarItinerario: function(){
-                //try{
-                    this.itinerario = []
-                    let itinerarioVacio = new Array(parseInt(this.duracionInt));
-                    console.log(itinerarioVacio)
-                    for(var i=0; i<itinerarioVacio.length; i++){
-                        this.itinerario.push({actividades: [], dia: i+1})
-                    }
-                //}catch{
-                //    this.itinerario = []
-                //}
-            }
         },
         components:{
 
@@ -295,63 +312,57 @@
             duracionInt() {
                 return parseInt(this.duracion)
             }
+        },
+        mounted(){
         }
     })
 
     function guardarTour(){
-        var incluyes = document.getElementsByClassName('incluye_input')
-        var incluye_ls = []
-        for(var i=0; i<incluyes.length; i++){
-            incluye_ls.push(incluyes[i].value)
+        var noHayErrores = true;
+        var elements = document.querySelectorAll('input')
+        console.log(elements)
+        var hayErrores = validarCampos(elements)
+        if(!hayErrores){
+            noHayErrores = false
         }
 
-        var no_incluyes = document.getElementsByClassName('no_incluye_input')
-        var no_incluye_ls = []
-        for(var i=0; i<no_incluyes.length; i++){
-            no_incluye_ls.push(no_incluyes[i].value)
-        }
-
-        var itinerarios = document.getElementsByClassName('itinerario_input')
-        var itinerario_ls = []
-        for(var i=0; i<itinerarios.length; i++){
-            itinerario_ls.push(itinerarios[i].value)
-        }
-
-        var dataTour ={
-            nombre: document.getElementById('nombre').value,
-            ubicacion: document.getElementById('ubicacion').value,
-            tipo: document.getElementById('tipo').value,
-            hora_checkin: document.getElementById('hora_checkin').value,
-            hora_salida: document.getElementById('hora_salida').value,
-            hora_retorno: document.getElementById('nombre').value,
-            es_internacional: document.getElementById('es_internacional').value,
-            capacidad: document.getElementById('capacidad').value,
-            precio: document.getElementById('precio').value,
-            descripcion: document.getElementById('descripcion').value,
-            duracion: document.getElementById('duracion').value,
-            lugar_salida: document.getElementById('lugar_salida').value,
-            incluye: vm.incluye,
-            no_incluye: vm.no_incluye,
-            itinerario: vm.itinerario,
-            imagen: vm.imagen
-        }
-
-        $.ajax({
-          type: "POST",
-          url: "{% url 'registrar_tour' %}",
-          data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_data: JSON.stringify(dataTour)},
-          success:function(response){
-            if(response.status == 200){
-                window.location.href = '{{settings.URL}}'+response.url
-            }else{
-                console.log(response.msg)
+        if(!noHayErrores){
+            $.notify('Revise los datos ingresados', "error", {globalPosition: 'bottom right'});
+        }else{
+            var dataTour ={
+                nombre: document.getElementById('nombre').value,
+                ubicacion: document.getElementById('ubicacion').value,
+                tipo: document.getElementById('tipo').value,
+                hora_checkin: document.getElementById('hora_checkin').value,
+                hora_salida: document.getElementById('hora_salida').value,
+                hora_retorno: document.getElementById('hora_retorno').value,
+                es_internacional: document.getElementById('es_internacional').value,
+                capacidad: document.getElementById('capacidad').value,
+                precio: document.getElementById('precio').value,
+                descripcion: document.getElementById('descripcion').value,
+                lugar_salida: document.getElementById('lugar_salida').value,
+                incluye: vm.incluye,
+                no_incluye: vm.no_incluye,
+                itinerario: vm.itinerario,
+                imagen: vm.imagen
             }
-          },
-        });
+
+            $.ajax({
+              type: "POST",
+              url: "{% if not tour %}{% url 'registrar_tour' %}{% else %}{% url 'editar_tour' tour.token %}{% endif %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_data: JSON.stringify(dataTour)},
+              success:function(response){
+                if(response.status == 200){
+                    window.location.href = '{{settings.URL}}'+response.url
+                }else{
+                    $.notify(response.msg, "error", {globalPosition: 'bottom right'});
+                }
+              },
+            });
+        }
     }
 
     function getImageData(){
-        console.log('ENTRA')
         var input = document.getElementById('fileinput');
         var file = input.files[0];
         var reader = new FileReader();
@@ -365,8 +376,20 @@
         };
     }
 
-    function actualizaItinerario(){
-
+    function validarCampos(elements){
+        var returnValue = true
+        for(var j=0; j<elements.length; j++){
+            console.log(elements[j])
+            if(!elements[j].checkValidity()){
+                returnValue = false
+                elements[j].classList.add('form-error')
+            }else{
+                try{
+                    elements[j].classList.remove('form-error')
+                }catch{}
+            }
+        }
+        return returnValue
     }
 </script>
 {% endblock %}
