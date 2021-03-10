@@ -13,20 +13,20 @@ from exploreit import settings
 from exploreit.helpers import send_html_email
 from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def dashboard(request):
     salidas_proximas = Salida.objects.all()
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'admin_dashboard.html', context)
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def salidas_programadas(request):
     hoy = datetime.date.today()
     salidas_proximas = Salida.objects.filter(fecha_salida__range=[hoy, '2030-12-31'])
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'salidas_programadas.html', context)
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def tours_registrados(request):
     tours = Tour.objects.all()
     params = request.GET
@@ -70,21 +70,21 @@ def tours_registrados(request):
     except:
         redirect('/tours/')
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def obtener_listado_pasajeros(request, token):
     salida = get_object_or_404(Salida, token=token)
     pasajeros = ReservaPasajero.objects.filter(reserva__salida=salida)
     context = {'salida': salida, 'pasajeros': pasajeros}
     return render(request, 'listado_pasajeros.html', context)
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def obtener_listado_reservas(request, token):
     salida = get_object_or_404(Salida, token=token)
     reservas = Reserva.objects.filter(salida=salida)
     context = {'salida': salida, 'reservas': reservas}
     return render(request, 'listado_reservas.html', context)
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def programar_salida(request):
     if request.method == 'GET':
         tours = Tour.objects.all()
@@ -101,7 +101,7 @@ def programar_salida(request):
         response = JsonResponse({'status':200, 'url': response_url})
         return response
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def registrar_tour(request):
     if request.method == 'GET':
         context = {}
@@ -161,7 +161,7 @@ def registrar_tour(request):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def editar_tour(request, slug):
     if request.method == 'GET':
         try:
@@ -253,7 +253,7 @@ def editar_tour(request, slug):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def reserva_aprobar(request):
     transaction.set_autocommit(False)
     try:
@@ -276,12 +276,12 @@ def reserva_aprobar(request):
         response = JsonResponse({'status': 200, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def reserva_dar_de_baja(request):
     response = JsonResponse({'status': 200})
     return response
 
-@login_required(login_url='/administradir/login/')
+@login_required(login_url='/administrador/login/')
 def historial_salidas(request):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     salidas = Salida.objects.filter(fecha_salida__range=['2021-01-01', yesterday])
