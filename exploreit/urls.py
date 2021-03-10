@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -30,7 +31,9 @@ urlpatterns = [
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
     path('tours/', main_views.tours, name='tours'),
-    
+
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('administrador/', admin_views.dashboard, name='admin_dashboard'),
     path('administrador/salidas-programadas/', admin_views.salidas_programadas, name='salidas_programadas'),
     path('administrador/salidas-programadas/<slug:token>/listado-pasajeros/', admin_views.obtener_listado_pasajeros, name='listado_pasajeros'),
@@ -41,6 +44,7 @@ urlpatterns = [
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
     path('administrador/historial-salidas/', admin_views.historial_salidas, name='historial_salidas'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
+    path('administrador/reserva-dar-de-baja/', admin_views.reserva_dar_de_baja, name='reserva_dar_de_baja'),
     path('administrador/login/', admin_views.admin_login, name='admin_login'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')

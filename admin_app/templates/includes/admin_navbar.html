@@ -25,7 +25,7 @@
                 <li id="nav_salidas_programadas"><a href="{% url 'salidas_programadas' %}">Salidas Programadas</a></li>
                 <li id="nav_programar_salida"><a href="{% url 'programar_salida' %}">Programar Salida</a></li>
                 <li id="nav_historial_salidas"><a href="{% url 'historial_salidas' %}">Historial de Salidas</a></li>
-                <p id="nav_cerrar_sesion" style="border-top: 1px solid #5d646d;"><a href="/" style="color: red;"><i class="la la-power-off mr-2 text-color-11"></i>Cerrar Sesion</a></p>
+                <p id="nav_cerrar_sesion" style="border-top: 1px solid #5d646d;"><a href="{% url 'logout' %}" style="color: red;"><i class="la la-power-off mr-2 text-color-11"></i>Cerrar Sesion</a></p>
             </ul>
         </div><!-- end sidebar-menu-wrap -->
     </div>

@@ -17,23 +17,29 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="contact-form-action">
-                                        <form method="post">
+                                        <form method="post" action="{% url 'login' %}">
+                                            {% csrf_token %}
                                             <div class="input-box">
-                                                <label class="label-text">Correo Electrónico</label>
+                                                <label class="label-text">Nombre de Usuario</label>
                                                 <div class="form-group">
                                                     <span class="la la-user form-icon"></span>
-                                                    <input class="form-control" type="text" name="text" placeholder="Ingrese su correo electrónico">
+                                                    <input id="is_username" class="form-control" type="text" name="username" placeholder="Ingrese su Nombre de Usuario" required>
                                                 </div>
                                             </div><!-- end input-box -->
                                             <div class="input-box">
                                                 <label class="label-text">Contraseña</label>
                                                 <div class="form-group mb-2">
                                                     <span class="la la-lock form-icon"></span>
-                                                    <input class="form-control" type="text" name="text" placeholder="Ingrese su contraseña">
+                                                    <input id="id_password" class="form-control" type="password" name="password" placeholder="Ingrese su contraseña" required>
                                                 </div>
                                             </div><!-- end input-box -->
+                                            {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+                                            <p style="font-size: 13px;">
+                                                {{ error|escape }}
+                                            </p>
+                                              {% endfor %} {% endif %}
                                             <div class="btn-box pt-3 pb-4">
-                                                <button type="button" class="theme-btn w-100">Iniciar Sesión</button>
+                                                <button type="submit" class="theme-btn w-100">Iniciar Sesión</button>
                                             </div>
                                         </form>
                                     </div><!-- end contact-form-action -->
