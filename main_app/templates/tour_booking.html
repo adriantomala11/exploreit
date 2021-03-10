@@ -56,7 +56,7 @@
                                             <label class="label-text">Nombres</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Nombres" required>
+                                                <input class="form-control" type="text" name="text" placeholder="Nombres" maxlength="20" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -65,7 +65,7 @@
                                             <label class="label-text">Apellidos</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
+                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" maxlength="20" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -74,7 +74,7 @@
                                             <label class="label-text">Número de Cédula</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Número de Cédula" required>
+                                                <input class="form-control" type="text" name="text" placeholder="Número de Cédula" maxlength="10" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-12 -->
@@ -153,34 +153,38 @@
                 </div><!-- end form-box -->
                 <div class="form-box">
                     <div class="form-title-wrap">
-                        <h3 class="title">Titular de la reserva</h3>
+                        <h3 class="title">Seleccion al titular de la reserva</h3>
                     </div><!-- form-title-wrap -->
-                    <div class="form-content ">
+                    <div class="form-content" style="padding-bottom: 0px;">
+                        {% for pasajero in pasajeros %}
+                        <input type="radio" name="titular" value="{{forloop.counter}}" onclick="cambiarTitular()"> <label style="padding-left: 7px;">Pasajero {{ forloop.counter }}</label><br>
+                        {% endfor %}
+                        <input type="radio" name="titular" value="otro" onclick="cambiarTitular()" checked> <label style="padding-left: 7px;">Otro {{ forloop.counter }}</label>
+                    </div>
+                    <div class="form-content" style="padding-top: 10px;">
                         <div class="contact-form-action">
-                            {% comment %}
-                            <input type="checkbox" id="contacto_input" name="contacto_input" value="false">
-                            <label for="contacto_input"> Usar los mismos datos de facturación</label><br>
-                            {% endcomment %}
                             <form id="contacto">
                                 <div class="row">
-                                    <div class="col-lg-6 responsive-column">
-                                        <div class="input-box">
-                                            <label class="label-text">Nombres</label>
-                                            <div class="form-group">
-                                                <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Nombres" required>
+                                    <div id="otro-titular-form" class="row" style="display: flex; width: 100%; margin: 0;">
+                                        <div class="col-lg-6 responsive-column">
+                                            <div class="input-box">
+                                                <label class="label-text">Nombres</label>
+                                                <div class="form-group">
+                                                    <span class="la la-user form-icon"></span>
+                                                    <input class="form-control" type="text" name="text" placeholder="Nombres" required>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div><!-- end col-lg-6 -->
-                                    <div class="col-lg-6 responsive-column">
-                                        <div class="input-box">
-                                            <label class="label-text">Apellidos</label>
-                                            <div class="form-group">
-                                                <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
+                                        </div><!-- end col-lg-6 -->
+                                        <div class="col-lg-6 responsive-column">
+                                            <div class="input-box">
+                                                <label class="label-text">Apellidos</label>
+                                                <div class="form-group">
+                                                    <span class="la la-user form-icon"></span>
+                                                    <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div><!-- end col-lg-6 -->
+                                        </div><!-- end col-lg-6 -->
+                                    </div>
                                     <div class="col-lg-6 responsive-column">
                                         <div class="input-box">
                                             <label class="label-text">Correo Electronico</label>
@@ -308,6 +312,10 @@
         background-color: #ffeaea !important;
         border-color: #cc5d5d !important;
     }
+
+    input[type=radio]{
+        cursor: pointer;
+    }
 </style>
 
 <script>
@@ -329,7 +337,22 @@
                 var facturacion = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value, domicilio:elements[4].value, cedula: elements[5].value}
                 requestDic.facturacion = facturacion
             }else if(allForms[i].id == 'contacto'){
-                var contacto = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                var radios = document.getElementsByName('titular');
+                for (var i = 0; i < radios.length; i++) {
+                    if (radios[i].checked) {
+                        console.log(radios[i])
+                        var otroTitularForm = document.getElementById("otro-titular-form");
+                        if(radios[i].value == 'otro'){
+                            var contacto = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                            requestDic.contacto = contacto
+                        }else{
+                            let pasajeroId = 'pasajero'+String(radios[i].value)
+                            var pasajeroForm = document.getElementById(pasajeroId)
+                            var contacto = {nombres:pasajeroForm.elements[0].value, apellidos: pasajeroForm.elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                            requestDic.contacto = contacto
+                        }
+                    }
+                }
                 requestDic.contacto = contacto
             }else if(allForms[i].classList.contains('pasajero')){
                 var pasajero = {nombres: elements[0].value, apellidos: elements[1].value, cedula: elements[2].value}
@@ -366,5 +389,21 @@
         }
         return returnValue
     }
+
+    function cambiarTitular(){
+        var radios = document.getElementsByName('titular');
+        for (var i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+          var otroTitularForm = document.getElementById("otro-titular-form");
+            if(radios[i].value == 'otro'){
+                otroTitularForm.style.display = 'flex';
+            }else{
+                otroTitularForm.style.display = 'none';
+            }
+            break;
+          }
+        }
+    }
+
 </script>
 {% endblock %}

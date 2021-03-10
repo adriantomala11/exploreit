@@ -78,8 +78,8 @@
                                                 <i class="la la-clock-o"></i>
                                             </div>
                                             <div class="single-feature-titles">
-                                                <h3 class="title font-size-15 font-weight-medium">Duracion</h3>
-                                                <span class="font-size-13">{{ tour_info.tour.duracion }} Día(s)</span>
+                                                <h3 class="title font-size-15 font-weight-medium">Duración</h3>
+                                                <span class="font-size-13">{{ tour_info.tour.obtener_duracion }} Día(s)</span>
                                             </div>
                                         </div><!-- end single-tour-feature -->
                                     </div><!-- end col-lg-4 -->
@@ -101,7 +101,7 @@
                                             </div>
                                             <div class="single-feature-titles">
                                                 <h3 class="title font-size-15 font-weight-medium">Próxima Salida</h3>
-                                                <span class="font-size-13">{{ tour_info.proximas_salidas.0.fecha_salida }}</span>
+                                                <span class="font-size-13">{% if tour_info.tour.esta_disponible %}{{ tour_info.proximas_salidas.0.fecha_salida }}{% else %}-{% endif %}</span>
                                             </div>
                                         </div><!-- end single-tour-feature -->
                                     </div><!-- end col-lg-4 -->
@@ -116,13 +116,13 @@
                                     <div class="col-lg-6 responsive-column">
                                         <h3 class="title font-size-15 font-weight-medium pb-3">Incluye</h3>
                                         <ul class="list-items">
-                                            {% for inc in tour_info.incluye %}<li><i class="la la-check text-success mr-2"></i>{{ inc.nombre }}</li>{% endfor %}
+                                            {% for inc in tour_info.incluye %}<li><i class="fa fa-check text-success" aria-hidden="true"></i> {{ inc.nombre }}</li>{% endfor %}
                                         </ul>
                                     </div>
                                     <div class="col-lg-6 responsive-column">
                                         <h3 class="title font-size-15 font-weight-medium pb-3">No Incluye</h3>
                                         <ul class="list-items">
-                                            {% for no_inc in tour_info.no_incluye %}<li><i class="la la-check text-success mr-2"></i>{{ no_inc.nombre }}</li>{% endfor %}
+                                            {% for no_inc in tour_info.no_incluye %}<li><i class="fa fa-times" style="color: red;" aria-hidden="true"></i> {{ no_inc.nombre }}</li>{% endfor %}
                                         </ul>
                                     </div>
                                 </div><!-- end row -->
@@ -144,7 +144,7 @@
                                             {% for descripcion in actividades %}
                                             <div id="faqCollapse{{forloop.counter}}" class="collapse show" aria-labelledby="faqHeadingOne" data-parent="#accordionExample">
                                                 <div class="card-body d-flex align-items-center" style="padding: 0px 0px 0px 20px;">
-                                                    <p>- {{descripcion}}</p>
+                                                    <p><i class="fa fa-check" style="color: #7b00ff;" aria-hidden="true"></i> {{descripcion}}</p>
                                                 </div>
                                             </div>
                                             {% endfor %}
@@ -186,6 +186,7 @@
                                     <p><span class="text-value mr-1">$45.00</span> Por Persona</p>
                                 </div>
                             </div><!-- end sidebar-widget-item -->
+                            {% if tour_info.tour.esta_disponible %}
                             <div class="sidebar-widget-item">
                                 <div class="contact-form-action">
                                     <form action="#">
@@ -209,6 +210,11 @@
                             <div class="btn-box pt-2">
                                 <a href="#" onclick="goToBooking()" class="theme-btn text-center w-100 mb-2"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
                             </div>
+                            {% else %}
+                            <div class="btn-box pt-2">
+                                <a href="#" onclick="mostrarInteres()" class="theme-btn text-center w-100 mb-2"><i class="fa fa-exclamation-circle mr-2 font-size-18" aria-hidden="true"></i>Estoy Interesado</a>
+                            </div>
+                            {% endif %}
                         </div><!-- end sidebar-widget -->
                         <div class="sidebar-widget single-content-widget">
                             <h3 class="title stroke-shape">Necesitas ayuda?</h3>
@@ -275,11 +281,35 @@
 ================================= -->
 {% endblock %}
 {% block footer_code %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function goToBooking(){
         var num_pasajeros = document.getElementById('num_pasajeros').value
         var salida = document.getElementById('salida').value
         window.location.href = '{% url 'tour_booking' tour_info.incluye.0.tour.token %}'+'?sal='+String(salida)+'&pas='+String(num_pasajeros)
+    }
+
+    function mostrarInteres(){
+        Swal.fire({
+          title: 'Mostrar Interés',
+          text: 'Al mostrar interés se le enviará un correo electrónico apenas una salida para este Tour sea programada. Indíquenos su correo electrónico.',
+          input: 'text',
+          icon: 'info',
+          inputAttributes: {
+            autocapitalize: 'off',
+            placeholder: 'Correo Electrónico'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Enviar',
+          showLoaderOnConfirm: true
+        }).then((result) => {
+          console.log(result.value)
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Gracias por tu interés!',
+            })
+          }
+        })
     }
 </script>
 

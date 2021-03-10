@@ -149,7 +149,7 @@
                     </div><!-- end filter-bar -->
                     <div style="display: flex; padding: 10px 5px; width: 100%; overflow: auto;">
                         {% for key,tag in tags.items %}
-                        <div class="tags-section" style="display: flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
+                        <div class="tags-section" style="display: inline-flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
                             <p style="font-weight: bold;">{{tag.nombre}}:</p>
                             <p style="padding-left: 5px;">{{tag.valor_string}}</p>
                             <p onclick="eliminarFiltro('{{key}}')" style="cursor: pointer; padding-left: 7px; font-weight: bold;"><i style="font-weight: bold;" class="las la-times"></i></p>
@@ -162,9 +162,12 @@
         <div class="row">
             {% if tours %}
             {% for key, tour in tours.items %}
-            <div class="col-lg-4 responsive-column">
+            <div class="col-lg-4 responsive-column" style="padding-bottom: 40px;">
                 <div class="card-item mb-0">
                     <div class="card-img">
+                        {% if not tour.esta_disponible %}
+                        <span class="badge" style="background-color: #b32f2f;">NO DISPONIBLE</span>
+                        {% endif %}
                         <a href="{% url 'tour_info' tour.token %}" class="d-block">
                             <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
                         </a>

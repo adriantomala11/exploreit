@@ -79,6 +79,13 @@ class Tour(models.Model):
     def obtener_similares(self):
         return Tour.objects.filter(es_internacional=self.es_internacional).exclude(pk=self.pk).order_by('?')[:3]
 
+    def obtener_duracion(self):
+        return (Itinerario.objects.filter(tour=self).order_by('-dia')[0]).dia
+
+    def esta_disponible(self):
+        proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).count()
+        return proximas_salidas > 0
+
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
     dia             = models.IntegerField(null=True)
@@ -203,3 +210,7 @@ class Categoria(models.Model):
 
 class Continente(models.Model):
     nombre          = models.CharField(max_length=10, null=True)
+
+class InteresadosTour(models.Model):
+    cliente         = models.CharField(max_length=50)
+    tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)

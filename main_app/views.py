@@ -91,64 +91,81 @@ def tours(request):
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
-    # FILTRO POR NACIONAL O INTERNACIONAL
-    if params.__contains__('tipo'):
-        tipo = params['tipo']
-        if tipo == 'INT':
-            salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=True)
-            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
-        elif tipo == 'NAC':
-            salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=False)
-            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+    try:
+        # # FILTRO POR NACIONAL O INTERNACIONAL
+        # if params.__contains__('tipo'):
+        #     tipo = params['tipo']
+        #     if tipo == 'INT':
+        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=True)
+        #         tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
+        #     elif tipo == 'NAC':
+        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=False)
+        #         tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+        #     else:
+        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
+        # else:
+        #     salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
+
+        # FILTRO POR NACIONAL O INTERNACIONAL
+        if params.__contains__('tipo'):
+            tipo = params['tipo']
+            if tipo == 'INT':
+                salidas = Salida.objects.filter(tour__es_internacional=True)
+                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
+            elif tipo == 'NAC':
+                salidas = Salida.objects.filter(tour__es_internacional=False)
+                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+            else:
+                salidas = Salida.objects.all()
         else:
-            salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
-    else:
-        salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
+            salidas = Salida.objects.all()
 
-    #FILTRO POR RANGO DE FECHAS
-    if params.__contains__('daterange'):
-        fechas = params['daterange'].split(' - ')
-        fecha_inicio = fechas[0]
-        fecha_inicio = fecha_inicio[6:10] + '-' + fecha_inicio[0:2] + '-' + fecha_inicio[3:5]
-        fecha_fin = fechas[1]
-        fecha_fin = fecha_fin[6:10] + '-' + fecha_fin[0:2] + '-' + fecha_fin[3:5]
-        salidas = salidas.filter(fecha_salida__range=[fecha_inicio, fecha_fin])
-        tags['daterange'] = {'nombre': 'Fecha Salida', 'valor': params['daterange'], 'valor_string': params['daterange']}
+        #FILTRO POR RANGO DE FECHAS
+        if params.__contains__('daterange'):
+            fechas = params['daterange'].split(' - ')
+            fecha_inicio = fechas[0]
+            fecha_inicio = fecha_inicio[6:10] + '-' + fecha_inicio[0:2] + '-' + fecha_inicio[3:5]
+            fecha_fin = fechas[1]
+            fecha_fin = fecha_fin[6:10] + '-' + fecha_fin[0:2] + '-' + fecha_fin[3:5]
+            salidas = salidas.filter(fecha_salida__range=[fecha_inicio, fecha_fin])
+            tags['daterange'] = {'nombre': 'Fecha Salida', 'valor': params['daterange'], 'valor_string': params['daterange']}
 
-    #FILTRO POR PRECIO
-    if params.__contains__('precio-min'):
-        if params['precio-min'] != '' and params['precio-min'] != '0':
-            precio_min = int(params['precio-min'])
-            tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
+        #FILTRO POR PRECIO
+        if params.__contains__('precio-min'):
+            if params['precio-min'] != '' and params['precio-min'] != '0':
+                precio_min = int(params['precio-min'])
+                tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
 
-    if params.__contains__('precio-max'):
-        if params['precio-max'] != '' and params['precio-max'] != '0':
-            precio_max = int(params['precio-max'])
-            tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
+        if params.__contains__('precio-max'):
+            if params['precio-max'] != '' and params['precio-max'] != '0':
+                precio_max = int(params['precio-max'])
+                tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
 
-    if params.__contains__('precio-max') or params.__contains__('precio-min'):
-        salidas = salidas.filter(tour__precio__range=[precio_min, precio_max])
+        if params.__contains__('precio-max') or params.__contains__('precio-min'):
+            salidas = salidas.filter(tour__precio__range=[precio_min, precio_max])
 
-    if params.__contains__('categoria'):
-        categoria = params['categoria']
+        if params.__contains__('categoria'):
+            categoria = params['categoria']
 
-    if params.__contains__('continente'):
-        continente = params['continente']
+        if params.__contains__('continente'):
+            continente = params['continente']
 
-    tours = {}
-    for salida in salidas:
-        if not tours.__contains__(str(salida.tour.id)):
-            tours[str(salida.tour.id)] = salida.tour
+        tours = {}
+        for salida in salidas:
+            if not tours.__contains__(str(salida.tour.id)):
+                tours[str(salida.tour.id)] = salida.tour
 
-    context = {'settings':settings, 'tags': tags, 'tours': tours}
+        context = {'settings':settings, 'tags': tags, 'tours': tours}
 
-    if params.__contains__('mobile'):
-        tipo = params['mobile']
-        if tipo == settings.MOBILE_KEY:
-            tours = Tour.to_response_dict(tours.values())
-            return JsonResponse(data={'tags': tags, 'tours': tours})
-    else:
-        return render(request,'tour_grid.html',context)
+        if params.__contains__('mobile'):
+            tipo = params['mobile']
+            if tipo == settings.MOBILE_KEY:
+                tours = Tour.to_response_dict(tours.values())
+                return JsonResponse(data={'tags': tags, 'tours': tours})
+        else:
+            return render(request,'tour_grid.html',context)
+    except:
+        return redirect('/tours/')
 
 def ver_reserva(request):
     if request.method == 'GET':
@@ -171,3 +188,4 @@ def enviar_mail(request):
     recipient_list = ['luisadriant11@hotmail.com', ]
     send_html_email(recipient_list, 'Good news', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
     return HttpResponse()
+

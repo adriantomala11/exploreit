@@ -30,39 +30,42 @@ def tours_registrados(request):
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
 
-    #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
-    if params.__contains__('tipo'):
-        tipo = params['tipo']
-        if tipo == 'INT':
-            tours = Tour.objects.filter(es_internacional=True)
-            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
-        elif tipo == 'NAC':
-            tours = Tour.objects.filter(es_internacional=False)
-            tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+    try:
+        #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
+        if params.__contains__('tipo'):
+            tipo = params['tipo']
+            if tipo == 'INT':
+                tours = Tour.objects.filter(es_internacional=True)
+                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
+            elif tipo == 'NAC':
+                tours = Tour.objects.filter(es_internacional=False)
+                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
+            else:
+                tours = Tour.objects.all()
         else:
             tours = Tour.objects.all()
-    else:
-        tours = Tour.objects.all()
 
-    #FILTRO POR NOMBRE
-    if params.__contains__('nombre'):
-        tours = tours.filter(nombre__icontains=params['nombre'])
-        tags['nombre'] = {'nombre': 'Nombre', 'valor': params['nombre'], 'valor_string': 'Nombre'}
+        #FILTRO POR NOMBRE
+        if params.__contains__('nombre'):
+            tours = tours.filter(nombre__icontains=params['nombre'])
+            tags['nombre'] = {'nombre': 'Nombre', 'valor': params['nombre'], 'valor_string': 'Nombre'}
 
-    #FILTRO POR PRECIO
-    if params.__contains__('precio-min'):
-        if params['precio-min'] != '' and params['precio-min'] != '0':
-            precio_min = int(params['precio-min'])
-            tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
-    if params.__contains__('precio-max'):
-        if params['precio-max'] != '' and params['precio-max'] != '0':
-            precio_max = int(params['precio-max'])
-            tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
-    if params.__contains__('precio-max') or params.__contains__('precio-min'):
-        tours = tours.filter(precio__range=[precio_min, precio_max])
+        #FILTRO POR PRECIO
+        if params.__contains__('precio-min'):
+            if params['precio-min'] != '' and params['precio-min'] != '0':
+                precio_min = int(params['precio-min'])
+                tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
+        if params.__contains__('precio-max'):
+            if params['precio-max'] != '' and params['precio-max'] != '0':
+                precio_max = int(params['precio-max'])
+                tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
+        if params.__contains__('precio-max') or params.__contains__('precio-min'):
+            tours = tours.filter(precio__range=[precio_min, precio_max])
 
-    context = {'tours': tours, 'tags': tags, 'settings': settings}
-    return render(request, 'tours_registrados.html', context)
+        context = {'tours': tours, 'tags': tags, 'settings': settings}
+        return render(request, 'tours_registrados.html', context)
+    except:
+        redirect('/tours/')
 
 def obtener_listado_pasajeros(request, token):
     salida = get_object_or_404(Salida, token=token)
@@ -272,7 +275,9 @@ def reserva_dar_de_baja(request):
 
 def historial_salidas(request):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
-    print(yesterday)
     salidas = Salida.objects.filter(fecha_salida__range=['2021-01-01', yesterday])
     context = {'salidas': salidas}
     return render(request, 'historial_salidas.html', context)
+
+def admin_login(request):
+    return render(request, 'login.html')

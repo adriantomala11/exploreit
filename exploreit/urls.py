@@ -41,6 +41,7 @@ urlpatterns = [
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
     path('administrador/historial-salidas/', admin_views.historial_salidas, name='historial_salidas'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
+    path('administrador/login/', admin_views.admin_login, name='admin_login'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')
 ]

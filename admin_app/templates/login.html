@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<section class="hero-wrapper">
+    <div class="hero-box hero-bg" style="height: 75vh;">
+        <div class="container">
+            <div class="row">
+                <div style="width: 400px; margin: auto;">
+                    <div class="" id="loginPopupForm" tabindex="-1" role="dialog"  aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <div>
+                                        <h5 class="modal-title title" id="exampleModalLongTitle2">Inicio de Sesión</h5>
+                                        <p class="font-size-14">Exclusivo para administradores de la plataforma</p>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="contact-form-action">
+                                        <form method="post">
+                                            <div class="input-box">
+                                                <label class="label-text">Correo Electrónico</label>
+                                                <div class="form-group">
+                                                    <span class="la la-user form-icon"></span>
+                                                    <input class="form-control" type="text" name="text" placeholder="Ingrese su correo electrónico">
+                                                </div>
+                                            </div><!-- end input-box -->
+                                            <div class="input-box">
+                                                <label class="label-text">Contraseña</label>
+                                                <div class="form-group mb-2">
+                                                    <span class="la la-lock form-icon"></span>
+                                                    <input class="form-control" type="text" name="text" placeholder="Ingrese su contraseña">
+                                                </div>
+                                            </div><!-- end input-box -->
+                                            <div class="btn-box pt-3 pb-4">
+                                                <button type="button" class="theme-btn w-100">Iniciar Sesión</button>
+                                            </div>
+                                        </form>
+                                    </div><!-- end contact-form-action -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end modal-popup -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div>
+</section>
+{% endblock %}
+{% block footer_code %}
+<style>
+.modal-dialog-centered::before{
+    height: 50vh !important;
+}
+
+.footer-area {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+}
+</style>
+{% endblock %}
