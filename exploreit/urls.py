@@ -31,6 +31,7 @@ urlpatterns = [
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
     path('tours/', main_views.tours, name='tours'),
+    path('subir-comprobante/', main_views.subir_comprobante, name='subir_comprobante'),
 
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),

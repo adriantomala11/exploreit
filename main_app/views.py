@@ -1,3 +1,4 @@
+import base64
 import datetime
 import json
 from datetime import timedelta
@@ -177,6 +178,7 @@ def ver_reserva(request):
             context['reserva'] = reserva
             context['pasajeros'] = pasajeros
             context['fecha_pago'] = reserva.fecha_creacion + timedelta(days=1)
+            context['settings'] = settings
             return render(request, 'tour_booked.html', context)
         else:
             return render(request, 'ver_reserva.html')
@@ -189,3 +191,10 @@ def enviar_mail(request):
     send_html_email(recipient_list, 'Good news', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
     return HttpResponse()
 
+def subir_comprobante(request):
+    reserva_token = request.POST['reserva']
+    reserva = Reserva.objects.get(token=reserva_token)
+    imagen = request.POST['imagen']
+    filename = request.POST['filename']
+    return_value = reserva.upload_to_aws(imagen, filename)
+    return JsonResponse({'data':return_value})

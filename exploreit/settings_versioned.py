@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'exploreit',
     'qr_code',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'storages'
 ]
 
 REST_FRAMEWORK = {
@@ -152,3 +153,9 @@ MOBILE_KEY = 'hfxpB6nUqwcv3p0'
 LOGIN_URL = '/administrador/login/'
 LOGIN_REDIRECT_URL = '/administrador/'
 LOGOUT_REDIRECT_URL = '/administrador/login/'
+
+#S3 BUCKETS CONFIG
+AWS_ACCESS_KEY_ID = 'AKIA2V7KEKPOYMRA6AFO'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'exploreit-pruebas'
+AWS_S3_BUCKET_URL = 'https://exploreit-pruebas.s3-us-west-1.amazonaws.com/'

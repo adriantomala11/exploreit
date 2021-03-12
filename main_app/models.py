@@ -10,6 +10,10 @@ from django.utils import timezone
 from rest_framework.decorators import api_view
 
 from exploreit import settings
+import boto3
+from botocore.exceptions import NoCredentialsError
+
+from exploreit.helpers import decode_base64_file
 
 
 class Tour(models.Model):
@@ -176,6 +180,7 @@ class Reserva(models.Model):
     apellido        = models.CharField(max_length=40)
     cedula          = models.CharField(max_length=15)
     telefono        = models.CharField(max_length=20, null=True)
+    comprobante     = models.CharField(max_length=100, null=True)
 
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)
@@ -187,6 +192,38 @@ class Reserva(models.Model):
 
     def get_num_pasajeros(self):
         return ReservaPasajero.objects.filter(reserva=self).count()
+
+
+    def upload_to_aws(self, base64_file, filename):
+        s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                          aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        try:
+            extension = filename.split('.')[1]
+            file, file_name = decode_base64_file(base64_file)
+            s3_filename = 'comprobante_' + str(self.token) + '.' + str(extension)
+            self.comprobante = s3_filename
+            s3.upload_fileobj(
+                file,
+                settings.AWS_STORAGE_BUCKET_NAME,
+                s3_filename,
+                ExtraArgs={'ACL': 'public-read'}
+            )
+            self.save()
+            return True
+        except FileNotFoundError:
+            print("The file was not found")
+            return False
+        except NoCredentialsError:
+            print("Credentials not available")
+            return False
+
+    def comprobante_es_imagen(self):
+        tipo = self.comprobante.split('.')[1]
+        return  tipo == 'jpg' or tipo == 'png' or tipo == 'jpeg'
+
+    def comprobante_es_documento(self):
+        tipo = self.comprobante.split('.')[1]
+        return  tipo != 'jpg' or tipo != 'png' or tipo != 'jpeg'
 
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=10, null=True)

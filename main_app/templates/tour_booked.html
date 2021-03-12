@@ -21,13 +21,36 @@
                                 <li style="font-weight: bold;">Fecha de Salida<p style="float: right;font-weight: 300;">{{reserva.salida.fecha_salida}}</p></li>
                                 <li style="font-weight: bold;">Hora Checkin<p style="float: right;font-weight: 300;">{{reserva.salida.tour.hora_checkin}}</p></li>
                                 <li style="font-weight: bold;">Pagar antes de<p style="float: right;font-weight: 300;">{{ fecha_pago }}</p></li>
-                                <li style="font-weight: bold;">Estado de la Reserva{% if reserva.de_baja %}<p style="float: right;font-weight: 300; color: red;">Anulada</p>{% else %}{% if reserva.pagado %}<p style="float: right;font-weight: 300; color: green;">Aprobada</p>{% else %}<p style="float: right;font-weight: 300;">Pendiente</p>{% endif %}{% endif %}</li>
                             </ul>
 
-                            <div class="pb-5" style="text-align: center;">
+                            <div class="pb-3" style="text-align: center;">
                                 <p style="font-weight: bold;">Lugar Salida</p>
                                 <p style="font-weight: 300;">{{reserva.salida.tour.lugar_salida}}</p>
                             </div>
+
+                            <div class="pb-3" style="text-align: center;">
+                                <p style="font-weight: bold;">Estado de la Reserva</p>
+                                {% if reserva.de_baja %}<p style="font-weight: 300; color: red;">Anulada</p>{% else %}{% if reserva.pagado %}<p style="font-weight: 300; color: green;">Aprobada</p>{% else %}<p style="font-weight: 300;">Pendiente</p>{% endif %}{% endif %}
+                            </div>
+
+                            <div class="pb-5" style="text-align: center;">
+                                <p style="font-weight: bold;">Comprobante de pago</p>
+                                <div style="width: fit-content; margin: auto;">
+                                    <div class="input-box">
+                                        <div class="form-group" style=" display: flex;">
+                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
+                                            <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                        </div>
+                                    </div>
+                                </div><!-- end col-lg-6 -->
+
+                                {% if reserva.comprobante_es_imagen %}
+                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                {% elif reserva.comprobante_es_documento%}
+                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                {% endif %}
+                            </div>
+
                         </div>
                         <div class="d-flex align-items-center pb-4">
                                 <h3 class="title" style="margin: auto;">Información de Pasajeros</h3>
@@ -70,4 +93,41 @@
   text-align: center;
 }
 </style>
+<link href="{% static 'lightbox/css/lightbox.css' %}" rel="stylesheet" />
+<script src="{% static 'lightbox/js/lightbox.js' %}"></script>
+<script>
+    var imagen = ''
+    var filename = ''
+
+    function getImageData(){
+        var input = document.getElementById('fileinput');
+        var file = input.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            imagen = reader.result;
+            filename = file.name
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
+
+    function subirImagen(){
+        console.log(imagen)
+        $.ajax({
+          type: "POST",
+          url: "{% url 'subir_comprobante' %}",
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}', imagen: imagen, filename: filename, reserva: '{{ reserva.token }}'},
+          success:function(response){
+            console.log(response)
+          },
+        });
+    }
+
+    lightbox.option({
+      'resizeDuration': 100,
+      'wrapAround': true
+    })
+</script>
 {% endblock %}
