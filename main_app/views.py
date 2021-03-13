@@ -12,7 +12,7 @@ from rest_framework.decorators import api_view
 
 from exploreit import settings
 from exploreit.helpers import send_html_email
-from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero
+from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
@@ -198,3 +198,12 @@ def subir_comprobante(request):
     filename = request.POST['filename']
     return_value = reserva.upload_to_aws(imagen, filename)
     return JsonResponse({'data':return_value})
+
+def mostrar_interes(request):
+    print('Entra')
+    tour_token = request.POST['tour']
+    correo_interesado = request.POST['correo']
+    new_interesado = InteresadoTour(cliente=correo_interesado, tour=get_object_or_404(Tour, token=tour_token))
+    new_interesado.save()
+    response = JsonResponse({'status': 200, 'msg': 'Success'})
+    return response

@@ -303,11 +303,21 @@
           confirmButtonText: 'Enviar',
           showLoaderOnConfirm: true
         }).then((result) => {
-          console.log(result.value)
           if (result.isConfirmed) {
-            Swal.fire({
-              title: 'Gracias por tu interés!',
-            })
+            $.ajax({
+              type: "POST",
+              url: "{% url 'mostrar_interes' %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour: '{{tour_info.tour.token}}', correo: result.value},
+              success:function(response){
+                if(response.status == 200){
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Gracias!',
+                      text: 'Exploreit agradece tu interés.',
+                    })
+                }else{}
+              },
+            });
           }
         })
     }

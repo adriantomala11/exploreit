@@ -32,6 +32,7 @@ urlpatterns = [
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
     path('tours/', main_views.tours, name='tours'),
     path('subir-comprobante/', main_views.subir_comprobante, name='subir_comprobante'),
+    path('mostrar-interes', main_views.mostrar_interes, name='mostrar_interes'),
 
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
@@ -47,6 +48,7 @@ urlpatterns = [
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
     path('administrador/reserva-dar-de-baja/', admin_views.reserva_dar_de_baja, name='reserva_dar_de_baja'),
     path('administrador/login/', admin_views.admin_login, name='admin_login'),
+    path('administrador/aumentar-capacidad/', admin_views.aumentar_capacidad, name='aumentar_capacidad'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')
 ]

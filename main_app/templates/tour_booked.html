@@ -38,7 +38,7 @@
                                 <div style="width: fit-content; margin: auto;">
                                     <div class="input-box">
                                         <div class="form-group" style=" display: flex;">
-                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
+                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
                                             <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
                                         </div>
                                     </div>
@@ -120,8 +120,11 @@
           url: "{% url 'subir_comprobante' %}",
           data: {csrfmiddlewaretoken: '{{ csrf_token }}', imagen: imagen, filename: filename, reserva: '{{ reserva.token }}'},
           success:function(response){
-            console.log(response)
+            window.location.reload()
           },
+          error: function(err){
+            console.log(err)
+          }
         });
     }
 

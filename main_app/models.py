@@ -28,7 +28,6 @@ class Tour(models.Model):
     token               = models.CharField(max_length=30, null=True)
     imagen              = models.ImageField(upload_to=os.path.join('tours',str(id)))
     es_internacional    = models.BooleanField(default=False)
-    capacidad           = models.IntegerField(default=0)
     precio              = models.FloatField()
     duracion            = models.IntegerField(default=0)
 
@@ -64,6 +63,9 @@ class Tour(models.Model):
 
     def imagen_url(self):
         return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), str(self.imagen))
+
+    def get_interesados(self):
+        return InteresadoTour.objects.filter(tour=self).count()
 
     @classmethod
     def to_response_dict(cls, tours):
@@ -154,6 +156,7 @@ class Salida(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.PROTECT)
     fecha_salida    = models.DateField()
     token           = models.CharField(max_length=30, null=True)
+    capacidad       = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.tour.nombre)+' ('+str(self.fecha_salida)+')'
@@ -218,12 +221,18 @@ class Reserva(models.Model):
             return False
 
     def comprobante_es_imagen(self):
-        tipo = self.comprobante.split('.')[1]
-        return  tipo == 'jpg' or tipo == 'png' or tipo == 'jpeg'
+        try:
+            tipo = self.comprobante.split('.')[1]
+            return  tipo == 'jpg' or tipo == 'png' or tipo == 'jpeg'
+        except:
+            return False
 
     def comprobante_es_documento(self):
-        tipo = self.comprobante.split('.')[1]
-        return  tipo != 'jpg' or tipo != 'png' or tipo != 'jpeg'
+        try:
+            tipo = self.comprobante.split('.')[1]
+            return  tipo != 'jpg' or tipo != 'png' or tipo != 'jpeg'
+        except:
+            return False
 
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=10, null=True)
@@ -248,6 +257,6 @@ class Categoria(models.Model):
 class Continente(models.Model):
     nombre          = models.CharField(max_length=10, null=True)
 
-class InteresadosTour(models.Model):
+class InteresadoTour(models.Model):
     cliente         = models.CharField(max_length=50)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)

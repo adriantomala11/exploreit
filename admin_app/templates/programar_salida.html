@@ -39,7 +39,7 @@
                             </div><!-- form-title-wrap -->
                             <div class="form-content contact-form-action">
                                 <form method="post" class="row">
-                                    <div class="col-lg-8 responsive-column">
+                                    <div class="col-lg-5 responsive-column">
                                         <div class="input-box">
                                             <label class="label-text">Tour</label>
                                             <div class="form-group select-contain w-100">
@@ -58,6 +58,15 @@
                                             <div class="form-group">
                                                 <span class="la la-calendar form-icon"></span>
                                                 <input id="fecha_input" class="date-range form-control" type="date">
+                                            </div>
+                                        </div>
+                                    </div><!-- end col-lg-4 -->
+                                    <div class="col-lg-2">
+                                        <div class="input-box">
+                                            <label class="label-text">Capacidad</label>
+                                            <div class="form-group">
+                                                <span class="la la-user form-icon"></span>
+                                                <input id="capacidad_input" class="date-range form-control" type="number">
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-4 -->
@@ -94,8 +103,7 @@
     document.getElementById('nav_programar_salida').classList.add('page-active')
 
     function guardarCambios(){
-        var requestDic = {tour: document.getElementById('tour_input').value, fecha: document.getElementById('fecha_input').value}
-        console.log(requestDic)
+        var requestDic = {tour: document.getElementById('tour_input').value, fecha: document.getElementById('fecha_input').value, capacidad: document.getElementById('capacidad_input').value}
         $.ajax({
           type: "POST",
           url: "{% url 'programar_salida' %}",

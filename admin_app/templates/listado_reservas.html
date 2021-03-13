@@ -12,7 +12,7 @@
                     <div class="col-lg-6">
                         <div class="breadcrumb-content">
                             <div class="section-heading">
-                                <h2 class="sec__title font-size-30"><a href="{% url 'salidas_programadas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Pasajeros</h2>
+                                <h2 class="sec__title font-size-30"><a href="{% url 'salidas_programadas' %}" style="color: white;"><i class="las la-arrow-left"></i></a> Listado de Reservas</h2>
                             </div>
                         </div><!-- end breadcrumb-content -->
                     </div><!-- end col-lg-6 -->
@@ -54,6 +54,7 @@
                                                 <th scope="col">Pasajeros</th>
                                                 <th scope="col">Salida</th>
                                                 <th scope="col">Codigo</th>
+                                                <th scope="col">Comprobante</th>
                                                 <th scope="col">Estado</th>
                                             </tr>
                                         </thead>
@@ -67,6 +68,13 @@
                                             <td>{{reserva.salida}}</td>
                                             <td><a href="{% url 'ver_reserva' %}?tok={{reserva.token}}">{{reserva.token}}</a></td>
                                             <td>
+                                                {% if reserva.comprobante_es_imagen %}
+                                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                                {% elif reserva.comprobante_es_documento%}
+                                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                                {% endif %}
+                                            </td>
+                                            <td>
                                                 <div class="">
                                                     {% if reserva.de_baja %}
                                                     <a style="background-color: red; color: white; border-color: white; cursor: pointer;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Cancelada</a>
@@ -75,7 +83,7 @@
                                                         <a style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small mr-2" data-toggle="tooltip" data-placement="top" title="Aprobar">Pagado</a>
                                                         {% else %}
                                                         <a onclick="javascript:reserva_aprobar('{{reserva.token}}')" style="background-color: green; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Aprobar"><i class="lar la-check-circle"></i></a>
-                                                        <a style="background-color: red; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Dar de Baja"><i class="las la-ban"></i></a>
+                                                        <a onclick="reserva_dar_de_baja('{{reserva.token}}')" style="background-color: red; color: white; border-color: white;" class="theme-btn theme-btn-small" title="Dar de Baja"><i class="las la-ban"></i></a>
                                                         {% endif %}
                                                     {% endif %}
                                                 </div>
@@ -135,6 +143,8 @@
 ================================= -->
 {% endblock %}
 {% block footer_code %}
+<link href="{% static 'lightbox/css/lightbox.css' %}" rel="stylesheet" />
+<script src="{% static 'lightbox/js/lightbox.js' %}"></script>
 <script>
     document.getElementById('nav_salidas_programadas').classList.add('page-active')
 
@@ -150,6 +160,24 @@
           },
         });
     }
+
+    function reserva_dar_de_baja(reserva_token){
+        $.ajax({
+          type: "POST",
+          url: "{% url 'reserva_dar_de_baja' %}",
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}', reserva_token: reserva_token},
+          success:function(response){
+            if(response.status == 200){
+                window.location.reload();
+            }else{}
+          },
+        });
+    }
+
+    lightbox.option({
+      'resizeDuration': 100,
+      'wrapAround': true
+    })
 </script>
 
 <style>
@@ -162,6 +190,10 @@
     }
     .table thead tr th{
         border: solid 1px white;
+    }
+
+    .table thead tr th {
+        border: solid #a5a5a5 1px !important;
     }
 </style>
 {% endblock %}

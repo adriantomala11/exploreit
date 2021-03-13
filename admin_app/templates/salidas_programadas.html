@@ -43,14 +43,14 @@
                     </div>
                     <div class="card-body">
                         <h3 class="card-title"><a href="tour-details.html">{{salida.tour.nombre}}</a><a style="padding-left: 5px;" target="_blank" href="{% url 'tour_info' salida.tour.token%}"><i class="fa fa-external-link" aria-hidden="true"></i></a></h3>
-                        <p class="card-meta">{{salida.tour.ubicacion}}</p>
-                        <p class="card-meta">{{salida.fecha_salida}}</p>
+                        <p class="card-meta">Fecha de Salida: {{salida.fecha_salida}} - Capacidad: {{salida.capacidad}}</p>
                         <div class="card-price d-flex align-items-center justify-content-between">
                             <p>
                                 <span class="price__num">${{salida.tour.precio|floatformat:2}}</span>
                                 <span class="price__from">Por Persona</span>
                             </p>
                         </div>
+                        <a href="javascript:void(0);" onclick="modalEditar('{{salida.token}}', '{{salida.tour.nombre}}', '{{salida.fecha_salida}}')">Aumentar Capacidad</a><br>
                         <a href="{% url 'listado_pasajeros' salida.token %}">Ver Listado de Pasajeros</a><br>
                         <a href="{% url 'listado_reservas' salida.token %}">Ver Listado de Reservas</a>
                     </div>
@@ -92,7 +92,42 @@
 {% endblock %}
 
 {% block footer_code %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.getElementById('nav_salidas_programadas').classList.add('page-active')
+
+    function modalEditar(salida_token, salida_nombre, salida_fecha){
+        Swal.fire({
+          title: 'Aumentar capacidad de la Salidad',
+          text: 'Ingrese la cantidad de cupos que desee agregar a la salida con destino a ' + salida_nombre + ' programada para el ' + String(salida_fecha),
+          input: 'number',
+          icon: 'info',
+          inputAttributes: {
+            autocapitalize: 'off',
+            placeholder: 'Cupos Adicionales'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Aceptar',
+          showLoaderOnConfirm: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: "POST",
+              url: "{% url 'aumentar_capacidad' %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', aumento: result.value, salida: salida_token},
+              success:function(response){
+                if(response.status == 200){
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Salida Actualizada!',
+                      text: 'La salida ha aumentado su capacidad a ' + ' pasajeros.',
+                    })
+                    setTimeout(function(){ window.location.reload(); }, 1000);
+                }else{}
+              },
+            });
+          }
+        })
+    }
 </script>
 {% endblock %}

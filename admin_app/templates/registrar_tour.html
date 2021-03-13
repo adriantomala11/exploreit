@@ -93,15 +93,6 @@
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
-                                    <label class="label-text">Capacidad</label>
-                                    <div class="form-group">
-                                        <span class="la la-users form-icon"></span>
-                                        <input v-model="capacidad" id="capacidad" class="form-control" type="number" name="text" placeholder="Ingrese la capacidad de pasajeros" required>
-                                    </div>
-                                </div>
-                            </div><!-- end col-lg-6 -->
-                            <div class="col-lg-6 responsive-column">
-                                <div class="input-box">
                                     <label class="label-text">Precio</label>
                                     <div class="form-group">
                                         <span class="la la-dollar-sign form-icon"></span>
@@ -230,7 +221,6 @@
             hora_checkin: '',
             hora_salida: '',
             hora_retorno: '',
-            capacidad: '',
             precio: '',
             duracion: 1,
             descripcion: '',
@@ -251,7 +241,6 @@
             hora_checkin: '{{tour.hora_checkin}}',
             hora_salida: '{{tour.hora_salida}}',
             hora_retorno: '{{tour.hora_retorno}}',
-            capacidad: {{tour.capacidad}},
             precio: parseFloat('{{tour.precio}}'),
             duracion: {{tour.duracion}},
             descripcion: '{{tour.descripcion}}',
@@ -337,7 +326,6 @@
                 hora_salida: document.getElementById('hora_salida').value,
                 hora_retorno: document.getElementById('hora_retorno').value,
                 es_internacional: document.getElementById('es_internacional').value,
-                capacidad: document.getElementById('capacidad').value,
                 precio: document.getElementById('precio').value,
                 descripcion: document.getElementById('descripcion').value,
                 lugar_salida: document.getElementById('lugar_salida').value,
