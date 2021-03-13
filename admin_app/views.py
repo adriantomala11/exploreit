@@ -239,8 +239,6 @@ def editar_tour(request, slug):
                 tour.save()
             except Exception as e:
                 print(e)
-
-
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             transaction.commit()
@@ -291,17 +289,14 @@ def copiar_tour(request):
         item.pk = None
         item.tour = new_tour
         item.save()
-
     for item in no_incluyes:
         item.pk = None
         item.tour = new_tour
         item.save()
-
     for item in itinerarios:
         item.pk = None
         item.tour = new_tour
         item.save()
-
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
