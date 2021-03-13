@@ -283,7 +283,7 @@ def copiar_tour(request):
     itinerarios = Itinerario.objects.filter(tour=new_tour)
     new_tour.pk = None
     new_tour.token = Salida.generar_token()
-    new_tour.nombre = nombre + str(datetime.datetime.timestamp(datetime.datetime.now()))
+    new_tour.nombre = nombre + 'COPIA'
     new_tour.save()
     for item in incluyes:
         item.pk = None
