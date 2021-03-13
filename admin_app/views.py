@@ -276,6 +276,37 @@ def reserva_aprobar(request):
     return response
 
 @login_required(login_url='/administrador/login/')
+def copiar_tour(request):
+    tour_token = request.POST['tour_token']
+    new_tour = get_object_or_404(Tour, token=tour_token)
+    nombre = new_tour.nombre
+    incluyes = Incluye.objects.filter(tour=new_tour)
+    no_incluyes = NoIncluye.objects.filter(tour=new_tour)
+    itinerarios = Itinerario.objects.filter(tour=new_tour)
+    new_tour.pk = None
+    new_tour.token = Salida.generar_token()
+    new_tour.nombre = nombre + str(datetime.datetime.timestamp(datetime.datetime.now()))
+    new_tour.save()
+    for item in incluyes:
+        item.pk = None
+        item.tour = new_tour
+        item.save()
+
+    for item in no_incluyes:
+        item.pk = None
+        item.tour = new_tour
+        item.save()
+
+    for item in itinerarios:
+        item.pk = None
+        item.tour = new_tour
+        item.save()
+
+    response = JsonResponse({'status': 200, 'msg': 'Success'})
+    return response
+
+
+@login_required(login_url='/administrador/login/')
 def reserva_dar_de_baja(request):
     transaction.set_autocommit(False)
     try:
