@@ -47,7 +47,6 @@ urlpatterns = [
     path('administrador/historial-salidas/', admin_views.historial_salidas, name='historial_salidas'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),
     path('administrador/reserva-dar-de-baja/', admin_views.reserva_dar_de_baja, name='reserva_dar_de_baja'),
-    path('administrador/login/', admin_views.admin_login, name='admin_login'),
     path('administrador/aumentar-capacidad/', admin_views.aumentar_capacidad, name='aumentar_capacidad'),
     path('administrador/copiar-tour/', admin_views.copiar_tour, name='copiar_tour'),
 

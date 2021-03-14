@@ -10,23 +10,23 @@ from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 
 from exploreit import settings
-from exploreit.helpers import send_html_email
+from exploreit.helpers import send_html_email, PrintException
 from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def dashboard(request):
     salidas_proximas = Salida.objects.all()
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'admin_dashboard.html', context)
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def salidas_programadas(request):
     hoy = datetime.date.today()
     salidas_proximas = Salida.objects.filter(fecha_salida__range=[hoy, '2030-12-31'])
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'salidas_programadas.html', context)
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def tours_registrados(request):
     tours = Tour.objects.all()
     params = request.GET
@@ -65,26 +65,27 @@ def tours_registrados(request):
         if params.__contains__('precio-max') or params.__contains__('precio-min'):
             tours = tours.filter(precio__range=[precio_min, precio_max])
 
+        tours.order_by('pk')
         context = {'tours': tours, 'tags': tags, 'settings': settings}
         return render(request, 'tours_registrados.html', context)
     except:
         redirect('/tours/')
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def obtener_listado_pasajeros(request, token):
     salida = get_object_or_404(Salida, token=token)
     pasajeros = ReservaPasajero.objects.filter(reserva__salida=salida, reserva__pagado=True)
     context = {'salida': salida, 'pasajeros': pasajeros}
     return render(request, 'listado_pasajeros.html', context)
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def obtener_listado_reservas(request, token):
     salida = get_object_or_404(Salida, token=token)
     reservas = Reserva.objects.filter(salida=salida)
     context = {'salida': salida, 'reservas': reservas, 'settings':settings}
     return render(request, 'listado_reservas.html', context)
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def programar_salida(request):
     if request.method == 'GET':
         tours = Tour.objects.all()
@@ -102,7 +103,7 @@ def programar_salida(request):
         response = JsonResponse({'status':200, 'url': response_url})
         return response
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def registrar_tour(request):
     if request.method == 'GET':
         context = {}
@@ -161,7 +162,7 @@ def registrar_tour(request):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def editar_tour(request, slug):
     if request.method == 'GET':
         try:
@@ -174,18 +175,20 @@ def editar_tour(request, slug):
             no_incluye = NoIncluye.queryset_to_list(no_incluye)
 
             itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
+            print(itinerario)
             itinerario_ls = [[]]
             for iti in itinerario:
                 if iti.dia == len(itinerario_ls):
                     itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
                 else:
                     itinerario_ls.append([])
+                    print()
                     itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
             print(itinerario_ls)
             context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour}
             return render(request, 'registrar_tour.html', context)
-        except Exception as e:
-            print('Exception: ',e)
+        except:
+            PrintException()
             redirect('/administrador/registrar-tour/')
 
     elif request.method == 'POST':
@@ -250,7 +253,7 @@ def editar_tour(request, slug):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def reserva_aprobar(request):
     transaction.set_autocommit(False)
     try:
@@ -273,7 +276,7 @@ def reserva_aprobar(request):
         response = JsonResponse({'status': 200, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def copiar_tour(request):
     tour_token = request.POST['tour_token']
     new_tour = get_object_or_404(Tour, token=tour_token)
@@ -301,7 +304,7 @@ def copiar_tour(request):
     return response
 
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def reserva_dar_de_baja(request):
     transaction.set_autocommit(False)
     try:
@@ -317,14 +320,14 @@ def reserva_dar_de_baja(request):
         response = JsonResponse({'status': 200, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def historial_salidas(request):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     salidas = Salida.objects.filter(fecha_salida__range=['2021-01-01', yesterday])
     context = {'salidas': salidas}
     return render(request, 'historial_salidas.html', context)
 
-@login_required(login_url='/administrador/login/')
+@login_required(login_url='/login/')
 def aumentar_capacidad(request):
     salida_token = request.POST['salida']
     salida = get_object_or_404(Salida, token=salida_token)
@@ -332,6 +335,3 @@ def aumentar_capacidad(request):
     salida.save()
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
-
-def admin_login(request):
-    return render(request, 'login.html')

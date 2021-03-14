@@ -15,34 +15,120 @@
                 </div>
             </div>
         </div>
-        <div class="sidebar-menu-wrap">
-            <ul class="sidebar-menu toggle-menu list-items">
-                <li id="nav_dashboard"><a href="{% url 'admin_dashboard' %}" style="padding-left: 0px;"><i class="la la-dashboard mr-2"></i>Dashboard</a></li>
-                <p class="nav_title"><i class="las la-passport"></i> Tours</p>
-                <li id="nav_tours_registrados"><a href="{% url 'tours_registrados' %}">Tours Registrados</a></li>
-                <li id="nav_registrar_tour"><a href="{% url 'registrar_tour' %}">Registrar Tour</a></li>
-                <p class="nav_title"><i class="las la-shuttle-van"></i> Salidas</p>
-                <li id="nav_salidas_programadas"><a href="{% url 'salidas_programadas' %}">Salidas Programadas</a></li>
-                <li id="nav_programar_salida"><a href="{% url 'programar_salida' %}">Programar Salida</a></li>
-                <li id="nav_historial_salidas"><a href="{% url 'historial_salidas' %}">Historial de Salidas</a></li>
-                <p id="nav_cerrar_sesion" style="border-top: 1px solid #5d646d;"><a href="{% url 'logout' %}" style="color: red;"><i class="la la-power-off mr-2 text-color-11"></i>Cerrar Sesion</a></p>
-            </ul>
-        </div><!-- end sidebar-menu-wrap -->
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id="heading3">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                  Reservas
+                </button>
+              </h5>
+            </div>
+            <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordion">
+              <div>
+                  <div class="card">
+                    <div class="card-header sub">
+                        Reservas Activas
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-header sub">
+                        Historial de Reservas
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Tours
+                </button>
+              </h5>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div>
+                  <a id="nav_registrar_tour" href="{% url 'registrar_tour' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Registrar Tour
+                        </div>
+                      </div>
+                  </a>
+                  <a id="nav_tours_registrados" href="{% url 'tours_registrados' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Tours Registrados
+                        </div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Salidas
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div>
+                  <a id="nav_programar_salida" href="{% url 'programar_salida' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Programas Salida
+                        </div>
+                      </div>
+                  </a>
+                  <a id="nav_salidas_programadas" href="{% url 'salidas_programadas' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Salidas Programadas
+                        </div>
+                      </div>
+                  </a>
+                  <a id="nav_historial_salidas" href="{% url 'historial_salidas' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Historial de Salidas
+                        </div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <a class="btn btn-link" href="{% url 'logout' %}">
+                  Cerrar Sesion
+                </a>
+              </h5>
+            </div>
+          </div>
+        </div>
     </div>
 </div><!-- end sidebar-nav -->
 <style>
-    .nav_title{
-        border-top: 1px solid #5d646d;
-        margin-top: 10px;
-        font-weight: 500;
-        padding: 10px 0px 5px 0px;
-        color: #5d646d;
-    }
+.card-header.sub{
+    font-size: 15px;
+    padding-left: 55px;
+    color: #0d233e;
+}
 
-    .sidebar-menu p a{
-        color: #5d646d;
-        font-weight: 500;
-    }
+button.btn.btn-link{
+    color: #0d233e;
+}
+
+.card{
+    background-color: white !important;
+    border: none !important;
+}
 </style>
 <!-- ================================
        END DASHBOARD NAV
