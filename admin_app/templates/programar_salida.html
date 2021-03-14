@@ -101,6 +101,8 @@
 {% block footer_code %}
 <script>
     document.getElementById('nav_programar_salida').classList.add('page-active')
+    document.getElementById('nav_salidas').classList.add('page-active')
+    document.getElementById('nav_salidas_content').classList.add('show')
 
     function guardarCambios(){
         var requestDic = {tour: document.getElementById('tour_input').value, fecha: document.getElementById('fecha_input').value, capacidad: document.getElementById('capacidad_input').value}

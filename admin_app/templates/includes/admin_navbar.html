@@ -19,12 +19,12 @@
           <div class="card">
             <div class="card-header" id="heading3">
               <h5 class="mb-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse3">
-                  Reservas
-                </button>
+                <a id="nav_reservas" class="btn btn-link" data-toggle="collapse" data-target="#nav_reservas_content" aria-expanded="true" aria-controls="collapse3">
+                  <i class="las la-ticket-alt"></i>Reservas
+                </a>
               </h5>
             </div>
-            <div id="collapse3" class="collapse" aria-labelledby="heading3" data-parent="#accordion">
+            <div id="nav_reservas_content" class="collapse" aria-labelledby="heading3" data-parent="#accordion">
               <div>
                   <div class="card">
                     <div class="card-header sub">
@@ -42,12 +42,12 @@
           <div class="card">
             <div class="card-header" id="headingOne">
               <h5 class="mb-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Tours
-                </button>
+                <a id="nav_tours" class="btn btn-link" data-toggle="collapse" data-target="#nav_tours_content" aria-expanded="true" aria-controls="collapseOne">
+                  <i class="las la-passport"></i>Tours
+                </a>
               </h5>
             </div>
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="nav_tours_content" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
               <div>
                   <a id="nav_registrar_tour" href="{% url 'registrar_tour' %}">
                       <div class="card">
@@ -69,17 +69,17 @@
           <div class="card">
             <div class="card-header" id="headingTwo">
               <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  Salidas
-                </button>
+                <a id="nav_salidas" class="btn btn-link collapsed" data-toggle="collapse" data-target="#nav_salidas_content" aria-expanded="false" aria-controls="collapseTwo">
+                  <i class="las la-bus"></i>Salidas
+                </a>
               </h5>
             </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div id="nav_salidas_content" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
               <div>
                   <a id="nav_programar_salida" href="{% url 'programar_salida' %}">
                       <div class="card">
                         <div class="card-header sub">
-                            Programas Salida
+                            Programar Salida
                         </div>
                       </div>
                   </a>
@@ -105,8 +105,8 @@
         <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <a class="btn btn-link" href="{% url 'logout' %}">
-                  Cerrar Sesion
+                <a class="btn btn-link" href="{% url 'logout' %}" style="text-decoration: none; color: inherit;">
+                  <i class="las la-power-off"></i>Cerrar Sesion
                 </a>
               </h5>
             </div>
@@ -128,6 +128,25 @@ button.btn.btn-link{
 .card{
     background-color: white !important;
     border: none !important;
+}
+
+.card-header{
+    border: none !important;
+    background-color: white !important;
+}
+
+a.btn.btn-link i{
+    margin-right: 5px;
+}
+
+.page-active > div > div{
+    color: rgb(123, 0, 255) !important;
+    font-weight: 400;
+}
+
+.page-active{
+    color: rgb(123, 0, 255) !important;
+    font-weight: 400;
 }
 </style>
 <!-- ================================

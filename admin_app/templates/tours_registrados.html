@@ -184,6 +184,8 @@
 {% block footer_code %}
 <script>
     document.getElementById('nav_tours_registrados').classList.add('page-active')
+    document.getElementById('nav_tours').classList.add('page-active')
+    document.getElementById('nav_tours_content').classList.add('show')
 
     var filtros = {% if tags %}{{tags|safe}}{% else %}{}{% endif %};
 
