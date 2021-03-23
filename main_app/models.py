@@ -17,8 +17,8 @@ from botocore.exceptions import NoCredentialsError
 from exploreit.helpers import decode_base64_file
 
 class Categoria(models.Model):
-    codigo          = models.CharField(max_length=6, unique=True)
-    nombre          = models.CharField(max_length=10)
+    codigo          = models.CharField(max_length=6, unique=True, null=True)
+    nombre          = models.CharField(max_length=10, null=True)
 
 class Tour(models.Model):
     TIPO_CHOICES = (
