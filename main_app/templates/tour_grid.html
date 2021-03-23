@@ -147,14 +147,16 @@
                             {% endif %}
                         </div><!-- end filter-bar-filter -->
                     </div><!-- end filter-bar -->
-                    <div style="display: flex; padding: 10px 5px; width: 100%; overflow: auto;">
-                        {% for key,tag in tags.items %}
-                        <div class="tags-section" style="display: inline-flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
-                            <p style="font-weight: bold;">{{tag.nombre}}:</p>
-                            <p style="padding-left: 5px;">{{tag.valor_string}}</p>
-                            <p onclick="eliminarFiltro('{{key}}')" style="cursor: pointer; padding-left: 7px; font-weight: bold;"><i style="font-weight: bold;" class="las la-times"></i></p>
+                    <div style="overflow: overlay;">
+                        <div style="display: flex; padding: 10px 5px; width: max-content; overflow: auto;">
+                            {% for key,tag in tags.items %}
+                            <div class="tags-section" style="display: inline-flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
+                                <p style="font-weight: bold;">{{tag.nombre}}:</p>
+                                <p style="padding-left: 5px;">{{tag.valor_string}}</p>
+                                <p onclick="eliminarFiltro('{{key}}')" style="cursor: pointer; padding-left: 7px; font-weight: bold;"><i style="font-weight: bold;" class="las la-times"></i></p>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div><!-- end filter-wrap -->
             </div><!-- end col-lg-12 -->

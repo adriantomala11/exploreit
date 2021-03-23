@@ -11,3 +11,4 @@ djangorestframework==3.12.2
 six==1.15.0
 boto3==1.17.26
 django-storages==1.11.1
+trml2pdf==0.6
