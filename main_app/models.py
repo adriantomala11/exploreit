@@ -2,6 +2,7 @@ import os
 import random
 import string
 import datetime
+from enum import Enum
 
 from django.db import models
 
@@ -15,24 +16,30 @@ from botocore.exceptions import NoCredentialsError
 
 from exploreit.helpers import decode_base64_file
 
+class Categoria(models.Model):
+    codigo          = models.CharField(max_length=6, unique=True)
+    nombre          = models.CharField(max_length=10)
 
 class Tour(models.Model):
-    nombre              = models.CharField(max_length=150)
-    descripcion         = models.TextField()
-    ubicacion           = models.CharField(max_length=60, null=True)
-    tipo                = models.CharField(max_length=10)
-    hora_checkin        = models.CharField(max_length=10)
-    hora_salida         = models.CharField(max_length=10)
-    hora_retorno        = models.CharField(max_length=10)
-    lugar_salida        = models.CharField(max_length=150)
-    token               = models.CharField(max_length=30, null=True)
-    imagen              = models.ImageField(upload_to=os.path.join('tours',str(id)))
-    es_internacional    = models.BooleanField(default=False)
-    precio              = models.FloatField()
-    duracion            = models.IntegerField(default=0)
+    TIPO_CHOICES = (
+        ('NAC', 'Nacional'),
+        ('INT', 'Internacional'),
+    )
 
-    # def __str__(self):
-    #     return self.nombre
+    nombre                  = models.CharField(max_length=150)
+    descripcion             = models.TextField()
+    ubicacion               = models.CharField(max_length=60, null=True)
+    hora_checkin            = models.CharField(max_length=10)
+    hora_salida             = models.CharField(max_length=10)
+    hora_retorno            = models.CharField(max_length=10)
+    lugar_salida            = models.CharField(max_length=150)
+    token                   = models.CharField(max_length=30, null=True)
+    imagen                  = models.ImageField(upload_to=os.path.join('tours',str(id)))
+    tipo                    = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
+    precio                  = models.FloatField()
+    duracion                = models.IntegerField(default=0)
+    categoria               = models.ForeignKey(Categoria, on_delete=models.PROTECT, null=True)
+    abordaje_dia_anterior   = models.BooleanField(default=True)
 
     def obtener_info(self):
         incluye = Incluye.objects.filter(tour=self)
@@ -83,14 +90,22 @@ class Tour(models.Model):
         return response_dict
 
     def obtener_similares(self):
-        return Tour.objects.filter(es_internacional=self.es_internacional).exclude(pk=self.pk).order_by('?')[:3]
+        return Tour.objects.filter(tipo=self.tipo).exclude(pk=self.pk).order_by('?')[:3]
 
     def obtener_duracion(self):
-        return (Itinerario.objects.filter(tour=self).order_by('-dia')[0]).dia
+        itinerario = Itinerario.objects.filter(tour=self).order_by('-dia')
+        if len(itinerario) > 0:
+            return (Itinerario.objects.filter(tour=self).order_by('-dia')[0]).dia
+        else:
+            return 0
 
     def esta_disponible(self):
         proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).count()
         return proximas_salidas > 0
+
+    def obtener_tipo_str(self):
+        return dict(Tour.TIPO_CHOICES).get(self.tipo)
+
 
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
@@ -169,6 +184,13 @@ class Salida(models.Model):
     def get_num_pasajeros(self):
         return ReservaPasajero.objects.filter(reserva__pagado=True, reserva__salida=self).count()
 
+    def obtener_cupos_disponibles(self):
+        pasajeros_confirmados = ReservaPasajero.objects.filter(reserva__salida=self, reserva__pagado=True, reserva__de_baja=False).count()
+        return int(self.capacidad) - int(pasajeros_confirmados)
+
+    def obtener_disponibilidad(self, cupos_solicitados):
+        return self.obtener_cupos_disponibles() >= int(cupos_solicitados)
+
 class ItinerarioVuelo(models.Model):
     fecha_ida       = models.DateTimeField()
     fecha_regreso   = models.DateTimeField()
@@ -246,16 +268,6 @@ class ReservaPasajero(models.Model):
     def generar_token(self):
         x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
         return str(self.id) + x
-
-
-class Tipo(models.Model):
-    nombre          = models.CharField(max_length=10, null=True)
-
-class Categoria(models.Model):
-    nombre          = models.CharField(max_length=10, null=True)
-
-class Continente(models.Model):
-    nombre          = models.CharField(max_length=10, null=True)
 
 class InteresadoTour(models.Model):
     cliente         = models.CharField(max_length=50)

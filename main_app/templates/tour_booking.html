@@ -42,6 +42,17 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
+                {% if not hay_suficientes_cupos %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="las la-exclamation-circle"></i> Lo sentimos, pero actualmente no contamos con suficientes cupos para asegurarte un espacio en esta salida,
+                    sin embargo puedes ingresar tus datos e ingresar a una cola de espera, y en caso de que se libere la cantidad necesaria de cupos, tu reserva se hará efectiva inmediatamente.
+                </div>
+                {% endif %}
+                {% if not salida.tour.abordaje_dia_anterior %}
+                <div class="alert alert-warning" role="alert">
+                  <i class="las la-exclamation-circle"></i> El abordaje a este tour es realizado el día anterior a la fecha de la salida establecida.
+                </div>
+                {% endif %}
                 {% for pasajero in pasajeros %}
                 <div class="form-box">
                     <div class="form-title-wrap">
@@ -171,7 +182,7 @@
                                                 <label class="label-text">Nombres</label>
                                                 <div class="form-group">
                                                     <span class="la la-user form-icon"></span>
-                                                    <input class="form-control" type="text" name="text" placeholder="Nombres" required>
+                                                    <input class="form-control" type="text" name="text" placeholder="Nombres">
                                                 </div>
                                             </div>
                                         </div><!-- end col-lg-6 -->
@@ -180,7 +191,7 @@
                                                 <label class="label-text">Apellidos</label>
                                                 <div class="form-group">
                                                     <span class="la la-user form-icon"></span>
-                                                    <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
+                                                    <input class="form-control" type="text" name="text" placeholder="Apellidos">
                                                 </div>
                                             </div>
                                         </div><!-- end col-lg-6 -->
@@ -258,7 +269,8 @@
                                 </div>
                                 <div class="section-block"></div>
                                 <ul class="list-items list-items-2 list--items-2 py-2">
-                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-calendar mr-1 text-black font-size-17"></i>Fecha y Hora</span>{{ salida.fecha_salida }}</li>
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-calendar mr-1 text-black font-size-17"></i>Fecha de Salida</span>{{ salida.fecha_salida }}</li>
+                                    <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-calendar mr-1 text-black font-size-17"></i>Hora de Salida</span>{{ salida.tour.hora_salida }}</li>
                                     <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-clock-o mr-1 text-black font-size-17"></i>Duracion</span>{{ salida.tour.duracion }} Día(s)</li>
                                     <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-map-marker mr-1 text-black font-size-17"></i>Salida desde</span>{{ salida.tour.lugar_salida }}</li>
                                     <li class="font-size-15"><span class="w-auto d-block mb-n1"><i class="la la-user mr-1 text-black font-size-17"></i># Pasajeros</span>{{ pasajeros|length }}</li>
@@ -326,7 +338,7 @@
         for(var i=0; i<allForms.length; i++){
             var elements = allForms[i].elements
 
-            if(allForms[i].id == 'facturacion' || allForms[i].classList.contains('pasajero')){
+            if(allForms[i].id == 'facturacion' || allForms[i].classList.contains('pasajero') || allForms[i].id == 'contacto'){
                 var hayErrores = validarCampos(elements)
                 if(!hayErrores){
                     noHayErrores = false

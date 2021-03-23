@@ -11,7 +11,7 @@
                 <div class="breadcrumb-list breadcrumb-top-list">
                     <ul class="list-items d-flex justify-content-start">
                         <li><a href="index.html">Inicio</a></li>
-                        <li>{% if tour_info.tour.es_internacional %}Internacional{% else %}Nacional{% endif %}</li>
+                        <li>{{ tour_info.tour.obtener_tipo_str }}</li>
                         <li>{{ tour_info.tour.nombre }}</li>
                     </ul>
                 </div><!-- end breadcrumb-list -->
@@ -286,7 +286,7 @@
     function goToBooking(){
         var num_pasajeros = document.getElementById('num_pasajeros').value
         var salida = document.getElementById('salida').value
-        window.location.href = '{% url 'tour_booking' tour_info.incluye.0.tour.token %}'+'?sal='+String(salida)+'&pas='+String(num_pasajeros)
+        window.location.href = '{% url 'tour_booking' tour_info.tour.token %}'+'?sal='+String(salida)+'&pas='+String(num_pasajeros)
     }
 
     function mostrarInteres(){

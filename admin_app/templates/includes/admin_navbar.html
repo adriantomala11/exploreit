@@ -100,7 +100,15 @@
               </div>
             </div>
           </div>
-
+        </div>
+        <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <a id="nav_categorias" class="btn btn-link" href="{% url 'categorias' %}" style="text-decoration: none; color: inherit;">
+                  <i class="las la-hiking"></i>Categorías
+                </a>
+              </h5>
+            </div>
         </div>
         <div class="card">
             <div class="card-header">
@@ -110,7 +118,6 @@
                 </a>
               </h5>
             </div>
-          </div>
         </div>
     </div>
 </div><!-- end sidebar-nav -->
@@ -147,6 +154,14 @@ a.btn.btn-link i{
 .page-active{
     color: rgb(123, 0, 255) !important;
     font-weight: 400;
+}
+
+.card-header.sub:hover{
+    color: rgb(123, 0, 255);
+}
+
+.card a:hover{
+    color: rgb(123, 0, 255);
 }
 </style>
 <!-- ================================

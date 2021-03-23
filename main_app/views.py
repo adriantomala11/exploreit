@@ -35,7 +35,8 @@ def tour_booking(request, token):
         tour = get_object_or_404(Tour, token=token)
         salida = Salida.objects.get(pk=request.GET['sal'], tour=tour)
         context['salida'] = salida
-
+        context['hay_suficientes_cupos'] = salida.obtener_disponibilidad(request.GET['pas'])
+        print(context['hay_suficientes_cupos'])
         n_pasajeros = request.GET['pas']
         pasajeros = []
         for i in range(int(n_pasajeros)):
@@ -93,31 +94,11 @@ def tours(request):
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
     try:
-        # # FILTRO POR NACIONAL O INTERNACIONAL
-        # if params.__contains__('tipo'):
-        #     tipo = params['tipo']
-        #     if tipo == 'INT':
-        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=True)
-        #         tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
-        #     elif tipo == 'NAC':
-        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'], tour__es_internacional=False)
-        #         tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
-        #     else:
-        #         salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
-        # else:
-        #     salidas = Salida.objects.filter(fecha_salida__range=[datetime.date.today(), '2030-12-31'])
-
         # FILTRO POR NACIONAL O INTERNACIONAL
         if params.__contains__('tipo'):
             tipo = params['tipo']
-            if tipo == 'INT':
-                salidas = Salida.objects.filter(tour__es_internacional=True)
-                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
-            elif tipo == 'NAC':
-                salidas = Salida.objects.filter(tour__es_internacional=False)
-                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
-            else:
-                salidas = Salida.objects.all()
+            salidas = Salida.objects.filter(tour__tipo=tipo)
+            tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
             salidas = Salida.objects.all()
 
@@ -200,7 +181,6 @@ def subir_comprobante(request):
     return JsonResponse({'data':return_value})
 
 def mostrar_interes(request):
-    print('Entra')
     tour_token = request.POST['tour']
     correo_interesado = request.POST['correo']
     new_interesado = InteresadoTour(cliente=correo_interesado, tour=get_object_or_404(Tour, token=tour_token))

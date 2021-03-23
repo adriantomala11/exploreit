@@ -150,9 +150,9 @@ DEFAULT_FROM_EMAIL = 'exploreit.ecuador@gmail.com'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 MOBILE_KEY = 'hfxpB6nUqwcv3p0'
 
-LOGIN_URL = '/administrador/login/'
+LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/administrador/'
-LOGOUT_REDIRECT_URL = '/administrador/login/'
+LOGOUT_REDIRECT_URL = '/'
 
 #S3 BUCKETS CONFIG
 AWS_ACCESS_KEY_ID = 'AKIA2V7KEKPOYMRA6AFO'

@@ -11,7 +11,8 @@ from django.urls import reverse
 
 from exploreit import settings
 from exploreit.helpers import send_html_email, PrintException
-from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario
+from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario, Categoria
+
 
 @login_required(login_url='/login/')
 def dashboard(request):
@@ -37,14 +38,8 @@ def tours_registrados(request):
         #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
         if params.__contains__('tipo'):
             tipo = params['tipo']
-            if tipo == 'INT':
-                tours = Tour.objects.filter(es_internacional=True)
-                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Internacional'}
-            elif tipo == 'NAC':
-                tours = Tour.objects.filter(es_internacional=False)
-                tags['tipo'] = {'nombre': 'Tipo', 'valor': params['tipo'], 'valor_string': 'Nacional'}
-            else:
-                tours = Tour.objects.all()
+            tours = Tour.objects.filter(tipo=tipo)
+            tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
             tours = Tour.objects.all()
 
@@ -106,13 +101,16 @@ def programar_salida(request):
 @login_required(login_url='/login/')
 def registrar_tour(request):
     if request.method == 'GET':
-        context = {}
+        categorias = Categoria.objects.all().order_by('nombre')
+        context = {'tour_class': Tour(), 'categorias': categorias}
         return render(request, 'registrar_tour.html', context)
 
     elif request.method == 'POST':
         transaction.set_autocommit(False)
         try:
             data = json.loads(request.POST['tour_data'])
+            categoria_cod = data['categoria']
+            categoria = Categoria.objects.get(codigo=categoria_cod)
             nuevo_tour = Tour(nombre=data['nombre'],
                               descripcion=data['descripcion'],
                               ubicacion=data['ubicacion'],
@@ -121,10 +119,10 @@ def registrar_tour(request):
                               hora_salida=data['hora_salida'],
                               hora_retorno=data['hora_retorno'],
                               lugar_salida=data['lugar_salida'],
-                              es_internacional=True if data['es_internacional']=='INT' else False,
                               duracion=len(data['itinerario']),
                               precio=float(data['precio']),
-                              token=Salida.generar_token())
+                              token=Salida.generar_token(),
+                              categoria=categoria)
             nuevo_tour.save()
 
             for inc in data['incluye']:
@@ -175,17 +173,15 @@ def editar_tour(request, slug):
             no_incluye = NoIncluye.queryset_to_list(no_incluye)
 
             itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
-            print(itinerario)
             itinerario_ls = [[]]
             for iti in itinerario:
                 if iti.dia == len(itinerario_ls):
                     itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
                 else:
                     itinerario_ls.append([])
-                    print()
                     itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
-            print(itinerario_ls)
-            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour}
+            categorias = Categoria.objects.all()
+            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour, 'tour_class': Tour(), 'categorias': categorias}
             return render(request, 'registrar_tour.html', context)
         except:
             PrintException()
@@ -196,17 +192,19 @@ def editar_tour(request, slug):
         try:
             tour = Tour.objects.get(token=slug)
             data = json.loads(request.POST['tour_data'])
+            categoria_cod = data['categoria']
+            categoria = Categoria.objects.get(codigo=categoria_cod)
             tour.nombre=data['nombre']
             tour.descripcion=data['descripcion']
             tour.ubicacion=data['ubicacion']
-            tour.tipo=data['tipo']
             tour.hora_checkin=data['hora_checkin']
             tour.hora_salida=data['hora_salida']
             tour.hora_retorno=data['hora_retorno']
             tour.lugar_salida=data['lugar_salida']
-            tour.es_internacional=True if data['es_internacional']=='INT' else False
+            tour.tipo=data['tipo']
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
+            tour.categoria = categoria
 
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
@@ -335,3 +333,24 @@ def aumentar_capacidad(request):
     salida.save()
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
+
+@login_required(login_url='/login/')
+def categorias(request):
+    if request.method == 'POST':
+        categoria_nombre = request.POST['categoria']
+        codigo = str(categoria_nombre[0:3]).upper()
+        try:
+            cat = get_object_or_404(Categoria, codigo=codigo)
+            codigo = codigo + str(int(cat.pk)+1)
+        except:
+            pass
+        categoria = Categoria(nombre=categoria_nombre, codigo=codigo)
+        categoria.save()
+        response = JsonResponse({'status': 200, 'msg': 'Success'})
+        return response
+    else:
+        context = {}
+        categorias = Categoria.objects.all()
+        context['categorias'] = categorias
+        response = render(request, 'categorias_tour.html', context)
+        return response

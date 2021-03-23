@@ -37,9 +37,10 @@
                                 <div class="input-box">
                                     <label class="label-text">Tipo de Tour</label>
                                     <div class="form-group select-contain w-100">
-                                        <select v-model="tipo" id="es_internacional" class="select-contain-select" required>
-                                            <option class="tipo-option" value="NAC">Nacional</option>
-                                            <option class="tipo-option" value="INT">Internacional</option>
+                                        <select v-model="tipo" id="tipo" class="select-contain-select" required>
+                                            {% for key, value in tour_class.TIPO_CHOICES %}
+                                            <option class="tipo-option" value="{{key}}">{{value}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -48,9 +49,10 @@
                                 <div class="input-box">
                                     <label class="label-text">Categoría</label>
                                     <div class="form-group select-contain w-100">
-                                        <select v-model="categoria" id="tipo" class="select-contain-select" required>
-                                            <option value="FDY">Full Day</option>
-                                            <option value="CAM">Campers</option>
+                                        <select v-model="categoria" id="categoria" class="select-contain-select" required>
+                                            {% for categoria in categorias %}
+                                            <option id="option-{{categoria.codigo}}" value="{{categoria.codigo}}">{{categoria.nombre}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
@@ -239,7 +241,7 @@
             nombre: '{{tour.nombre}}',
             ubicacion: '{{tour.ubicacion}}',
             tipo: '{{tour.tipo}}',
-            categoria: '{{tour.categoria}}',
+            categoria: '{{tour.categoria.codigo}}',
             lugar_salida: '{{tour.lugar_salida}}',
             hora_checkin: '{{tour.hora_checkin}}',
             hora_salida: '{{tour.hora_salida}}',
@@ -328,10 +330,10 @@
                 hora_checkin: document.getElementById('hora_checkin').value,
                 hora_salida: document.getElementById('hora_salida').value,
                 hora_retorno: document.getElementById('hora_retorno').value,
-                es_internacional: document.getElementById('es_internacional').value,
                 precio: document.getElementById('precio').value,
                 descripcion: document.getElementById('descripcion').value,
                 lugar_salida: document.getElementById('lugar_salida').value,
+                categoria: document.getElementById('categoria').value,
                 incluye: vm.incluye,
                 no_incluye: vm.no_incluye,
                 itinerario: vm.itinerario,
