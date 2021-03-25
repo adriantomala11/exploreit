@@ -48,9 +48,9 @@
                     sin embargo puedes ingresar tus datos e ingresar a una cola de espera, y en caso de que se libere la cantidad necesaria de cupos, tu reserva se hará efectiva inmediatamente.
                 </div>
                 {% endif %}
-                {% if not salida.tour.abordaje_dia_anterior %}
+                {% if salida.tour.abordaje_dia_anterior %}
                 <div class="alert alert-warning" role="alert">
-                  <i class="las la-exclamation-circle"></i> El abordaje a este tour es realizado el día anterior a la fecha de la salida establecida.
+                  <i class="las la-exclamation-circle"></i> El abordaje a este tour es realizado el día anterior a la fecha de salida establecida.
                 </div>
                 {% endif %}
                 {% for pasajero in pasajeros %}

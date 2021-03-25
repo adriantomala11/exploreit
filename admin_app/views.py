@@ -138,18 +138,23 @@ def registrar_tour(request):
                 for iti in dia:
                     itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=counter)
                     itinerario.save()
-            imagen = data['imagen']['data']
-            imgdata = base64.b64decode(imagen.split(',')[1])
-            filename = data['imagen']['nombre']
-            nuevo_tour.imagen = filename
-            ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
 
-            if not (os.path.exists(ruta)):
-                os.makedirs(ruta)
-            ruta = os.path.join(ruta, filename)
-            with open(ruta, 'wb+') as f:
-                f.write(imgdata)
-            nuevo_tour.save()
+            try:
+                imagen = data['imagen']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen']['nombre']
+                nuevo_tour.imagen = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id))
+
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                nuevo_tour.save()
+            except:
+                PrintException()
+
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status': 200, 'url': response_url})
             transaction.commit()
@@ -224,7 +229,7 @@ def editar_tour(request, slug):
                 for iti in dia:
                     itinerario = Itinerario(tour=tour, descripcion=iti['descripcion'], dia=counter)
                     itinerario.save()
-
+            tour.save()
             try:
                 imagen = data['imagen']['data']
                 imgdata = base64.b64decode(imagen.split(',')[1])
@@ -238,8 +243,8 @@ def editar_tour(request, slug):
                 with open(ruta, 'wb+') as f:
                     f.write(imgdata)
                 tour.save()
-            except Exception as e:
-                print(e)
+            except:
+                PrintException()
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             transaction.commit()
