@@ -196,6 +196,10 @@ class ItinerarioVuelo(models.Model):
     fecha_regreso   = models.DateTimeField()
 
 class Reserva(models.Model):
+    PAGO_CHOICES = (
+        ('PAP', 'Payphone'),
+        ('DEP', 'Depósito o Transferencia'),
+    )
     token           = models.CharField(max_length=10, null=True)
     fecha_creacion  = models.DateTimeField(default=timezone.now)
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
@@ -206,6 +210,7 @@ class Reserva(models.Model):
     cedula          = models.CharField(max_length=15)
     telefono        = models.CharField(max_length=20, null=True)
     comprobante     = models.CharField(max_length=100, null=True)
+    metodo_de_pago  = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
 
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)

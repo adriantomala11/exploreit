@@ -60,3 +60,7 @@ def PrintException():
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
     print('EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj))
+
+class Payphone():
+    TOKEN = 'Bearer 2KAO-HrEN850Og0EenF_JmvaEMik8sOqvR7NmHg1rkAHGwehhWUBvjZxfjKjQPuuURPMkJF6oAaWWn1QqvFKeWIqi40k9ZltU0CWseEFWdoW3rQm3NgEGefZ0m8knZdtcP9wRQFJm5Vhx0PSgIeeh5OhRp5Poa6OsdLFrzPpo6FmYAT5f6Q_MGqwGKN4lRCt04NMCwXW_cS5rYKm994QWlmYzq7WnXX7b4NHqrxOSEF3Xl5Jb-nsRTUVngJmwvA0ue1GtobQyT6ii2-Cql5DzioerrsEr3lgwmQ_Vz3WW3iAxDSFZ8BKH_WjKVV73-pH8oMoaHq3e8NXMvWGoE4OQ4shrNM'
+    PREPARE_URL = 'https://pay.payphonetodoesposible.com/api/button/Prepare'

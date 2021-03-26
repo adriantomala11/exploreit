@@ -11,7 +11,7 @@ from django.template.loader import get_template, render_to_string
 from rest_framework.decorators import api_view
 
 from exploreit import settings
-from exploreit.helpers import send_html_email
+from exploreit.helpers import send_html_email, Payphone
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour
 from django.views.decorators.csrf import csrf_exempt
 
@@ -36,7 +36,6 @@ def tour_booking(request, token):
         salida = Salida.objects.get(pk=request.GET['sal'], tour=tour)
         context['salida'] = salida
         context['hay_suficientes_cupos'] = salida.obtener_disponibilidad(request.GET['pas'])
-        print(context['hay_suficientes_cupos'])
         n_pasajeros = request.GET['pas']
         pasajeros = []
         for i in range(int(n_pasajeros)):
@@ -44,10 +43,18 @@ def tour_booking(request, token):
         context['pasajeros'] = pasajeros
 
         detalle_orden = {}
-        detalle_orden['total'] = tour.precio * int(n_pasajeros)
-        detalle_orden['subtotal'] = detalle_orden['total'] / 1.12 #asumiendo que el iva es 12%
-        detalle_orden['impuestos'] = detalle_orden['total'] - detalle_orden['subtotal']
+        detalle_orden['total'] = round(tour.precio * int(n_pasajeros), 2)
+        detalle_orden['subtotal'] = round(detalle_orden['total'] / 1.12, 2) #asumiendo que el iva es 12%
+        detalle_orden['impuestos'] = round(detalle_orden['total'] - detalle_orden['subtotal'], 2)
+
+        detalle_payphone = {}
+        detalle_payphone['total'] = int(detalle_orden['total'] * 100)
+        detalle_payphone['subtotal'] = int(detalle_orden['subtotal'] * 100)
+        detalle_payphone['impuestos'] = int(detalle_orden['impuestos'] * 100)
+        detalle_payphone['service'] = int(detalle_payphone['total'] - detalle_payphone['subtotal'] - detalle_payphone['impuestos'])
+
         context['detalle_orden'] = detalle_orden
+        context['detalle_payphone'] = detalle_payphone
 
         return render(request, 'tour_booking.html', context)
 
@@ -72,11 +79,11 @@ def tour_booking(request, token):
         """
         email_from = settings.EMAIL_HOST_USER
         recipient_list = [reserva.correo, ]
-        send_mail(subject, message, email_from, recipient_list)
+        # send_mail(subject, message, email_from, recipient_list)
 
         #RETORNO
         response_url = '/tour-booked/'+reserva.token+'/'
-        response = JsonResponse({'status':200, 'url': response_url})
+        response = JsonResponse({'status':200, 'url': response_url, 'reserva_token':reserva.token, 'payphone_token': Payphone.TOKEN, 'payphone_prepare_url': Payphone.PREPARE_URL})
         return response
 
 def tour_booked(request, token):
@@ -185,5 +192,11 @@ def mostrar_interes(request):
     correo_interesado = request.POST['correo']
     new_interesado = InteresadoTour(cliente=correo_interesado, tour=get_object_or_404(Tour, token=tour_token))
     new_interesado.save()
+    response = JsonResponse({'status': 200, 'msg': 'Success'})
+    return response
+
+@api_view
+def payphone_callback(request):
+    print(request)
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response

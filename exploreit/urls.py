@@ -51,7 +51,8 @@ urlpatterns = [
     path('administrador/copiar-tour/', admin_views.copiar_tour, name='copiar_tour'),
     path('administrador/categorias/', admin_views.categorias, name='categorias'),
 
-    path('prueba-mail/', main_views.enviar_mail, name='enviar_mail')
+    path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),
+    path('payphone-callback/', main_views.payphone_callback, name='payphone_callback')
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

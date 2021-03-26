@@ -227,17 +227,17 @@
                         <div class="section-tab check-mark-tab text-center pb-4">
                             <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="credit-card-tab" data-toggle="tab" href="#credit-card" role="tab" aria-controls="credit-card" aria-selected="false">
+                                    <a onclick="cambiarPago('PAP');" class="nav-link active" id="credit-card-tab" data-toggle="tab" href="#credit-card" role="tab" aria-controls="credit-card" aria-selected="false">
                                         <i class="la la-check icon-element"></i>
                                         <i class="las la-credit-card" style="font-size: 45px;"></i>
-                                        <span class="d-block">Tarjeta de crédito</span>
+                                        <span class="d-block">Payphone</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="true">
+                                    <a onclick="cambiarPago('DEP');" class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="true">
                                         <i class="la la-check icon-element"></i>
                                         <i class="las la-money-check-alt" style="font-size: 45px;"></i>
-                                        <span class="d-block">Transfernecia o Depósito</span>
+                                        <span class="d-block">Transferencia o Depósito</span>
                                     </a>
                                 </li>
                             </ul>
@@ -331,9 +331,10 @@
 </style>
 
 <script>
+    var metodo_pago = 'PAP';
     function confirmarReserva(){
         var noHayErrores = true
-        requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}'}
+        requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}', metodo_pago: metodo_pago}
         var allForms = document.forms
         for(var i=0; i<allForms.length; i++){
             var elements = allForms[i].elements
@@ -380,7 +381,29 @@
               data: {csrfmiddlewaretoken: '{{ csrf_token }}', booking_data: JSON.stringify(requestDic)},
               success:function(response){
                 if(response.status == 200){
-                    window.location.href = '{{settings.URL}}'+response.url
+                    var payphone_data = {
+                        Amount: {{detalle_payphone.total}},
+                        AmountWithTax: {{detalle_payphone.subtotal}},
+                        Tax : {{detalle_payphone.impuestos}},
+                        Service : {{detalle_payphone.service}},
+                        Tip : 0,
+                        ClientTransactionId : "11",
+                        ResponseUrl : '{{settings.URL}}'+response.url,
+                        Currency : "USD"
+                    }
+                    $.ajax({
+                      type: "POST",
+                      beforeSend: function(request) {
+                        request.setRequestHeader("Authorization", response.payphone_token);
+                      },
+                      url: response.payphone_prepare_url,
+                      data: payphone_data,
+                      success: function(msg) {
+                        window.open(msg.payWithPayPhone, '_blank').focus();
+                      }
+                    });
+
+
                 }else{}
               },
             });
@@ -415,6 +438,10 @@
             break;
           }
         }
+    }
+
+    function cambiarPago(pago){
+        metodo_pago = pago
     }
 
 </script>
