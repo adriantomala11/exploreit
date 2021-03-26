@@ -399,7 +399,7 @@
                       url: response.payphone_prepare_url,
                       data: payphone_data,
                       success: function(msg) {
-                        window.open(msg.payWithPayPhone, '_blank').focus();
+                        window.location.href = msg.payWithPayPhone
                       }
                     });
 
