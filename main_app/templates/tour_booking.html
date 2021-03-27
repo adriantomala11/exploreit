@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+{% block header_code %}
+<script src="https://pay.payphonetodoesposible.com/api/button/js?appId=Iz7xRtMgDkKG9gQW6I41BA"></script>
+{% endblock %}
 {% block main_content %}
 
 <!-- ================================
@@ -240,6 +243,9 @@
                                         <span class="d-block">Transferencia o Depósito</span>
                                     </a>
                                 </li>
+                                <li>
+                                    <div id="pp-button"></div>
+                                </li>
                             </ul>
                         </div><!-- end section-tab -->
                     </div><!-- end form-content -->
@@ -383,10 +389,7 @@
                 if(response.status == 200){
                     var payphone_data = {
                         Amount: {{detalle_payphone.total}},
-                        AmountWithTax: {{detalle_payphone.subtotal}},
-                        Tax : {{detalle_payphone.impuestos}},
-                        Service : {{detalle_payphone.service}},
-                        Tip : 0,
+                        AmountWithTax: {{detalle_payphone.total}},
                         ClientTransactionId : "11",
                         ResponseUrl : '{{settings.URL}}'+response.url,
                         Currency : "USD"
@@ -444,5 +447,48 @@
         metodo_pago = pago
     }
 
+
+window.onload = function() {
+payphone.Button({
+
+//token obtenido desde la consola de developer
+token: "2KAO-HrEN850Og0EenF_JmvaEMik8sOqvR7NmHg1rkAHGwehhWUBvjZxfjKjQPuuURPMkJF6oAaWWn1QqvFKeWIqi40k9ZltU0CWseEFWdoW3rQm3NgEGefZ0m8knZdtcP9wRQFJm5Vhx0PSgIeeh5OhRp5Poa6OsdLFrzPpo6FmYAT5f6Q_MGqwGKN4lRCt04NMCwXW_cS5rYKm994QWlmYzq7WnXX7b4NHqrxOSEF3Xl5Jb-nsRTUVngJmwvA0ue1GtobQyT6ii2-Cql5DzioerrsEr3lgwmQ_Vz3WW3iAxDSFZ8BKH_WjKVV73-pH8oMoaHq3e8NXMvWGoE4OQ4shrNM",
+
+//PARÁMETROS DE CONFIGURACIÓN
+btnHorizontal: true,
+
+createOrder: function(actions){
+
+//Se ingresan los datos de la transaccion ej. monto
+return actions.prepare({
+
+amount: 100,
+amountWithoutTax: 100,
+currency: "USD",
+clientTransactionId: "68973"
+});
+
+},
+onComplete: function(model, actions){
+
+//Se confirma el pago realizado
+actions.confirm({
+id: model.id,
+clientTxId: model.clientTxId
+}).then(function(value){
+
+//EN ESTA SECCIÓN SE PROCESA LA RESPUESTA CON LOS DATOS DE RESPUESTA
+
+if (value.transactionStatus == "Approved"){
+alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
+}
+}).catch(function(err){
+console.log(err);
+});
+
+}
+}).render("#pp-button");
+
+}
 </script>
 {% endblock %}
