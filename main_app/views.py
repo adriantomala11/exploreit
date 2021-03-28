@@ -212,7 +212,7 @@ def recibir_pagos(request):
         }
         url = url+'/button/V2/Confirm/'
         auth_token = 'Bearer '+Payphone.TOKEN
-        r = requests.get(url, data=data, headers={'Authorization': auth_token})
+        r = requests.post(url, data=data, headers={'Authorization': auth_token})
         print('#############################################')
         print(r.text)
         reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
