@@ -198,6 +198,10 @@ def mostrar_interes(request):
 
 @api_view
 def recibir_pagos(request):
-    print(request)
+    subject = 'Explore It: Instrucciones de Pago para Reserva '
+    message = str(request.data)+'\n\n'+str(request.POST)+'\n\n'+str(request)
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['luisadriant11@hotmail.com', ]
+    send_mail(subject, message, email_from, recipient_list)
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
