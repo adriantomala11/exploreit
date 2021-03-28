@@ -10,5 +10,7 @@ admin.site.register(ItinerarioVuelo)
 admin.site.register(Incluye)
 admin.site.register(NoIncluye)
 admin.site.register(Importante)
+admin.site.register(InteresadoTour)
+admin.site.register(Categoria)
 
 # Register your models here.

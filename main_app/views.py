@@ -198,8 +198,12 @@ def mostrar_interes(request):
 
 @api_view()
 def recibir_pagos(request):
-    print(request)
-    interesado = InteresadoTour(cliente='test', tour=Tour.objects.all()[0])
-    interesado.save()
-    response = HttpResponse()
+    try:
+        print(request)
+        interesado = InteresadoTour(cliente='test', tour=Tour.objects.all()[0])
+        interesado.save()
+        response = HttpResponse()
+    except:
+        print(request)
+        response = HttpResponse()
     return response
