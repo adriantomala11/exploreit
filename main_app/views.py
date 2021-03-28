@@ -4,6 +4,7 @@ import json
 from datetime import timedelta
 from http import HTTPStatus
 
+from django.contrib.sites import requests
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail, EmailMessage
@@ -198,9 +199,15 @@ def mostrar_interes(request):
 
 @api_view()
 def recibir_pagos(request):
+    url = 'https://pay.payphonetodoesposible.com/api/'
     try:
-        interesado = InteresadoTour(cliente=str(request.GET), tour=Tour.objects.all()[0])
-        interesado.save()
+        r = requests.get(url+'/Sale/'+str(request.GET.get('id')))
+        # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
+        subject = 'Explore It Transaction:  ' + str(request.GET.get('id'))
+        message = str(r)
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = ['exploreit.ecuador@gmail.com', ]
+        send_mail(subject, message, email_from, recipient_list)
         response = HttpResponse()
     except:
         response = HttpResponse()
