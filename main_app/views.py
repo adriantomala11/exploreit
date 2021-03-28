@@ -208,7 +208,8 @@ def recibir_pagos(request):
         id = str(request.GET.get('id'))
         url = url+'/Sale/'+id
         auth_token = 'Bearer '+Payphone.TOKEN
-        r = requests.get(url=url, auth=auth_token)
+        print(url)
+        r = requests.get(url, headers={'Authorization': auth_token})
         print('###################################################')
         print(r)
         print('###################################################')
