@@ -15,7 +15,7 @@ from django.template.loader import get_template, render_to_string
 from rest_framework.decorators import api_view
 
 from exploreit import settings
-from exploreit.helpers import send_html_email, Payphone
+from exploreit.helpers import send_html_email, Payphone, PrintException
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour
 from django.views.decorators.csrf import csrf_exempt
 
@@ -213,14 +213,14 @@ def recibir_pagos(request):
         url = url+'/button/V2/Confirm/'
         auth_token = 'Bearer '+Payphone.TOKEN
         r = requests.post(url, data=data, headers={'Authorization': auth_token})
-        print('#############################################')
-        print(r.text)
+        response = json.loads(r)
         reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
-        reserva.aprobar()
+        if(response['transactionStatus']=='Approved' and response['amount']==reserva.valor):
+            reserva.aprobar()
+        else:
+            pass
         response = HttpResponse()
     except Exception as e:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print(exc_type, fname, exc_tb.tb_lineno, e)
+        PrintException()
         response = HttpResponse()
     return response

@@ -38,7 +38,9 @@
 
                             <div class="pb-5" style="text-align: center;">
                                 {% if reserva.metodo_de_pago == 'PAP' %}
+                                    {% if not reserva.pagado %}
                                     <div id="pp-button"></div>
+                                    {% endif %}
                                 {% else %}
                                     <p style="font-weight: bold;">Comprobante de pago</p>
                                     <div style="width: fit-content; margin: auto;">
@@ -140,6 +142,7 @@
         })
     }catch{}
 
+    {% if not reserva.pagado %}
     window.onload = function() {
     payphone.Button({
 
@@ -162,25 +165,21 @@
 
     },
     onComplete: function(model, actions){
-
-    //Se confirma el pago realizado
-    actions.confirm({
-    id: model.id,
-    clientTxId: model.clientTxId
+        //Se confirma el pago realizado
+        actions.confirm({
+        id: model.id,
+        clientTxId: model.clientTxId
     }).then(function(value){
-
-    //EN ESTA SECCIÓN SE PROCESA LA RESPUESTA CON LOS DATOS DE RESPUESTA
-
-    if (value.transactionStatus == "Approved"){
-    alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
-    }
+        if (value.transactionStatus == "Approved"){
+        alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
+        }
     }).catch(function(err){
-    console.log(err);
+        console.log(err);
     });
 
     }
     }).render("#pp-button");
-
+    {% endif %}
 }
 </script>
 {% endblock %}
