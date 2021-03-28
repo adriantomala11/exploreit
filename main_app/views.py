@@ -60,7 +60,7 @@ def tour_booking(request, token):
 
     elif request.method == 'POST':
         data = json.loads(request.POST['booking_data'])
-        valor = int(data['valor'].replace(',', ''))*100
+        valor = int(data['valor'].replace(',', ''))
         reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], apellido=data['contacto']['apellidos'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
         reserva.save()
         pasajeros = data['pasajeros']
