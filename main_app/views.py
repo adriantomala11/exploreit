@@ -201,7 +201,12 @@ def mostrar_interes(request):
 def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api/'
     try:
+        print('###################################################')
+        print(str(request.GET.get('id')))
         r = requests.get(url+'/Sale/'+str(request.GET.get('id')), auth=('Bearer '+Payphone.TOKEN))
+        print('###################################################')
+        print(r)
+        print('###################################################')
         # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
         subject = 'Explore It Transaction:  ' + str(request.GET.get('id'))
         message = str(r)
@@ -210,8 +215,6 @@ def recibir_pagos(request):
         send_mail(subject, message, email_from, recipient_list)
         response = HttpResponse()
     except Exception as e:
-        import logging
-        log = logging.getLogger(__name__)
-        log.debug(str(e))
+        print(e)
         response = HttpResponse()
     return response
