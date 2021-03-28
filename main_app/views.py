@@ -201,7 +201,7 @@ def mostrar_interes(request):
 def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api/'
     try:
-        r = requests.get(url+'/Sale/'+str(request.GET.get('id')))
+        r = requests.get(url+'/Sale/'+str(request.GET.get('id')), auth=('Bearer '+Payphone.TOKEN))
         # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
         subject = 'Explore It Transaction:  ' + str(request.GET.get('id'))
         message = str(r)
