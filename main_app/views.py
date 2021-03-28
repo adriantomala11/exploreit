@@ -204,21 +204,20 @@ def mostrar_interes(request):
 def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api'
     try:
-        print('###################################################')
         id = str(request.GET.get('id'))
+        data = {
+            "id": str(request.GET.get('id')),
+            "clientTxId": str(request.GET.get('clientTransactionId'))
+        }
         url = url+'/Sale/'+id
         auth_token = 'Bearer '+Payphone.TOKEN
-        print(url)
-        r = requests.get(url, headers={'Authorization': auth_token})
-        print('###################################################')
+        r = requests.get(url, data=data, headers={'Authorization': auth_token})
+        print('#############################################')
         print(r)
-        print('###################################################')
-        # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
-        subject = 'Explore It Transaction:  ' + str(request.GET.get('id'))
-        message = str(r)
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = ['exploreit.ecuador@gmail.com', ]
-        send_mail(subject, message, email_from, recipient_list)
+        print(r.content)
+        print(r.text)
+        reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
+        reserva.aprobar()
         response = HttpResponse()
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()

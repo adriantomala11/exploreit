@@ -14,7 +14,8 @@ from exploreit import settings
 import boto3
 from botocore.exceptions import NoCredentialsError
 
-from exploreit.helpers import decode_base64_file
+from exploreit.helpers import decode_base64_file, send_html_email
+
 
 class Categoria(models.Model):
     codigo          = models.CharField(max_length=6, unique=True, null=True)
@@ -262,6 +263,18 @@ class Reserva(models.Model):
         except:
             return False
 
+
+    def aprobar(self):
+        pasajeros = ReservaPasajero.objects.filter(reserva=self)
+        for pasajero in pasajeros:
+            pasajero.token = pasajero.generar_token()
+            pasajero.save()
+        self.pagado = True
+        self.save()
+        recipient_list = [self.correo, ]
+        context = {'url': settings.URL, 'link': settings.URL + '/ver-reserva/?tok=' + self.token, 'reserva': self}
+        send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context,
+                        settings.DEFAULT_FROM_EMAIL)
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=10, null=True)
     reserva         = models.ForeignKey(Reserva, on_delete=models.CASCADE)
