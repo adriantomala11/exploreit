@@ -205,8 +205,10 @@ def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api/'
     try:
         print('###################################################')
-        print(str(request.GET.get('id')))
-        r = requests.get(url+'/Sale/'+str(request.GET.get('id')), auth='Bearer '+Payphone.TOKEN)
+        id = str(request.GET.get('id'))
+        url = url+'/Sale/'+id
+        auth_token = 'Bearer '+Payphone.TOKEN
+        r = requests.get(url, auth=auth_token)
         print('###################################################')
         print(r)
         print('###################################################')
