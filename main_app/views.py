@@ -198,8 +198,12 @@ def mostrar_interes(request):
 
 @api_view
 def recibir_pagos(request):
-    subject = 'Explore It: Instrucciones de Pago para Reserva '
-    message = str(request.data)+'\n\n'+str(request.GET)+'\n\n'+str(request)
+    try:
+        subject = 'Pago con Payphone'
+        message = str(request.data)+'\n\n'+str(request.GET)+'\n\n'+str(request)
+    except Exception as e:
+        subject = str(e)
+        message = str(e)
     email_from = settings.EMAIL_HOST_USER
     recipient_list = ['luisadriant11@hotmail.com', ]
     send_mail(subject, message, email_from, recipient_list)
