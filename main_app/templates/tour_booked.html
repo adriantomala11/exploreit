@@ -133,12 +133,12 @@
           }
         });
     }
-
-    lightbox.option({
-      'resizeDuration': 100,
-      'wrapAround': true
-    })
-
+    try{
+        lightbox.option({
+          'resizeDuration': 100,
+          'wrapAround': true
+        })
+    }
 
     window.onload = function() {
     payphone.Button({
