@@ -211,6 +211,7 @@ class Reserva(models.Model):
     telefono        = models.CharField(max_length=20, null=True)
     comprobante     = models.CharField(max_length=100, null=True)
     metodo_de_pago  = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
+    valor           = models.IntegerField(default=100)
 
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)
