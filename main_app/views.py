@@ -1,10 +1,10 @@
 import base64
 import datetime
 import json
+import requests
 from datetime import timedelta
 from http import HTTPStatus
 
-from django.contrib.sites import requests
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail, EmailMessage
