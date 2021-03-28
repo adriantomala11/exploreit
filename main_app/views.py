@@ -210,6 +210,8 @@ def recibir_pagos(request):
         send_mail(subject, message, email_from, recipient_list)
         response = HttpResponse()
     except Exception as e:
-        print(e)
+        import logging
+        log = logging.getLogger(__name__)
+        log.debug(str(e))
         response = HttpResponse()
     return response
