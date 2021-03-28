@@ -83,7 +83,7 @@ def tour_booking(request, token):
         # send_mail(subject, message, email_from, recipient_list)
 
         #RETORNO
-        response_url = '/tour-booked/'+reserva.token+'/'
+        response_url = '/ver-reserva/?tok='+str(reserva.token)
         response = JsonResponse({'status':200, 'url': response_url, 'reserva_token':reserva.token, 'payphone_token': Payphone.TOKEN, 'payphone_prepare_url': Payphone.PREPARE_URL})
         return response
 

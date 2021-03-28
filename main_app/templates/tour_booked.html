@@ -37,20 +37,23 @@
                             </div>
 
                             <div class="pb-5" style="text-align: center;">
-                                <p style="font-weight: bold;">Comprobante de pago</p>
-                                <div style="width: fit-content; margin: auto;">
-                                    <div class="input-box">
-                                        <div class="form-group" style=" display: flex;">
-                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
-                                            <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                {% if reserva.metodo_de_pago == 'PAP' %}
+                                    <div id="pp-button"></div>
+                                {% else %}
+                                    <p style="font-weight: bold;">Comprobante de pago</p>
+                                    <div style="width: fit-content; margin: auto;">
+                                        <div class="input-box">
+                                            <div class="form-group" style=" display: flex;">
+                                                <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
+                                                <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div><!-- end col-lg-6 -->
-
-                                {% if reserva.comprobante_es_imagen %}
-                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
-                                {% elif reserva.comprobante_es_documento%}
-                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                    </div><!-- end col-lg-6 -->
+                                    {% if reserva.comprobante_es_imagen %}
+                                    <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                    {% elif reserva.comprobante_es_documento%}
+                                    <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 
