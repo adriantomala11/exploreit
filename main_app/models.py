@@ -179,7 +179,7 @@ class Salida(models.Model):
 
     @classmethod
     def generar_token(cls):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
         return x
 
     def get_num_pasajeros(self):
@@ -201,7 +201,7 @@ class Reserva(models.Model):
         ('PAP', 'Payphone'),
         ('DEP', 'Depósito o Transferencia'),
     )
-    token           = models.CharField(max_length=10, null=True)
+    token           = models.CharField(max_length=30, null=True)
     fecha_creacion  = models.DateTimeField(default=timezone.now)
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion     = models.CharField(max_length=10, null=True)
@@ -219,7 +219,7 @@ class Reserva(models.Model):
 
     @classmethod
     def generar_token(cls):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
         return x
 
     def get_num_pasajeros(self):
@@ -276,7 +276,7 @@ class Reserva(models.Model):
         send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context,
                         settings.DEFAULT_FROM_EMAIL)
 class ReservaPasajero(models.Model):
-    token           = models.CharField(max_length=10, null=True)
+    token           = models.CharField(max_length=25, null=True)
     reserva         = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     nombres         = models.CharField(max_length=100, null=True)
     apellidos       = models.CharField(max_length=100, null=True)
@@ -285,8 +285,8 @@ class ReservaPasajero(models.Model):
 
     @classmethod
     def generar_token(self):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
-        return str(self.id) + x
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(19))
+        return str(self.pk) + x
 
 class InteresadoTour(models.Model):
     cliente         = models.CharField(max_length=50)
