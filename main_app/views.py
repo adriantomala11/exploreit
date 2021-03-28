@@ -205,16 +205,15 @@ def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api'
     try:
         id = str(request.GET.get('id'))
+        clientTxId = str(request.GET.get('clientTransactionId'))
         data = {
-            "id": str(request.GET.get('id')),
-            "clientTxId": str(request.GET.get('clientTransactionId'))
+            "id": id,
+            "clientTxId": clientTxId,
         }
-        url = url+'/Sale/'+id
+        url = url+'/button/V2/Confirm/'
         auth_token = 'Bearer '+Payphone.TOKEN
         r = requests.get(url, data=data, headers={'Authorization': auth_token})
         print('#############################################')
-        print(r)
-        print(r.content)
         print(r.text)
         reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
         reserva.aprobar()
