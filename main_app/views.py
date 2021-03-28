@@ -202,7 +202,7 @@ def mostrar_interes(request):
 
 @api_view()
 def recibir_pagos(request):
-    url = 'https://pay.payphonetodoesposible.com/api/'
+    url = 'https://pay.payphonetodoesposible.com/api'
     try:
         print('###################################################')
         id = str(request.GET.get('id'))
