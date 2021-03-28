@@ -196,7 +196,7 @@ def mostrar_interes(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
-@api_view
+@api_view()
 def recibir_pagos(request):
     try:
         subject = 'Pago con Payphone'
