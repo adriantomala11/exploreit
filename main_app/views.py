@@ -198,12 +198,17 @@ def mostrar_interes(request):
 
 @api_view()
 def recibir_pagos(request):
+    print('########################################')
+    print('ENTRA ##################################')
+    print('########################################')
     try:
-        print(request)
-        interesado = InteresadoTour(cliente='test', tour=Tour.objects.all()[0])
-        interesado.save()
-        response = HttpResponse()
-    except:
-        print(request)
-        response = HttpResponse()
+        subject = 'Pago con Payphone'
+        message = str(request.data)+'\n\n'+str(request.GET)+'\n\n'+str(request)
+    except Exception as e:
+        subject = str(e)
+        message = str(e)
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['luisadriant11@hotmail.com', ]
+    send_mail(subject, message, email_from, recipient_list)
+    response = HttpResponse()
     return response
