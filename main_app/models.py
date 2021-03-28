@@ -285,8 +285,8 @@ class ReservaPasajero(models.Model):
 
     @classmethod
     def generar_token(self):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(19))
-        return str(self.pk) + x
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
+        return x
 
 class InteresadoTour(models.Model):
     cliente         = models.CharField(max_length=50)
