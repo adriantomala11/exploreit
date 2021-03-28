@@ -209,6 +209,7 @@ def recibir_pagos(request):
         recipient_list = ['exploreit.ecuador@gmail.com', ]
         send_mail(subject, message, email_from, recipient_list)
         response = HttpResponse()
-    except:
+    except Exception as e:
+        print(e)
         response = HttpResponse()
     return response
