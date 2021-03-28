@@ -203,7 +203,7 @@ def recibir_pagos(request):
     try:
         print('###################################################')
         print(str(request.GET.get('id')))
-        r = requests.get(url+'/Sale/'+str(request.GET.get('id')), auth=('Bearer '+Payphone.TOKEN))
+        r = requests.get(url+'/Sale/'+request.GET.get('id'), auth=('Bearer '+Payphone.TOKEN))
         print('###################################################')
         print(r)
         print('###################################################')
