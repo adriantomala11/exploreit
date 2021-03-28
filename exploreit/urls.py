@@ -52,7 +52,7 @@ urlpatterns = [
     path('administrador/categorias/', admin_views.categorias, name='categorias'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),
-    path('payphone-callback/', main_views.payphone_callback, name='payphone_callback')
+    path('payphone/recibir-pagos/', main_views.recibir_pagos, name='recibir_pagos')
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

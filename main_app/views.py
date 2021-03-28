@@ -197,7 +197,7 @@ def mostrar_interes(request):
     return response
 
 @api_view
-def payphone_callback(request):
+def recibir_pagos(request):
     print(request)
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
