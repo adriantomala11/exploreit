@@ -213,7 +213,7 @@ def recibir_pagos(request):
         url = url+'/button/V2/Confirm/'
         auth_token = 'Bearer '+Payphone.TOKEN
         r = requests.post(url, data=data, headers={'Authorization': auth_token})
-        response = json.loads(r)
+        response = json.loads(r.text)
         reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
         if(response['transactionStatus']=='Approved' and response['amount']==reserva.valor):
             reserva.aprobar()
