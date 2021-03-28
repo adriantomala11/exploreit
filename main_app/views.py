@@ -198,6 +198,9 @@ def mostrar_interes(request):
 
 @api_view()
 def recibir_pagos(request):
+    print('########################################')
+    print('ENTRA ##################################')
+    print('########################################')
     try:
         subject = 'Pago con Payphone'
         message = str(request.data)+'\n\n'+str(request.GET)+'\n\n'+str(request)
