@@ -329,7 +329,7 @@
         cursor: pointer;
     }
 </style>
-
+<script src=»https://pay.payphonetodoesposible.com/api/button/js?appId=Iz7xRtMgDkKG9gQW6I41BA»></script>
 <script>
     var metodo_pago = 'PAP';
     function confirmarReserva(){
@@ -353,7 +353,6 @@
                 var radios = document.getElementsByName('titular');
                 for (var i = 0; i < radios.length; i++) {
                     if (radios[i].checked) {
-                        console.log(radios[i])
                         var otroTitularForm = document.getElementById("otro-titular-form");
                         if(radios[i].value == 'otro'){
                             var contacto = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value}

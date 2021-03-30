@@ -60,7 +60,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Precio
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -80,7 +80,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Tipo
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a onclick="addCalendarListener()" class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Fecha Salida
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -120,22 +120,9 @@
                                     </div><!-- end dropdown-menu -->
                                 </div><!-- end dropdown -->
                             </div>
-                            {% if tags.tipo.valor == 'INT' %}
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
-                                        Continente
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-wrap">
-                                        <div class="dropdown-item">
-                                        </div><!-- end dropdown-item -->
-                                    </div><!-- end dropdown-menu -->
-                                </div><!-- end dropdown -->
-                            </div>
-                            {% else %}
-                            <div class="filter-option">
-                                <div class="dropdown dropdown-contain">
-                                    <a class="dropdown-toggle dropdown-btn dropdown--btn" href="#" role="button" data-toggle="dropdown">
+                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Categoría
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -144,7 +131,6 @@
                                     </div><!-- end dropdown-menu -->
                                 </div><!-- end dropdown -->
                             </div>
-                            {% endif %}
                         </div><!-- end filter-bar-filter -->
                     </div><!-- end filter-bar -->
                     <div style="overflow: overlay;">
@@ -258,6 +244,20 @@
         let button = document.querySelector('.applyBtn.btn.btn-sm.btn-primary')
         button.addEventListener("click", function(){ aplicarFiltros(['daterange']), false})
     }
+
+    function abrirDropdownMenu(el){
+        let node = el.nextSibling.nextSibling;
+        let elementos = document.querySelectorAll('.dropdown-menu.dropdown-menu-wrap')
+        for(var i=0; i<elementos.length; elementos++){
+            elementos[i].style.display = "none";
+        }
+        if (node.style.display != "block") {
+            node.style.display = "block";
+        } else {
+            node.style.display = "none";
+        }
+    }
+
 </script>
 <style>
     .tags-section p{
