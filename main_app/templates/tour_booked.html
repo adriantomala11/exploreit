@@ -33,12 +33,12 @@
 
                             <div class="pb-3" style="text-align: center;">
                                 <p style="font-weight: bold;">Estado de la Reserva</p>
-                                {% if reserva.de_baja %}<p style="font-weight: 300; color: red;">Anulada</p>{% else %}{% if reserva.pagado %}<p style="font-weight: 300; color: green;">Aprobada</p>{% else %}<p style="font-weight: 300;">Pendiente</p>{% endif %}{% endif %}
+                                <p style="font-weight: 400;">{{ reserva.obtener_estado_str }}</p>
                             </div>
 
                             <div class="pb-5" style="text-align: center;">
                                 {% if reserva.metodo_de_pago == 'PAP' %}
-                                    {% if not reserva.pagado %}
+                                    {% if reserva.estado == 'PEN' %}
                                     <div id="pp-button"></div>
                                     {% endif %}
                                 {% else %}
@@ -171,6 +171,12 @@
         clientTxId: model.clientTxId
     }).then(function(value){
         if (value.transactionStatus == "Approved"){
+            Swal.fire({
+              icon: 'success',
+              title: 'Pago realizado con éxito!',
+              text: 'Estamos emitiendo y enviando el ticket de abordaje al correo electrónico del titular de la reserva. Gracias por elegir Explore It.',
+            })
+            setTimeout(function(){ window.location.reload(); }, 3000);
         alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
         }
     }).catch(function(err){

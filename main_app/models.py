@@ -201,6 +201,14 @@ class Reserva(models.Model):
         ('PAP', 'Payphone'),
         ('DEP', 'Depósito o Transferencia'),
     )
+
+    ESTADO_CHOICES = (
+        ('PEN', 'PENDIENTE'),
+        ('APR', 'APROBADA'),
+        ('PRO', 'PROCESANDO'),
+        ('DBC', 'DE BAJA POR CLIENTE'),
+        ('DBA', 'DE BAJA POR ADMIN'),
+    )
     token           = models.CharField(max_length=30, null=True)
     fecha_creacion  = models.DateTimeField(default=timezone.now)
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
@@ -213,7 +221,7 @@ class Reserva(models.Model):
     comprobante     = models.CharField(max_length=100, null=True)
     metodo_de_pago  = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
     valor           = models.IntegerField(default=100)
-
+    estado          = models.CharField(max_length=3, default='PEN', choices=ESTADO_CHOICES)
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)
 
@@ -221,6 +229,9 @@ class Reserva(models.Model):
     def generar_token(cls):
         x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
         return x
+
+    def obtener_estado_str(self):
+        return dict(Tour.TIPO_CHOICES).get(self.estado)
 
     def get_num_pasajeros(self):
         return ReservaPasajero.objects.filter(reserva=self).count()
@@ -270,6 +281,7 @@ class Reserva(models.Model):
             pasajero.token = pasajero.generar_token()
             pasajero.save()
         self.pagado = True
+        self.estado = 'APR'
         self.save()
         recipient_list = [self.correo, ]
         context = {'url': settings.URL, 'link': settings.URL + '/ver-reserva/?tok=' + self.token, 'reserva': self}
