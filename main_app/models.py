@@ -14,7 +14,8 @@ from exploreit import settings
 import boto3
 from botocore.exceptions import NoCredentialsError
 
-from exploreit.helpers import decode_base64_file
+from exploreit.helpers import decode_base64_file, send_html_email
+
 
 class Categoria(models.Model):
     codigo          = models.CharField(max_length=6, unique=True, null=True)
@@ -178,7 +179,7 @@ class Salida(models.Model):
 
     @classmethod
     def generar_token(cls):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
         return x
 
     def get_num_pasajeros(self):
@@ -200,7 +201,15 @@ class Reserva(models.Model):
         ('PAP', 'Payphone'),
         ('DEP', 'Depósito o Transferencia'),
     )
-    token           = models.CharField(max_length=10, null=True)
+
+    ESTADO_CHOICES = (
+        ('PEN', 'PENDIENTE'),
+        ('APR', 'APROBADA'),
+        ('PRO', 'PROCESANDO'),
+        ('DBC', 'DE BAJA POR CLIENTE'),
+        ('DBA', 'DE BAJA POR ADMIN'),
+    )
+    token           = models.CharField(max_length=30, null=True)
     fecha_creacion  = models.DateTimeField(default=timezone.now)
     salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion     = models.CharField(max_length=10, null=True)
@@ -211,14 +220,18 @@ class Reserva(models.Model):
     telefono        = models.CharField(max_length=20, null=True)
     comprobante     = models.CharField(max_length=100, null=True)
     metodo_de_pago  = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
-
+    valor           = models.IntegerField(default=100)
+    estado          = models.CharField(max_length=3, default='PEN', choices=ESTADO_CHOICES)
     pagado          = models.BooleanField(default=False)
     de_baja         = models.BooleanField(default=False)
 
     @classmethod
     def generar_token(cls):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
         return x
+
+    def obtener_estado_str(self):
+        return dict(Tour.TIPO_CHOICES).get(self.estado)
 
     def get_num_pasajeros(self):
         return ReservaPasajero.objects.filter(reserva=self).count()
@@ -261,8 +274,21 @@ class Reserva(models.Model):
         except:
             return False
 
+
+    def aprobar(self):
+        pasajeros = ReservaPasajero.objects.filter(reserva=self)
+        for pasajero in pasajeros:
+            pasajero.token = pasajero.generar_token()
+            pasajero.save()
+        self.pagado = True
+        self.estado = 'APR'
+        self.save()
+        recipient_list = [self.correo, ]
+        context = {'url': settings.URL, 'link': settings.URL + '/ver-reserva/?tok=' + self.token, 'reserva': self}
+        send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context,
+                        settings.DEFAULT_FROM_EMAIL)
 class ReservaPasajero(models.Model):
-    token           = models.CharField(max_length=10, null=True)
+    token           = models.CharField(max_length=25, null=True)
     reserva         = models.ForeignKey(Reserva, on_delete=models.CASCADE)
     nombres         = models.CharField(max_length=100, null=True)
     apellidos       = models.CharField(max_length=100, null=True)
@@ -271,8 +297,8 @@ class ReservaPasajero(models.Model):
 
     @classmethod
     def generar_token(self):
-        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(9))
-        return str(self.id) + x
+        x = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(24))
+        return x
 
 class InteresadoTour(models.Model):
     cliente         = models.CharField(max_length=50)

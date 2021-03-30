@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block main_content %}
-
 <!-- ================================
     START BREADCRUMB AREA
 ================================= -->
@@ -334,7 +333,7 @@
     var metodo_pago = 'PAP';
     function confirmarReserva(){
         var noHayErrores = true
-        requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}', metodo_pago: metodo_pago}
+        requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}', metodo_pago: metodo_pago, valor: '{{detalle_orden.total | floatformat:2 }}'}
         var allForms = document.forms
         for(var i=0; i<allForms.length; i++){
             var elements = allForms[i].elements
@@ -380,29 +379,7 @@
               data: {csrfmiddlewaretoken: '{{ csrf_token }}', booking_data: JSON.stringify(requestDic)},
               success:function(response){
                 if(response.status == 200){
-                    var payphone_data = {
-                        Amount: {{detalle_payphone.total}},
-                        AmountWithTax: {{detalle_payphone.subtotal}},
-                        Tax : {{detalle_payphone.impuestos}},
-                        Service : {{detalle_payphone.service}},
-                        Tip : 0,
-                        ClientTransactionId : "11",
-                        ResponseUrl : '{{settings.URL}}'+response.url,
-                        Currency : "USD"
-                    }
-                    $.ajax({
-                      type: "POST",
-                      beforeSend: function(request) {
-                        request.setRequestHeader("Authorization", response.payphone_token);
-                      },
-                      url: response.payphone_prepare_url,
-                      data: payphone_data,
-                      success: function(msg) {
-                        window.location.href = msg.payWithPayPhone
-                      }
-                    });
-
-
+                    window.location.href = '{{settings.URL}}'+response.url
                 }else{}
               },
             });
@@ -442,6 +419,5 @@
     function cambiarPago(pago){
         metodo_pago = pago
     }
-
 </script>
 {% endblock %}

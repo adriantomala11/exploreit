@@ -262,15 +262,7 @@ def reserva_aprobar(request):
     try:
         reserva_token = request.POST['reserva_token']
         reserva = get_object_or_404(Reserva, token=reserva_token)
-        pasajeros = ReservaPasajero.objects.filter(reserva=reserva)
-        for pasajero in pasajeros:
-            pasajero.token = pasajero.generar_token()
-            pasajero.save()
-        reserva.pagado = True
-        reserva.save()
-        recipient_list = [reserva.correo,]
-        context = {'url': settings.URL,'link': settings.URL+'/ver-reserva/?tok='+reserva.token, 'reserva':reserva}
-        send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
+        reserva.aprobar()
         transaction.commit()
         response = JsonResponse({'status': 200, 'msg': 'Success'})
     except Exception as e:

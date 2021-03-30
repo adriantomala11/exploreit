@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% load qr_code %}
+{% block header_code %}
+<script src="https://pay.payphonetodoesposible.com/api/button/js?appId=Iz7xRtMgDkKG9gQW6I41BA"></script>
+{% endblock %}
 {% block main_content %}
 <!-- ================================
     START PAYMENT AREA
@@ -30,24 +33,29 @@
 
                             <div class="pb-3" style="text-align: center;">
                                 <p style="font-weight: bold;">Estado de la Reserva</p>
-                                {% if reserva.de_baja %}<p style="font-weight: 300; color: red;">Anulada</p>{% else %}{% if reserva.pagado %}<p style="font-weight: 300; color: green;">Aprobada</p>{% else %}<p style="font-weight: 300;">Pendiente</p>{% endif %}{% endif %}
+                                <p style="font-weight: 400;">{{ reserva.obtener_estado_str }}</p>
                             </div>
 
                             <div class="pb-5" style="text-align: center;">
-                                <p style="font-weight: bold;">Comprobante de pago</p>
-                                <div style="width: fit-content; margin: auto;">
-                                    <div class="input-box">
-                                        <div class="form-group" style=" display: flex;">
-                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
-                                            <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                {% if reserva.metodo_de_pago == 'PAP' %}
+                                    {% if reserva.estado == 'PEN' %}
+                                    <div id="pp-button"></div>
+                                    {% endif %}
+                                {% else %}
+                                    <p style="font-weight: bold;">Comprobante de pago</p>
+                                    <div style="width: fit-content; margin: auto;">
+                                        <div class="input-box">
+                                            <div class="form-group" style=" display: flex;">
+                                                <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
+                                                <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div><!-- end col-lg-6 -->
-
-                                {% if reserva.comprobante_es_imagen %}
-                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
-                                {% elif reserva.comprobante_es_documento%}
-                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                    </div><!-- end col-lg-6 -->
+                                    {% if reserva.comprobante_es_imagen %}
+                                    <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                    {% elif reserva.comprobante_es_documento%}
+                                    <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                    {% endif %}
                                 {% endif %}
                             </div>
 
@@ -127,10 +135,57 @@
           }
         });
     }
+    try{
+        lightbox.option({
+          'resizeDuration': 100,
+          'wrapAround': true
+        })
+    }catch{}
 
-    lightbox.option({
-      'resizeDuration': 100,
-      'wrapAround': true
-    })
+    {% if not reserva.pagado %}
+    window.onload = function() {
+    payphone.Button({
+
+    //token obtenido desde la consola de developer
+    token: "2KAO-HrEN850Og0EenF_JmvaEMik8sOqvR7NmHg1rkAHGwehhWUBvjZxfjKjQPuuURPMkJF6oAaWWn1QqvFKeWIqi40k9ZltU0CWseEFWdoW3rQm3NgEGefZ0m8knZdtcP9wRQFJm5Vhx0PSgIeeh5OhRp5Poa6OsdLFrzPpo6FmYAT5f6Q_MGqwGKN4lRCt04NMCwXW_cS5rYKm994QWlmYzq7WnXX7b4NHqrxOSEF3Xl5Jb-nsRTUVngJmwvA0ue1GtobQyT6ii2-Cql5DzioerrsEr3lgwmQ_Vz3WW3iAxDSFZ8BKH_WjKVV73-pH8oMoaHq3e8NXMvWGoE4OQ4shrNM",
+
+    //PARÁMETROS DE CONFIGURACIÓN
+    btnHorizontal: true,
+
+    createOrder: function(actions){
+
+    //Se ingresan los datos de la transaccion ej. monto
+    return actions.prepare({
+
+    amount: {{reserva.valor}},
+    amountWithoutTax: {{reserva.valor}},
+    currency: "USD",
+    clientTransactionId: "{{reserva.token}}"
+    });
+
+    },
+    onComplete: function(model, actions){
+        //Se confirma el pago realizado
+        actions.confirm({
+        id: model.id,
+        clientTxId: model.clientTxId
+    }).then(function(value){
+        if (value.transactionStatus == "Approved"){
+            Swal.fire({
+              icon: 'success',
+              title: 'Pago realizado con éxito!',
+              text: 'Estamos emitiendo y enviando el ticket de abordaje al correo electrónico del titular de la reserva. Gracias por elegir Explore It.',
+            })
+            setTimeout(function(){ window.location.reload(); }, 3000);
+        alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
+        }
+    }).catch(function(err){
+        console.log(err);
+    });
+
+    }
+    }).render("#pp-button");
+    {% endif %}
+}
 </script>
 {% endblock %}

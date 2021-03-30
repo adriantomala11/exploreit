@@ -1,6 +1,10 @@
 import base64
 import datetime
 import json
+import os
+import sys
+
+import requests
 from datetime import timedelta
 from http import HTTPStatus
 
@@ -11,7 +15,7 @@ from django.template.loader import get_template, render_to_string
 from rest_framework.decorators import api_view
 
 from exploreit import settings
-from exploreit.helpers import send_html_email, Payphone
+from exploreit.helpers import send_html_email, Payphone, PrintException
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour
 from django.views.decorators.csrf import csrf_exempt
 
@@ -60,7 +64,8 @@ def tour_booking(request, token):
 
     elif request.method == 'POST':
         data = json.loads(request.POST['booking_data'])
-        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], apellido=data['contacto']['apellidos'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token())
+        valor = int(data['valor'].replace(',', ''))
+        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], apellido=data['contacto']['apellidos'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
         reserva.save()
         pasajeros = data['pasajeros']
         for pasajero in pasajeros:
@@ -82,7 +87,7 @@ def tour_booking(request, token):
         # send_mail(subject, message, email_from, recipient_list)
 
         #RETORNO
-        response_url = '/tour-booked/'+reserva.token+'/'
+        response_url = '/ver-reserva/?tok='+str(reserva.token)
         response = JsonResponse({'status':200, 'url': response_url, 'reserva_token':reserva.token, 'payphone_token': Payphone.TOKEN, 'payphone_prepare_url': Payphone.PREPARE_URL})
         return response
 
@@ -195,8 +200,27 @@ def mostrar_interes(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
-@api_view
-def payphone_callback(request):
-    print(request)
-    response = JsonResponse({'status': 200, 'msg': 'Success'})
+@api_view()
+def recibir_pagos(request):
+    url = 'https://pay.payphonetodoesposible.com/api'
+    try:
+        id = str(request.GET.get('id'))
+        clientTxId = str(request.GET.get('clientTransactionId'))
+        data = {
+            "id": id,
+            "clientTxId": clientTxId,
+        }
+        url = url+'/button/V2/Confirm/'
+        auth_token = 'Bearer '+Payphone.TOKEN
+        r = requests.post(url, data=data, headers={'Authorization': auth_token})
+        response = json.loads(r.text)
+        reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
+        if(response['transactionStatus']=='Approved' and response['amount']==reserva.valor):
+            reserva.aprobar()
+        else:
+            pass
+        response = HttpResponse()
+    except Exception as e:
+        PrintException()
+        response = HttpResponse()
     return response
