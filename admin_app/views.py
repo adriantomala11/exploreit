@@ -341,7 +341,7 @@ def categorias(request):
             codigo = codigo + str(int(cat.pk)+1)
         except:
             pass
-        categoria = Categoria(nombre=categoria_nombre, codigo=codigo)
+        categoria = Categoria(nombre=categoria_nombre, codigo=codigo, tipo=request.POST['tipo'])
         categoria.save()
         response = JsonResponse({'status': 200, 'msg': 'Success'})
         return response

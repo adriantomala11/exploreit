@@ -37,37 +37,46 @@
                                     <h3 class="title">Listado de Categorías</h3>
                                     <p class="font-size-14">Se han registrado {{ categorias|length }} categorias.</p>
                                 </div>
-<!--                                <div style="width:30%; text-align: right;">-->
-<!--                                    <a href="">Ver Listado de Pasajeros</a>-->
-<!--                                </div>-->
+                                <div style="width:30%; text-align: right;">
+                                    <div class="filter-option">
+                                        <div class="dropdown dropdown-contain">
+                                            <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button" style="font-size: 20px;">
+                                                +
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-wrap" style="margin-top: 0px !important;">
+                                                <div class="dropdown-item">
+                                                    <a onclick="agregarCategoria('NAC')">Agregar Categoria Nacional</a><br>
+                                                    <a onclick="agregarCategoria('INT')">Agregar Categoria Internacional</a>
+                                                </div><!-- end dropdown-item -->
+                                            </div><!-- end dropdown-menu -->
+                                        </div><!-- end dropdown -->
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-content">
-                                <div class="table-form table-responsive" style="width: 60%; margin: auto;">
+                                <div class="table-form table-responsive" style="width: 100%; margin: auto;">
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Código</th>
                                                 <th scope="col">Nombre</th>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Tipo</th>
                                                 <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         {% for categoria in categorias %}
                                             <tr>
-                                                <td>{{categoria.codigo}}</td>
                                                 <td>{{categoria.nombre}}</td>
-                                                <td><a href="#">Eliminar</a></td>
+                                                <td>{{categoria.codigo}}</td>
+                                                <td>{{categoria.tipo}}</td>
+                                                <td><a href="javascript:void(0);" onclick="eliminarCategoria({{categoria.id}})">Eliminar</a></td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="submit-box" style="padding: 50px !important;">
-                                <div class="btn-box pt-3" style="width: fit-content; margin: auto;">
-                                    <a onclick="agregarCategoria()" class="theme-btn" style="color: white; cursor: pointer;">Agregar Categoria</a>
-                                </div>
-                            </div><!-- end submit-box -->
                         </div><!-- end form-box -->
                     </div><!-- end col-lg-12 -->
                 </div><!-- end row -->
@@ -77,18 +86,18 @@
                         <nav aria-label="Page navigation example">
                             <ul class="pagination">
                                 <li class="page-item">
-                                    <a class="page-link page-link-nav" href="#" aria-label="Previous">
+                                    <a class="page-link page-link-nav"  aria-label="Previous">
                                         <span aria-hidden="true"><i class="la la-angle-left"></i></span>
                                         <span class="sr-only">Previous</span>
                                     </a>
                                 </li>
-                                <li class="page-item"><a class="page-link page-link-nav" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link page-link-nav" >1</a></li>
                                 <li class="page-item active">
-                                    <a class="page-link page-link-nav" href="#">2 <span class="sr-only">(current)</span></a>
+                                    <a class="page-link page-link-nav" >2 <span class="sr-only">(current)</span></a>
                                 </li>
-                                <li class="page-item"><a class="page-link page-link-nav" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link page-link-nav" >3</a></li>
                                 <li class="page-item">
-                                    <a class="page-link page-link-nav" href="#" aria-label="Next">
+                                    <a class="page-link page-link-nav"  aria-label="Next">
                                         <span aria-hidden="true"><i class="la la-angle-right"></i></span>
                                         <span class="sr-only">Next</span>
                                     </a>
@@ -128,12 +137,16 @@
     .table thead tr th{
         border: solid 1px white;
     }
+
+    .dropdown-item a{
+        font-size: 13px;
+    }
 </style>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     document.getElementById('nav_categorias').classList.add('page-active')
 
-    function agregarCategoria(){
+    function agregarCategoria(tipo){
         Swal.fire({
           title: 'Agregar Tour',
           text: 'Ingrese el Nombre de la nueva categoria.',
@@ -151,7 +164,7 @@
             $.ajax({
               type: "POST",
               url: "{% url 'categorias' %}",
-              data: {csrfmiddlewaretoken: '{{ csrf_token }}', categoria: result.value},
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', categoria: result.value, tipo: tipo},
               success:function(response){
                 if(response.status == 200){
                     window.location.reload();
@@ -160,6 +173,16 @@
             });
           }
         })
+    }
+
+    function abrirDropdownMenu(el){
+        let node = el.nextSibling.nextSibling;
+        let elementos = document.querySelectorAll('.dropdown-menu.dropdown-menu-wrap')
+        if (node.style.display != "block") {
+            node.style.display = "block";
+        } else {
+            node.style.display = "none";
+        }
     }
 </script>
 {% endblock %}

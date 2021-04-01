@@ -18,8 +18,16 @@ from exploreit.helpers import decode_base64_file, send_html_email
 
 
 class Categoria(models.Model):
+    TIPO_CHOICES = (
+        ('NAC', 'Nacional'),
+        ('INT', 'Internacional'),
+    )
     codigo          = models.CharField(max_length=6, unique=True, null=True)
-    nombre          = models.CharField(max_length=10, null=True)
+    nombre          = models.CharField(max_length=30, null=True)
+    tipo            = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
+
+    def obtener_tipo_str(self):
+        return dict(Tour.TIPO_CHOICES).get(self.tipo)
 
 class Tour(models.Model):
     TIPO_CHOICES = (

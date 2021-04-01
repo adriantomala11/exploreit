@@ -121,6 +121,9 @@
             - $small_mobile_five: '(max-width: 375px)';
             - $small_mobile_two: '(max-width: 320px)';
 -------------------------------------------------------------------*/
+a{
+    cursor: pointer;
+}
 /*---------------- css loader ----------------*/
 @keyframes rotate {
   100% {

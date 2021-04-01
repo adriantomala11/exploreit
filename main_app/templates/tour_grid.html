@@ -80,7 +80,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Tipo
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -104,7 +104,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Fecha Salida
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -122,7 +122,7 @@
                             </div>
                             <div class="filter-option">
                                 <div class="dropdown dropdown-contain">
-                                    <a class="dropdown--btn" href="javascript:void(0);" role="button">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
                                         Categoría
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
@@ -248,7 +248,8 @@
     function abrirDropdownMenu(el){
         let node = el.nextSibling.nextSibling;
         let elementos = document.querySelectorAll('.dropdown-menu.dropdown-menu-wrap')
-        for(var i=0; i<elementos.length; elementos++){
+        for(var i=0; i<elementos.length; i++){
+            console.log(elementos[i])
             elementos[i].style.display = "none";
         }
         if (node.style.display != "block") {
