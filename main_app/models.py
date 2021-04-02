@@ -25,6 +25,7 @@ class Categoria(models.Model):
     codigo          = models.CharField(max_length=6, unique=True, null=True)
     nombre          = models.CharField(max_length=30, null=True)
     tipo            = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
+    activa          = models.BooleanField(default=True)
 
     def obtener_tipo_str(self):
         return dict(Tour.TIPO_CHOICES).get(self.tipo)

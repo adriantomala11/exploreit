@@ -16,12 +16,15 @@ from rest_framework.decorators import api_view
 
 from exploreit import settings
 from exploreit.helpers import send_html_email, Payphone, PrintException
-from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour
+from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour, \
+    Categoria
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     tours = Tour.objects.all()
-    context = {'tours': tours, 'settings': settings}
+    categorias_nacionales = Categoria.objects.filter(tipo='NAC', activa=True)
+    categorias_internacionales = Categoria.objects.filter(tipo='INT', activa=True)
+    context = {'tours': tours, 'settings': settings, 'categorias_nacionales':categorias_nacionales, 'categorias_internacionales':categorias_internacionales}
     return render(request, 'index.html', context)
 
 def tour_info(request, token):
@@ -109,9 +112,14 @@ def tours(request):
         # FILTRO POR NACIONAL O INTERNACIONAL
         if params.__contains__('tipo'):
             tipo = params['tipo']
+            if tipo=='NAC':
+                categorias = Categoria.objects.filter(tipo='NAC')
+            elif tipo=='INT':
+                categorias = Categoria.objects.filter(tipo='INT')
             salidas = Salida.objects.filter(tour__tipo=tipo)
             tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
+            categorias = Categoria.objects.all()
             salidas = Salida.objects.all()
 
         #FILTRO POR RANGO DE FECHAS
@@ -140,6 +148,9 @@ def tours(request):
 
         if params.__contains__('categoria'):
             categoria = params['categoria']
+            categoria = Categoria.objects.get(codigo=categoria)
+            salidas = salidas.filter(tour__categoria=categoria)
+            tags['categoria'] = {'nombre': 'Categoria', 'valor': categoria.codigo, 'valor_string': categoria.nombre}
 
         if params.__contains__('continente'):
             continente = params['continente']
@@ -149,7 +160,7 @@ def tours(request):
             if not tours.__contains__(str(salida.tour.id)):
                 tours[str(salida.tour.id)] = salida.tour
 
-        context = {'settings':settings, 'tags': tags, 'tours': tours}
+        context = {'settings':settings, 'tags': tags, 'tours': tours, 'categorias': categorias}
 
         if params.__contains__('mobile'):
             tipo = params['mobile']

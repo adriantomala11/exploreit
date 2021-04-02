@@ -112,10 +112,10 @@
                                             <div class="input-box">
                                                 <label class="label-text">Rango de fechas</label>
                                                 <div class="form-group">
-                                                    <input class="date-range form-control" type="text" name="daterange" id="daterange">
+                                                    <input onclick="addCalendarListener();" class="date-range form-control" type="text" name="daterange" id="daterange">
                                                 </div>
                                             </div>
-                                            <button class="theme-btn w-100 text-center">Aplicar</button>
+<!--                                            <button onclick="aplicarFiltros(['daterange'])" class="theme-btn w-100 text-center">Aplicar</button>-->
                                         </div><!-- end dropdown-item -->
                                     </div><!-- end dropdown-menu -->
                                 </div><!-- end dropdown -->
@@ -127,6 +127,18 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-wrap">
                                         <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Categoria</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto">
+                                                    <select name="categoria" class="select-contain-select" id="categoria">
+                                                        <option value="ALL" selected>Todo</option>
+                                                        {% for categoria in categorias %}
+                                                        <option value="{{categoria.codigo}}">{{categoria.nombre}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <button onclick="aplicarFiltros(['categoria'])" class="theme-btn w-100 text-center mt-2">Aplicar</button>
+                                            </div>
                                         </div><!-- end dropdown-item -->
                                     </div><!-- end dropdown-menu -->
                                 </div><!-- end dropdown -->
@@ -183,8 +195,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="btn-box mt-3 text-center">
-                    <button type="button" class="theme-btn"><i class="la la-refresh mr-1"></i>Cargar Mas</button>
                     {%comment%}
+                    <button type="button" class="theme-btn"><i class="la la-refresh mr-1"></i>Cargar Mas</button>
+
                     <p class="font-size-13 pt-2">Mostrando 1 - 9 de 22 Salidas</p>
                     {%endcomment%}
                 </div><!-- end btn-box -->
@@ -242,14 +255,13 @@
 
     function addCalendarListener(){
         let button = document.querySelector('.applyBtn.btn.btn-sm.btn-primary')
-        button.addEventListener("click", function(){ aplicarFiltros(['daterange']), false})
+        button.addEventListener("click", function(){ aplicarFiltros(['daterange']); false;})
     }
 
     function abrirDropdownMenu(el){
         let node = el.nextSibling.nextSibling;
         let elementos = document.querySelectorAll('.dropdown-menu.dropdown-menu-wrap')
         for(var i=0; i<elementos.length; i++){
-            console.log(elementos[i])
             elementos[i].style.display = "none";
         }
         if (node.style.display != "block") {

@@ -38,12 +38,12 @@
                                     <p class="font-size-14">Se han registrado {{ categorias|length }} categorias.</p>
                                 </div>
                                 <div style="width:30%; text-align: right;">
-                                    <div class="filter-option">
+                                    <div class="filter-option" style="width: fit-content; float: right;">
                                         <div class="dropdown dropdown-contain">
                                             <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button" style="font-size: 20px;">
                                                 +
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-wrap" style="margin-top: 0px !important;">
+                                            <div class="dropdown-menu dropdown-menu-wrap" style="margin-top: 0px !important; margin-left: -245px;">
                                                 <div class="dropdown-item">
                                                     <a onclick="agregarCategoria('NAC')">Agregar Categoria Nacional</a><br>
                                                     <a onclick="agregarCategoria('INT')">Agregar Categoria Internacional</a>
@@ -61,6 +61,7 @@
                                                 <th scope="col">Nombre</th>
                                                 <th scope="col">Código</th>
                                                 <th scope="col">Tipo</th>
+                                                <th scope="col">Estado</th>
                                                 <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
@@ -70,7 +71,12 @@
                                                 <td>{{categoria.nombre}}</td>
                                                 <td>{{categoria.codigo}}</td>
                                                 <td>{{categoria.tipo}}</td>
-                                                <td><a href="javascript:void(0);" onclick="eliminarCategoria({{categoria.id}})">Eliminar</a></td>
+                                                <td>{{categoria.activo}}</td>
+                                                {% if categoria.activo %}
+                                                <td><a href="javascript:void(0);" onclick="cambiarEstadoCategoria({{categoria.id}})">Desabilitar</a></td>
+                                                {% else %}
+                                                <td><a href="javascript:void(0);" onclick="cambiarEstadoCategoria({{categoria.id}})">Habilitar</a></td>
+                                                {% endif %}
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -183,6 +189,9 @@
         } else {
             node.style.display = "none";
         }
+    }
+
+    function cambiarEstadoCategoria(){
     }
 </script>
 {% endblock %}

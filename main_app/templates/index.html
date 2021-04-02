@@ -55,9 +55,10 @@
                                                 <label class="label-text">Categoria</label>
                                                 <div class="form-group select-contain select-contain-shadow w-auto">
                                                     <select name="categoria" class="select-contain-select">
-                                                        <option value="1">Todo</option>
-                                                        <option value="2" selected>Full Day</option>
-                                                        <option value="3">Campers</option>
+                                                        <option value="ALL" selected>Todo</option>
+                                                        {% for categoria in categorias_nacionales %}
+                                                        <option value="{{categoria.codigo}}">{{categoria.nombre}}</option>
+                                                        {% endfor %}
                                                     </select>
                                                 </div>
                                             </div>
@@ -113,15 +114,14 @@
                                         </div><!-- end col-lg-3 -->
                                         <div class="col-lg-3 pr-0">
                                             <div class="input-box">
-                                                <label class="label-text">Continente</label>
-                                                <div class="form-group">
-                                                    <div class="select-contain select-contain-shadow w-auto">
-                                                        <select name="continente" class="select-contain-select">
-                                                            <option value="1" selected>Todo</option>
-                                                            <option value="2">América</option>
-                                                            <option value="3">Europa</option>
-                                                        </select>
-                                                    </div>
+                                                <label class="label-text">Categoria</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto">
+                                                    <select name="categoria" class="select-contain-select">
+                                                        <option value="ALL" selected>Todo</option>
+                                                        {% for categoria in categorias_internacionales %}
+                                                        <option value="{{categoria.codigo}}">{{categoria.nombre}}</option>
+                                                        {% endfor %}
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div><!-- end col-lg-3 -->
