@@ -18,10 +18,9 @@
              <div class="col-lg-4">
                 <div class="footer-social-box text-right">
                     <ul class="social-profile">
-                        <li><a ><i class="lab la-facebook-f"></i></a></li>
-                        <li><a ><i class="lab la-twitter"></i></a></li>
-                        <li><a ><i class="lab la-instagram"></i></a></li>
-                        <li><a ><i class="lab la-linkedin-in"></i></a></li>
+                        <li><a href="https://www.facebook.com/exploreitec/" target="_blank"><i class="lab la-facebook-f"></i></a></li>
+                        <li><a href="https://twitter.com/exploreit_ec/" target="_blank"><i class="lab la-twitter"></i></a></li>
+                        <li><a href="https://www.instagram.com/exploreit_ec/" target="_blank"><i class="lab la-instagram"></i></a></li>
                     </ul>
                 </div>
             </div><!-- end col-lg-4 -->
@@ -33,7 +32,7 @@
             <div class="col-lg-7">
                 <div class="copy-right padding-top-30px">
                     <p class="copy__desc">
-                        &copy; Copyright Explore It 2020.
+                        &copy; Copyright Explore It {% now "Y" %}.
                     </p>
                 </div><!-- end copy-right -->
             </div><!-- end col-lg-7 -->
@@ -56,7 +55,7 @@
         <i class="la la-angle-up" title="Go top"></i>
     </div>
     <!-- end back-to-top -->
-
+    {% comment %}
     <!-- end modal-shared -->
     <div class="modal-popup">
         <div class="modal fade" id="signupPopupForm" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -71,6 +70,7 @@
                             <span aria-hidden="true" class="la la-close"></span>
                         </button>
                     </div>
+                    {% comment %}
                     <div class="modal-body">
                         <div class="contact-form-action">
                             <form method="post">
@@ -108,6 +108,7 @@
                             </form>
                         </div><!-- end contact-form-action -->
                     </div>
+                    {% endcomment %}
                 </div>
             </div>
         </div>
@@ -164,3 +165,4 @@
             </div>
         </div>
     </div><!-- end modal-popup -->
+    {% endcomment %}
