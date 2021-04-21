@@ -68,6 +68,23 @@
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
+                                    <label class="label-text">Precio</label>
+                                    <div class="form-group">
+                                        <span class="la la-dollar-sign form-icon"></span>
+                                        <input v-model="precio" id="precio" class="form-control" type="number" step="0.01" placeholder="Ingrese el precio por persona (Incluir IVA)" required>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Image </label>
+                                    <div class="form-group">
+                                        <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
                                     <label class="label-text">Hora de Checkin</label>
                                     <div class="form-group">
                                         <span class="la la-clock form-icon"></span>
@@ -95,22 +112,14 @@
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
-                                    <label class="label-text">Precio</label>
-                                    <div class="form-group">
-                                        <span class="la la-dollar-sign form-icon"></span>
-                                        <input v-model="precio" id="precio" class="form-control" type="number" step="0.01" placeholder="Ingrese el precio por persona (Incluir IVA)" required>
+<!--                                    <label class="label-text">Salida Tranoche</label>-->
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                        <label class="form-check-label" for="exampleCheck1">Marcar en caso de que la salida de este tour se realice el día anterior.</label>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
-                            <div class="col-lg-6 responsive-column">
-                                <div class="input-box">
-                                    <label class="label-text">Image </label>
-                                    <div class="form-group">
-                                        <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
-                                    </div>
-                                </div>
-                            </div><!-- end col-lg-6 -->
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" style="margin-top: 30px;">
                                 <div class="input-box">
                                     <label class="label-text mb-0 line-height-20">Descripcion del tour</label>
                                     <p class="font-size-13 mb-3 line-height-20">Maximo 400 caracteres</p>
