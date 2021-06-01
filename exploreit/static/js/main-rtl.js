@@ -76,7 +76,7 @@ Author Email:   contact@tecydevs.com
         var fullWidthSlider = $('.full-width-slider');
 
         /* ======= Preloader ======= */
-        preloader.delay('100').fadeOut(700);
+        preloader.delay('200').fadeOut(200);
 
         /*=========== Header top bar menu ============*/
         $document.on('click', '.down-button', function () {

@@ -240,7 +240,7 @@ class Reserva(models.Model):
         return x
 
     def obtener_estado_str(self):
-        return dict(Tour.TIPO_CHOICES).get(self.estado)
+        return dict(Reserva.ESTADO_CHOICES).get(self.estado)
 
     def get_num_pasajeros(self):
         return ReservaPasajero.objects.filter(reserva=self).count()
@@ -250,7 +250,7 @@ class Reserva(models.Model):
         s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
         try:
-            extension = filename.split('.')[1]
+            extension = filename.split('.')[-1]
             file, file_name = decode_base64_file(base64_file)
             s3_filename = 'comprobante_' + str(self.token) + '.' + str(extension)
             self.comprobante = s3_filename

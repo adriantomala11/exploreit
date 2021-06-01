@@ -90,7 +90,7 @@
                                             </div>
                                             <div class="single-feature-titles">
                                                 <h3 class="title font-size-15 font-weight-medium">Tamaño del Grupo</h3>
-                                                <span class="font-size-13">{{ tour_info.tour.capacidad }} Personas</span>
+                                                <span class="font-size-13">{% if tour_info.tour.esta_disponible %}{{ tour_info.proximas_salidas.0.capacidad }}{% else %}-{% endif %} Personas</span>
                                             </div>
                                         </div><!-- end single-tour-feature -->
                                     </div><!-- end col-lg-4 -->
@@ -208,7 +208,7 @@
                                 </div><!-- end qty-box -->
                             </div><!-- end sidebar-widget-item -->
                             <div class="btn-box pt-2">
-                                <a  onclick="goToBooking()" class="theme-btn text-center w-100 mb-2"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
+                                <a  onclick="goToBooking()" class="theme-btn text-center w-100 mb-2" style="color: white;"><i class="la la-shopping-cart mr-2 font-size-18"></i>Realizar Reserva</a>
                             </div>
                             {% else %}
                             <div class="btn-box pt-2">
