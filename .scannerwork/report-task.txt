@@ -1,0 +1,6 @@
+projectKey=explore_it_rodriguez
+serverUrl=http://localhost:9000
+serverVersion=7.4.0.18908
+dashboardUrl=http://localhost:9000/dashboard?id=explore_it_rodriguez
+ceTaskId=AXntUqiCSvKGHfWAZ-4x
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXntUqiCSvKGHfWAZ-4x
