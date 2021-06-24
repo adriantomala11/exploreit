@@ -98,25 +98,26 @@ class CategoriaTestCase(TestCase):
         response = self.client.post('/administrador/reserva-aprobar/', {'reserva_token': reserva_token})
         reserva = get_object_or_404(Reserva, token=reserva_token)
         self.assertEqual(reserva.estado,"APR")
+    
     '''
     /administrador/editar-tour/<slug:slug>/
-    '''
     '''
     def testEditarTourGet(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         tour_token = "ti5RCHZmtRoPDgcfnvojAV7H"
-        response = self.client.get('/administrador/editar-tour/'+tour_token)
+        response = self.client.get('/administrador/editar-tour/'+tour_token+'/')
         tour = Tour.objects.get(token=tour_token)
         print(response)
         self.assertEqual(response.context['tour'],tour)
-    '''
+    
     def testEditarTourPost(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         tour_token = "ti5RCHZmtRoPDgcfnvojAV7H"
         tour = Tour.objects.get(token=tour_token)
         tour.nombre = "Nombre Cambiado del Tour"
-        response = self.client.post('/administrador/editar-tour/'+tour_token,{'tour_data':tour})
-        self.assertEqual(tour.nombre,"Nombre Cambiado del Tour")
+        print(tour.nombre)
+        response = self.client.post('/administrador/editar-tour/'+tour_token+'/',{'tour_data':tour})
+        self.assertEqual("Nombre Cambiado del Tour",tour.nombre)
     '''
     /administrador/registrar-tour/
     '''
@@ -182,6 +183,16 @@ class CategoriaTestCase(TestCase):
         response = self.client.get('/administrador/salidas-programadas/')
         self.assertNotEqual(response.status_code,404)
 
-
+'''
+nombre + ' COPIA'
+response = self.client.get('/administrador/categorias/', {'categoria': 'FUL','tipo':'NAC'})
+def test_animals_can_speak(self):
+        """Animals that can speak are correctly identified"""
+        lion = Animal.objects.get(name="lion")
+        cat = Animal.objects.get(name="cat")
+        self.assertEqual(lion.speak(), 'The lion says "roar"')
+        self.assertEqual(cat.speak(), 'The cat says "meow"')
+'''
+    
     
    
