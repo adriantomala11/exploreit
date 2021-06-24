@@ -33,16 +33,18 @@ class MainTestCase(TestCase):
         Reserva.objects.create(token="Mmgv2eKwvKd7V2LBQiv1y3zz",fecha_creacion="2021-04-04 02:05:10",
         salida=Salida.objects.get(token="DyeISHV8mO8D7BB4Bnqgfx1j"),acomodacion="asd",correo="bmsa753@gmail.com",
         nombre="NombreTest",apellido="ApellidoTest",cedula="0000000000",telefono="0000000000",
-        comprobante="ASDASDAASDAADASASDADAS",metodo_de_pago="PAP",valor=95.0,estado="PEN",pagado=False,de_baja=False)
+        comprobante="ASDASDAASDAADASASDADAS.jpg",metodo_de_pago="PAP",valor=95.0,estado="PEN",pagado=False,de_baja=False)
 
         ReservaPasajero.objects.create(token="vDjCla2TcrXFuQaQNUqEkEBN",reserva=Reserva.objects.get(token="Mmgv2eKwvKd7V2LBQiv1y3zz"),
         nombres="NombreTest",apellidos="ApellidosTest",edad=18,cedula="0000000000")
-
+        Incluye.objects.create(nombre="Guía Nacional",tour=Tour.objects.get(nombre="Volcan Chimborazo"))
+        NoIncluye.objects.create(nombre="Guía Nacional",tour=Tour.objects.get(nombre="Volcan Chimborazo"))
+    
     '''
     Link: ''
     '''
     def testIndex(self):
-        self.client.login(username='admin222', password='Exploreit2021!')
+   
         response = self.client.get('')
         self.assertEqual(len(response.context['categorias_nacionales']) , 3)
         self.assertEqual(len(response.context['categorias_internacionales']) , 1)
@@ -51,7 +53,7 @@ class MainTestCase(TestCase):
     /tour-info/<slug:token>/
     '''
     def testTourInfo(self):
-        self.client.login(username='admin222', password='Exploreit2021!')
+  
         token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
         response = self.client.get('/tour-info/'+token_tour+'/')
         tour = get_object_or_404(Tour, token=token_tour)
@@ -61,7 +63,7 @@ class MainTestCase(TestCase):
     /tour-booking/<slug:token>/
     '''
     def testTourBookingGet(self):
-        self.client.login(username='admin222', password='Exploreit2021!')
+   
         token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
         token_salida = 'DyeISHV8mO8D7BB4Bnqgfx1j'
         tour = get_object_or_404(Tour, token=token_tour)
@@ -78,10 +80,8 @@ class MainTestCase(TestCase):
         self.assertEqual(response.context['detalle_orden'] , detalle_orden)
 
     def testTourBookingPost(self):
-        self.client.login(username='admin222', password='Exploreit2021!')
+ 
         token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
-        token_salida = 'DyeISHV8mO8D7BB4Bnqgfx1j'
-        reserva_token='Mmgv2eKwvKd7V2LBQiv1y3zz'
         salida = Salida.objects.get(token="DyeISHV8mO8D7BB4Bnqgfx1j")
         reserva = {}
         reserva['salida']=salida.id
@@ -104,9 +104,7 @@ class MainTestCase(TestCase):
     /tour-booked/<slug:token>/
     '''
     def testTourBooked(self):
-        self.client.login(username='admin222', password='Exploreit2021!')
-        token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
-        token_salida = 'DyeISHV8mO8D7BB4Bnqgfx1j'
+
         reserva_token='Mmgv2eKwvKd7V2LBQiv1y3zz'
 
         reserva = get_object_or_404(Reserva, token=reserva_token)
@@ -114,21 +112,85 @@ class MainTestCase(TestCase):
         response = self.client.post('/tour-booked/'+reserva_token+'/')
         self.assertEqual(response.context['reserva'],reserva)
         self.assertEqual(len(response.context['pasajeros']),len(pasajeros))
-'''
-nombre + ' COPIA'
-response = self.client.get('/administrador/categorias/', {'categoria': 'FUL','tipo':'NAC'})
-def test_animals_can_speak(self):
-        """Animals that can speak are correctly identified"""
-        lion = Animal.objects.get(name="lion")
-        cat = Animal.objects.get(name="cat")
-        self.assertEqual(lion.speak(), 'The lion says "roar"')
-        self.assertEqual(cat.speak(), 'The cat says "meow"')
+    '''
+    /tours/
+    '''
+    def testTours(self):
 
-         Itinerario.objects.create(tour=Tour.objects.get(nombre="Volcan Chimborazo"), dia=1, descripcion="NAC")
-        Incluye.objects.create(nombre="Guía Nacional",tour=Tour.objects.get(nombre="Volcan Chimborazo"))
-        NoIncluye.objects.create(nombre="Guía Nacional",tour=Tour.objects.get(nombre="Volcan Chimborazo"))
+        #Filtro tipo NAC o INT
+        response = self.client.get('/tours/',{'tipo':'NAC'})
+        self.assertNotEqual(response.status_code,404)
+        #Filtro Categoria
+        response = self.client.get('/tours/',{'categoria':'FUL'})
+        self.assertNotEqual(response.status_code,404)
+        #Filtro precio max
+        response = self.client.get('/tours/',{'precio-max':'95.0'})
+        self.assertNotEqual(response.status_code,404)
+    '''
+    /ver-reserva/
+    '''
+    def testVerReserva(self):
+   
+        reserva_token='Mmgv2eKwvKd7V2LBQiv1y3zz'
+        reserva = get_object_or_404(Reserva, token=reserva_token)
+        response = self.client.get('/ver-reserva/',{'tok':reserva_token})
+        self.assertEqual(response.context['reserva'],reserva)
+    
+    '''
+    /mostrar-interes/
+    '''
+    def testMostarInteres(self):
 
-'''
+        token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
+        tour=get_object_or_404(Tour, token=token_tour)
+        response = self.client.post('/mostrar-interes',{'tour':token_tour,'correo':'bmsa753@gmail.com'})
+        interesado = InteresadoTour.objects.get(tour=tour)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(interesado.tour,tour)
+
+    '''
+    Test de metodos de Reservas
+    '''
+    def testModeloReserva(self):
+        reserva_token='Mmgv2eKwvKd7V2LBQiv1y3zz'
+        ReservaPasajero.objects.create(token="vDjC2a2TcrXFuQaQNUqEkEBN",reserva=Reserva.objects.get(token="Mmgv2eKwvKd7V2LBQiv1y3zz"),
+        nombres="NombreTest",apellidos="ApellidosTest",edad=18,cedula="0000000000")
+        ReservaPasajero.objects.create(token="vDjCla2TZrXFuQaQNUqEkEBN",reserva=Reserva.objects.get(token="Mmgv2eKwvKd7V2LBQiv1y3zz"),
+        nombres="NombreTest",apellidos="ApellidosTest",edad=18,cedula="0000000000")
+        reserva = Reserva.objects.get(token=reserva_token)
+        self.assertEqual(reserva.get_num_pasajeros(), 3)
+        self.assertEqual(reserva.obtener_estado_str(), 'PENDIENTE') 
+        self.assertTrue(reserva.comprobante_es_imagen())
+        reserva.aprobar()
+        self.assertEqual(reserva.obtener_estado_str(), 'APROBADA') 
     
+    '''
+    Test de metodos de Salidas'''
+    def testModeloSalida(self):
+        ReservaPasajero.objects.create(token="vDjC2a2TcrXFuQaQNUqEkEBN",reserva=Reserva.objects.get(token="Mmgv2eKwvKd7V2LBQiv1y3zz"),
+        nombres="NombreTest",apellidos="ApellidosTest",edad=18,cedula="0000000000")
+        ReservaPasajero.objects.create(token="vDjCla2TZrXFuQaQNUqEkEBN",reserva=Reserva.objects.get(token="Mmgv2eKwvKd7V2LBQiv1y3zz"),
+        nombres="NombreTest",apellidos="ApellidosTest",edad=18,cedula="0000000000")
+
+        token_salida = 'DyeISHV8mO8D7BB4Bnqgfx1j'
+        token_reserva = 'Mmgv2eKwvKd7V2LBQiv1y3zz'
+        salida = Salida.objects.get(token=token_salida)
+        reserva = Reserva.objects.get(token=token_reserva)
+        reserva.pagado=True
+        reserva.save()
+        self.assertEqual(salida.obtener_cupos_disponibles(),17)
+        self.assertFalse(salida.obtener_disponibilidad(50))
+        self.assertTrue(salida.obtener_disponibilidad(3))
+    '''
+    Test de metodos de Tour'''
+    def testModeloTour(self):
+        token_tour = 'ti5RCHZmtRoPDgcfnvojAV7H'
+        tour = Tour.objects.get(token=token_tour)
+        InteresadoTour.objects.create(cliente="Cliente1",tour=tour)
+        InteresadoTour.objects.create(cliente="Cliente2",tour=tour)
+        self.assertEqual(tour.get_interesados(),2)
+
+
     
+   
    

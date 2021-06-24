@@ -183,16 +183,5 @@ class CategoriaTestCase(TestCase):
         response = self.client.get('/administrador/salidas-programadas/')
         self.assertNotEqual(response.status_code,404)
 
-'''
-nombre + ' COPIA'
-response = self.client.get('/administrador/categorias/', {'categoria': 'FUL','tipo':'NAC'})
-def test_animals_can_speak(self):
-        """Animals that can speak are correctly identified"""
-        lion = Animal.objects.get(name="lion")
-        cat = Animal.objects.get(name="cat")
-        self.assertEqual(lion.speak(), 'The lion says "roar"')
-        self.assertEqual(cat.speak(), 'The cat says "meow"')
-'''
-    
-    
+
    
