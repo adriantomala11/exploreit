@@ -15,7 +15,7 @@ from django.template.loader import get_template, render_to_string
 from rest_framework.decorators import api_view
 
 from exploreit import settings
-from exploreit.helpers import send_html_email, Payphone, PrintException
+from exploreit.helpers import send_html_email, Payphone, print_exception
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour, \
     Categoria
 from django.views.decorators.csrf import csrf_exempt
@@ -85,9 +85,9 @@ def tour_booking(request, token):
             Att. Explore It\n
             <script>console.log("Hola Mundo")</script>
         """
-        email_from = settings.EMAIL_HOST_USER
+        from_email = settings.EMAIL_HOST_USER
         recipient_list = [reserva.correo, ]
-        # send_mail(subject, message, email_from, recipient_list)
+        send_mail(subject, message, from_email, recipient_list)
 
         #RETORNO
         response_url = '/ver-reserva/?tok='+str(reserva.token)
@@ -133,15 +133,14 @@ def tours(request):
             tags['daterange'] = {'nombre': 'Fecha Salida', 'valor': params['daterange'], 'valor_string': params['daterange']}
 
         #FILTRO POR PRECIO
-        if params.__contains__('precio-min'):
+        elif params.__contains__('precio-min'):
             if params['precio-min'] != '' and params['precio-min'] != '0':
                 precio_min = int(params['precio-min'])
                 tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
 
-        if params.__contains__('precio-max'):
-            if params['precio-max'] != '' and params['precio-max'] != '0':
-                precio_max = int(params['precio-max'])
-                tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
+        elif params.__contains__('precio-max') and params['precio-max'] != '' and params['precio-max'] != '0':
+            precio_max = int(params['precio-max'])
+            tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
 
         if params.__contains__('precio-max') or params.__contains__('precio-min'):
             salidas = salidas.filter(tour__precio__range=[precio_min, precio_max])
@@ -190,7 +189,7 @@ def ver_reserva(request):
 def enviar_mail(request):
     # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
     subject = 'Explore It: Instrucciones de Pago para Reserva'
-    context = {}
+    context = {subject}
     recipient_list = ['luisadriant11@hotmail.com', ]
     send_html_email(recipient_list, 'Good news', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
     return HttpResponse()
@@ -216,10 +215,10 @@ def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api'
     try:
         id = str(request.GET.get('id'))
-        clientTxId = str(request.GET.get('clientTransactionId'))
+        client_tx_id = str(request.GET.get('clientTransactionId'))
         data = {
             "id": id,
-            "clientTxId": clientTxId,
+            "clientTxId": client_tx_id,
         }
         url = url+'/button/V2/Confirm/'
         auth_token = 'Bearer '+Payphone.TOKEN
@@ -228,10 +227,8 @@ def recibir_pagos(request):
         reserva = Reserva.objects.get(token=str(request.GET.get('clientTransactionId')))
         if(response['transactionStatus']=='Approved' and response['amount']==reserva.valor):
             reserva.aprobar()
-        else:
-            pass
         response = HttpResponse()
     except Exception as e:
-        PrintException()
+        print_exception()
         response = HttpResponse()
     return response

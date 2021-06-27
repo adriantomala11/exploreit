@@ -52,7 +52,7 @@ def decode_base64_file(data):
 
         return io.BytesIO(decoded_file), complete_file_name
 
-def PrintException():
+def print_exception():
     exc_type, exc_obj, tb = sys.exc_info()
     f = tb.tb_frame
     lineno = tb.tb_lineno

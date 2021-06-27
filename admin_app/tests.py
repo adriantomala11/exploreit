@@ -8,7 +8,7 @@ import json
 from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario, Categoria
 from main_app.views import *
 
-class CategoriaTestCase(TestCase):
+class AdminTestCase(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_superuser('admin222', 'admin@correo.com', 'Exploreit2021!')
@@ -62,7 +62,7 @@ class CategoriaTestCase(TestCase):
     def testAumentarCapacidad(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         salida_token = "DyeISHV8mO8D7BB4Bnqgfx1j"
-        response = self.client.post('/administrador/aumentar-capacidad/', {'salida': salida_token,'aumento':3})
+        self.client.post('/administrador/aumentar-capacidad/', {'salida': salida_token,'aumento':3})
         salida = get_object_or_404(Salida, token=salida_token)
         self.assertEqual(salida.capacidad,23)
     '''
@@ -72,7 +72,7 @@ class CategoriaTestCase(TestCase):
     def testDarDeBaja(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         reserva_token = "Mmgv2eKwvKd7V2LBQiv1y3zz"
-        response = self.client.post('/administrador/reserva-dar-de-baja/', {'reserva_token': reserva_token})
+        self.client.post('/administrador/reserva-dar-de-baja/', {'reserva_token': reserva_token})
         reserva = get_object_or_404(Reserva, token=reserva_token)
         self.assertEqual(reserva.de_baja,True)
     
@@ -82,11 +82,11 @@ class CategoriaTestCase(TestCase):
     def testCopiarTour(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         tour_token = "ti5RCHZmtRoPDgcfnvojAV7H"
-        response = self.client.post('/administrador/copiar-tour/', {'tour_token': tour_token})
-        nombreTour ="Volcan Chimborazo"
-        tourOriginal = get_object_or_404(Tour, nombre=nombreTour)
-        tourCopia = get_object_or_404(Tour, nombre="Volcan Chimborazo COPIA")
-        self.assertEqual(tourOriginal.nombre+ ' COPIA',tourCopia.nombre)
+        self.client.post('/administrador/copiar-tour/', {'tour_token': tour_token})
+        nombre_tour ="Volcan Chimborazo"
+        tour_original = get_object_or_404(Tour, nombre=nombre_tour)
+        tour_copia = get_object_or_404(Tour, nombre="Volcan Chimborazo COPIA")
+        self.assertEqual(tour_original.nombre+ ' COPIA',tour_copia.nombre)
 
     '''
     /administrador/reserva-aprobar/
@@ -95,7 +95,7 @@ class CategoriaTestCase(TestCase):
     def testReservaAprobar(self):
         self.client.login(username='admin222', password='Exploreit2021!')
         reserva_token = "Mmgv2eKwvKd7V2LBQiv1y3zz"
-        response = self.client.post('/administrador/reserva-aprobar/', {'reserva_token': reserva_token})
+        self.client.post('/administrador/reserva-aprobar/', {'reserva_token': reserva_token})
         reserva = get_object_or_404(Reserva, token=reserva_token)
         self.assertEqual(reserva.estado,"APR")
     
@@ -116,7 +116,7 @@ class CategoriaTestCase(TestCase):
         tour = Tour.objects.get(token=tour_token)
         tour.nombre = "Nombre Cambiado del Tour"
         print(tour.nombre)
-        response = self.client.post('/administrador/editar-tour/'+tour_token+'/',{'tour_data':tour})
+        self.client.post('/administrador/editar-tour/'+tour_token+'/',{'tour_data':tour})
         self.assertEqual("Nombre Cambiado del Tour",tour.nombre)
     '''
     /administrador/registrar-tour/
@@ -125,7 +125,7 @@ class CategoriaTestCase(TestCase):
         self.client.login(username='admin222', password='Exploreit2021!')
         tour_token = "ti5RCHZmtRoPDgcfnvojAV7H"
         tour = Tour.objects.get(token=tour_token)
-        response = self.client.post('/administrador/registrar-tour/',{'tour_data':tour})
+        self.client.post('/administrador/registrar-tour/',{'tour_data':tour})
         tour2 = Tour.objects.get(nombre=tour.nombre)
         self.assertEqual(tour,tour2)
     '''
