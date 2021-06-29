@@ -10,7 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 
 from exploreit import settings
-from exploreit.helpers import send_html_email, PrintException
+from exploreit.helpers import send_html_email, print_exception
 from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario, Categoria
 
 
@@ -49,15 +49,15 @@ def tours_registrados(request):
             tags['nombre'] = {'nombre': 'Nombre', 'valor': params['nombre'], 'valor_string': 'Nombre'}
 
         #FILTRO POR PRECIO
-        if params.__contains__('precio-min'):
+        elif params.__contains__('precio-min'):
             if params['precio-min'] != '' and params['precio-min'] != '0':
                 precio_min = int(params['precio-min'])
                 tags['precio-min'] = {'nombre': 'Precio Mínimo', 'valor': params['precio-min'], 'valor_string': '$'+str(precio_min)}
-        if params.__contains__('precio-max'):
+        elif params.__contains__('precio-max'):
             if params['precio-max'] != '' and params['precio-max'] != '0':
                 precio_max = int(params['precio-max'])
                 tags['precio-max'] = {'nombre': 'Precio Máximo', 'valor': params['precio-max'], 'valor_string': '$'+str(precio_max)}
-        if params.__contains__('precio-max') or params.__contains__('precio-min'):
+        elif params.__contains__('precio-max') or params.__contains__('precio-min'):
             tours = tours.filter(precio__range=[precio_min, precio_max])
 
         tours.order_by('pk')
@@ -125,19 +125,10 @@ def registrar_tour(request):
                               categoria=categoria)
             nuevo_tour.save()
 
-            for inc in data['incluye']:
-                incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
-                incluye.save()
-
-            for ninc in data['no_incluye']:
-                no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
-                no_incluye.save()
-            counter = 0
-            for dia in data['itinerario']:
-                counter += 1
-                for iti in dia:
-                    itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=counter)
-                    itinerario.save()
+            
+            registrar_extras(data,nuevo_tour)
+            
+            
 
             try:
                 imagen = data['imagen']['data']
@@ -153,7 +144,7 @@ def registrar_tour(request):
                     f.write(imgdata)
                 nuevo_tour.save()
             except:
-                PrintException()
+                print_exception()
 
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status': 200, 'url': response_url})
@@ -165,31 +156,28 @@ def registrar_tour(request):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
+def registrar_extras(data,nuevo_tour):
+    for inc in data['incluye']:
+        incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
+        incluye.save()
+    for ninc in data['no_incluye']:
+        no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
+        no_incluye.save()
+    counter = 0
+    for dia in data['itinerario']:
+        counter += 1
+        for iti in dia:
+            itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=counter)
+            itinerario.save()
+
 @login_required(login_url='/login/')
 def editar_tour(request, slug):
     if request.method == 'GET':
         try:
-            tour = Tour.objects.get(token=slug)
-
-            incluye = Incluye.objects.filter(tour=tour)
-            incluye = Incluye.queryset_to_list(incluye)
-
-            no_incluye = NoIncluye.objects.filter(tour=tour)
-            no_incluye = NoIncluye.queryset_to_list(no_incluye)
-
-            itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
-            itinerario_ls = [[]]
-            for iti in itinerario:
-                if iti.dia == len(itinerario_ls):
-                    itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
-                else:
-                    itinerario_ls.append([])
-                    itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
-            categorias = Categoria.objects.all()
-            context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour, 'tour_class': Tour(), 'categorias': categorias}
+            context = get_editar_tour(slug)
             return render(request, 'registrar_tour.html', context)
         except:
-            PrintException()
+            print_exception()
             redirect('/administrador/registrar-tour/')
 
     elif request.method == 'POST':
@@ -210,26 +198,11 @@ def editar_tour(request, slug):
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
             tour.categoria = categoria
-
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
             tour.eliminar_itinerarios()
-
-            for inc in data['incluye']:
-                incluye = Incluye(tour=tour, nombre=inc['nombre'])
-                incluye.save()
-
-            for ninc in data['no_incluye']:
-                no_incluye = NoIncluye(tour=tour, nombre=ninc['nombre'])
-                no_incluye.save()
-
-            counter = 0
-            for dia in data['itinerario']:
-                counter += 1
-                for iti in dia:
-                    itinerario = Itinerario(tour=tour, descripcion=iti['descripcion'], dia=counter)
-                    itinerario.save()
             tour.save()
+            registrar_extras(data,tour)
             try:
                 imagen = data['imagen']['data']
                 imgdata = base64.b64decode(imagen.split(',')[1])
@@ -244,7 +217,7 @@ def editar_tour(request, slug):
                     f.write(imgdata)
                 tour.save()
             except:
-                PrintException()
+                print_exception()
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             transaction.commit()
@@ -255,6 +228,25 @@ def editar_tour(request, slug):
             msg = str(e)
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
+
+def get_editar_tour(slug):
+    tour = Tour.objects.get(token=slug)
+    incluye = Incluye.objects.filter(tour=tour)
+    incluye = Incluye.queryset_to_list(incluye)
+
+    no_incluye = NoIncluye.objects.filter(tour=tour)
+    no_incluye = NoIncluye.queryset_to_list(no_incluye)
+    itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
+    itinerario_ls = [[]]
+    for iti in itinerario:
+        if iti.dia == len(itinerario_ls):
+            itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
+        else:
+            itinerario_ls.append([])
+            itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
+    categorias = Categoria.objects.all()
+    context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour, 'tour_class': Tour(), 'categorias': categorias}
+    return context
 
 @login_required(login_url='/login/')
 def reserva_aprobar(request):
