@@ -235,3 +235,13 @@ def recibir_pagos(request):
         PrintException()
         response = HttpResponse()
     return response
+
+from django.http import StreamingHttpResponse
+
+@csrf_exempt
+
+def validate_certificate(request):
+    content = open('/03AD7A9BEA9EB391FFB054085DBCE166.txt', 'r').read()
+    response = StreamingHttpResponse(content)
+    response['Content-Type'] = 'text/plain; charset=utf8'
+    return response

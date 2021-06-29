@@ -52,7 +52,8 @@ urlpatterns = [
     path('administrador/categorias/', admin_views.categorias, name='categorias'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),
-    path('payphone/recibir-pagos/', main_views.recibir_pagos, name='recibir_pagos')
+    path('payphone/recibir-pagos/', main_views.recibir_pagos, name='recibir_pagos'),
+    path('/.well-known/pki-validation/pki-validation/03AD7A9BEA9EB391FFB054085DBCE166.txt', main_views.validate_certificate, name='validate_certificate')
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
