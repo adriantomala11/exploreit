@@ -238,7 +238,7 @@ from django.http import StreamingHttpResponse
 @csrf_exempt
 
 def validate_certificate(request):
-    content = open('/03AD7A9BEA9EB391FFB054085DBCE166.txt', 'r').read()
+    content = open('/Users/adriantomala/Desktop/Proyecto Exploreit/exploreit/main_app/6E1AA5227777D3E36CCEF7FB5B85D88A.txt', 'r').read()
     response = StreamingHttpResponse(content)
     response['Content-Type'] = 'text/plain; charset=utf8'
     return response
