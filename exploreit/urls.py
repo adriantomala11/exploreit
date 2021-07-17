@@ -53,7 +53,6 @@ urlpatterns = [
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),
     path('payphone/recibir-pagos/', main_views.recibir_pagos, name='recibir_pagos'),
-    path('.well-known/pki-validation/pki-validation/6E1AA5227777D3E36CCEF7FB5B85D88A.txt', main_views.validate_certificate, name='validate_certificate')
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

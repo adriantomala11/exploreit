@@ -83,10 +83,9 @@ def tour_booking(request, token):
             2. Realizar el deposito\n
             3. Responder a este correo con la foto del comprobante\n\n
             Att. Explore It\n
-            <script>console.log("Hola Mundo")</script>
         """
         from_email = settings.EMAIL_HOST_USER
-        recipient_list = [reserva.correo, ]
+        recipient_list = [reserva.correo,]
         send_mail(subject, message, from_email, recipient_list)
 
         #RETORNO
@@ -233,12 +232,9 @@ def recibir_pagos(request):
         response = HttpResponse()
     return response
 
-from django.http import StreamingHttpResponse
-
-@csrf_exempt
-
-def validate_certificate(request):
-    content = open('/Users/adriantomala/Desktop/Proyecto Exploreit/exploreit/main_app/6E1AA5227777D3E36CCEF7FB5B85D88A.txt', 'r').read()
-    response = StreamingHttpResponse(content)
-    response['Content-Type'] = 'text/plain; charset=utf8'
-    return response
+#from django.http import StreamingHttpResponse
+#def validate_certificate(request):
+#    content = open('/Users/adriantomala/Desktop/Proyecto Exploreit/exploreit/main_app/6E1AA5227777D3E36CCEF7FB5B85D88A.txt', 'r').read()
+#    response = StreamingHttpResponse(content)
+#    response['Content-Type'] = 'text/plain; charset=utf8'
+#    return response
