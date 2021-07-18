@@ -164,14 +164,11 @@
             {% for key, tour in tours.items %}
             <div class="col-lg-4 responsive-column" style="padding-bottom: 40px;">
                 <div class="card-item mb-0">
-                    <div class="card-img">
+                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;">
                         {% if not tour.esta_disponible %}
                         <span class="badge" style="background-color: #b32f2f;">NO DISPONIBLE</span>
                         {% endif %}
-                        <a href="{% url 'tour_info' tour.token %}" class="d-block">
-                            <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
-                        </a>
-                    </div>
+                    </div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
                         <p class="card-meta">{{tour.ubicacion}}</p>

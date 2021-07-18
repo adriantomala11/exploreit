@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% block header_code %}
+{% endblock %}
 {% block main_content %}
 <!-- ================================
     START BREADCRUMB AREA
@@ -254,10 +256,7 @@
                     </div><!-- end form-title-wrap -->
                     <div class="form-content">
                         <div class="card-item shadow-none radius-none mb-0">
-                            <div class="card-img pb-4">
-                                <a href="tour-details.html" class="d-block">
-                                    <img src="{% if salida.tour.imagen %}{{ salida.tour.imagen_url }}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="tour-img">
-                                </a>
+                            <div class="card-img mb-4" style="background-image: url('{% if salida.tour.imagen %}{{salida.tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;">
                             </div>
                             <div class="card-body p-0">
                                 <div class="d-flex justify-content-between">

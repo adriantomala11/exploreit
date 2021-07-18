@@ -133,25 +133,21 @@
                     </div>
                     {% for tour in tours %}
                     <div class="card-item card-item-list" style="width: 100%;">
-                    <div class="card-img" style="width: 25%;">
-                        <a class="d-block">
-                            <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="Destination-img">
-                        </a>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title"><a href="{% url 'editar_tour' tour.token %}">{{tour.nombre}}</a><a style="padding-left: 5px;" target="_blank" href="{% url 'tour_info' tour.token%}"><i class="fa fa-external-link" aria-hidden="true"></i></a></h3>
-                        <p class="card-meta">{{tour.ubicacion}}</p>
-                        <p class="card-meta">Interesados: {{tour.get_interesados}}</p>
-                        <div class="card-price d-flex align-items-center justify-content-between">
-                            <p>
-                                <span class="price__num">${{tour.precio|floatformat:2}}</span>
-                                <span class="price__from">Por Persona</span>
-                            </p>
+                        <div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;"></div>
+                        <div class="card-body">
+                            <h3 class="card-title"><a href="{% url 'editar_tour' tour.token %}">{{tour.nombre}}</a><a style="padding-left: 5px;" target="_blank" href="{% url 'tour_info' tour.token%}"><i class="fa fa-external-link" aria-hidden="true"></i></a></h3>
+                            <p class="card-meta">{{tour.ubicacion}}</p>
+                            <p class="card-meta">Interesados: {{tour.get_interesados}}</p>
+                            <div class="card-price d-flex align-items-center justify-content-between">
+                                <p>
+                                    <span class="price__num">${{tour.precio|floatformat:2}}</span>
+                                    <span class="price__from">Por Persona</span>
+                                </p>
+                            </div>
+                            <a href="{% url 'editar_tour' tour.token %}"><p>Ver/Editar</p></a>
+                            <a href="javascript:void(0)" onclick="copiarTour('{{tour.token}}')"><p>Crear Copia</p></a>
                         </div>
-                        <a href="{% url 'editar_tour' tour.token %}"><p>Ver/Editar</p></a>
-                        <a href="javascript:void(0)" onclick="copiarTour('{{tour.token}}')"><p>Crear Copia</p></a>
-                    </div>
-                </div><!-- end card-item -->
+                    </div><!-- end card-item -->
                     {% endfor %}
                 </div><!-- end row -->
                 <div class="border-top mt-5"></div>

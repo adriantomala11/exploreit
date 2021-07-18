@@ -86,17 +86,6 @@
                                     <div class="col-lg-4 responsive-column">
                                         <div class="single-tour-feature d-flex align-items-center mb-3">
                                             <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
-                                                <i class="la la-users"></i>
-                                            </div>
-                                            <div class="single-feature-titles">
-                                                <h3 class="title font-size-15 font-weight-medium">Tamaño del Grupo</h3>
-                                                <span class="font-size-13">{% if tour_info.tour.esta_disponible %}{{ tour_info.proximas_salidas.0.capacidad }}{% else %}-{% endif %} Personas</span>
-                                            </div>
-                                        </div><!-- end single-tour-feature -->
-                                    </div><!-- end col-lg-4 -->
-                                    <div class="col-lg-4 responsive-column">
-                                        <div class="single-tour-feature d-flex align-items-center mb-3">
-                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
                                                 <i class="la la-calendar"></i>
                                             </div>
                                             <div class="single-feature-titles">
@@ -105,6 +94,18 @@
                                             </div>
                                         </div><!-- end single-tour-feature -->
                                     </div><!-- end col-lg-4 -->
+                                    <div class="col-lg-4 responsive-column">
+                                        <div class="single-tour-feature d-flex align-items-center mb-3">
+                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
+                                                <i class="la la-file"></i>
+                                            </div>
+                                            <div class="single-feature-titles">
+                                                <h3 class="title font-size-15 font-weight-medium">Mas Información</h3>
+                                                <span class="font-size-13"><a href="#">Descargar PDF</a></span>
+                                            </div>
+                                        </div><!-- end single-tour-feature -->
+                                    </div><!-- end col-lg-4 -->
+
 
                                 </div><!-- end row -->
                             </div><!-- end single-content-item -->
@@ -254,11 +255,7 @@
             {% for tour in similares %}
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
-                    <div class="card-img">
-                        <a href="{% url 'tour_info' tour.token %}" class="d-block">
-                            <img src="{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}" alt="hotel-img">
-                        </a>
-                    </div>
+                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;"></div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
                         <p class="card-meta">{{tour.ubicacion}}</p>
@@ -342,6 +339,10 @@
 
     .bread-bg-2 {
         background-image: url('{% if tour_info.tour.imagen %}{{settings.MEDIA_URL}}{{ tour_info.tour.imagen }}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}') !important;
+    }
+
+    .btn-box a{
+        color: white;
     }
 </style>
 {% endblock %}

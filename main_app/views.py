@@ -102,11 +102,11 @@ def tour_booked(request, token):
     context['fecha_pago'] = reserva.fecha_creacion + timedelta(days=1)
     return render(request, 'tour_booked.html', context)
 
-@api_view()
 def tours(request):
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
+    categorias = []
     try:
         # FILTRO POR NACIONAL O INTERNACIONAL
         if params.__contains__('tipo'):
@@ -115,11 +115,11 @@ def tours(request):
                 categorias = Categoria.objects.filter(tipo='NAC')
             elif tipo=='INT':
                 categorias = Categoria.objects.filter(tipo='INT')
-            salidas = Salida.objects.filter(tour__tipo=tipo)
+            salidas = Salida.objects.filter(tour__tipo=tipo, tour__activo=True)
             tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
             categorias = Categoria.objects.all()
-            salidas = Salida.objects.all()
+            salidas = Salida.objects.filter(tour__activo=True)
 
         #FILTRO POR RANGO DE FECHAS
         if params.__contains__('daterange'):
@@ -146,9 +146,12 @@ def tours(request):
 
         if params.__contains__('categoria'):
             categoria = params['categoria']
-            categoria = Categoria.objects.get(codigo=categoria)
-            salidas = salidas.filter(tour__categoria=categoria)
-            tags['categoria'] = {'nombre': 'Categoria', 'valor': categoria.codigo, 'valor_string': categoria.nombre}
+            if categoria == 'ALL':
+                pass
+            else:
+                categoria = Categoria.objects.get(codigo=categoria)
+                salidas = salidas.filter(tour__categoria=categoria)
+                tags['categoria'] = {'nombre': 'Categoria', 'valor': categoria.codigo, 'valor_string': categoria.nombre}
 
         if params.__contains__('continente'):
             continente = params['continente']
@@ -159,15 +162,16 @@ def tours(request):
                 tours[str(salida.tour.id)] = salida.tour
 
         context = {'settings':settings, 'tags': tags, 'tours': tours, 'categorias': categorias}
-
-        if params.__contains__('mobile'):
-            tipo = params['mobile']
-            if tipo == settings.MOBILE_KEY:
-                tours = Tour.to_response_dict(tours.values())
-                return JsonResponse(data={'tags': tags, 'tours': tours})
-        else:
-            return render(request,'tour_grid.html',context)
-    except:
+        return render(request, 'tour_grid.html', context)
+        #if params.__contains__('mobile'):
+        #    tipo = params['mobile']
+        #    if tipo == settings.MOBILE_KEY:
+        #        tours = Tour.to_response_dict(tours.values())
+        #        return JsonResponse(data={'tags': tags, 'tours': tours})
+        #else:
+        #    return render(request,'tour_grid.html',context)
+    except Exception as e:
+        print(e)
         return redirect('/tours/')
 
 def ver_reserva(request):

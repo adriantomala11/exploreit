@@ -50,6 +50,7 @@ class Tour(models.Model):
     duracion                = models.IntegerField(default=0)
     categoria               = models.ForeignKey(Categoria, on_delete=models.PROTECT, null=True)
     abordaje_dia_anterior   = models.BooleanField(default=True)
+    activo                  = models.BooleanField(default=False)
 
     def obtener_info(self):
         incluye = Incluye.objects.filter(tour=self)
@@ -84,6 +85,9 @@ class Tour(models.Model):
     def get_interesados(self):
         return InteresadoTour.objects.filter(tour=self).count()
 
+    def esta_activo(self):
+        return self.activo
+
     @classmethod
     def to_response_dict(cls, tours):
         response_dict = []
@@ -100,7 +104,7 @@ class Tour(models.Model):
         return response_dict
 
     def obtener_similares(self):
-        return Tour.objects.filter(tipo=self.tipo).exclude(pk=self.pk).order_by('?')[:3]
+        return Tour.objects.filter(tipo=self.tipo, activo=True).exclude(pk=self.pk).order_by('?')[:3]
 
     def obtener_duracion(self):
         itinerario = Itinerario.objects.filter(tour=self).order_by('-dia')

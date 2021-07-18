@@ -29,7 +29,7 @@ def salidas_programadas(request):
 
 @login_required(login_url='/login/')
 def tours_registrados(request):
-    tours = Tour.objects.all()
+    tours = Tour.objects.filter(activo=True)
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
@@ -38,10 +38,10 @@ def tours_registrados(request):
         #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
         if params.__contains__('tipo'):
             tipo = params['tipo']
-            tours = Tour.objects.filter(tipo=tipo)
+            tours = Tour.objects.filter(tipo=tipo, activo=True)
             tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
-            tours = Tour.objects.all()
+            tours = Tour.objects.filter(activo=True)
 
         #FILTRO POR NOMBRE
         if params.__contains__('nombre'):
@@ -63,7 +63,8 @@ def tours_registrados(request):
         tours.order_by('pk')
         context = {'tours': tours, 'tags': tags, 'settings': settings}
         return render(request, 'tours_registrados.html', context)
-    except:
+    except Exception as e:
+        print(e)
         redirect('/tours/')
 
 @login_required(login_url='/login/')

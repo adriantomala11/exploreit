@@ -4182,12 +4182,12 @@ body {
   position: relative; }
   .card-item .card-img {
     position: relative;
+    height: 220px;
+    width: 100%;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px; }
     .card-item .card-img img {
-      height: 200px;
-      width: 100%;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
       border-radius: 5px;
