@@ -255,7 +255,7 @@
             {% for tour in similares %}
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
-                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;"></div></a>
+                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center;  height: 100%;"></div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
                         <p class="card-meta">{{tour.ubicacion}}</p>
