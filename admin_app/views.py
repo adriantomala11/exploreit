@@ -112,7 +112,6 @@ def registrar_tour(request):
         transaction.set_autocommit(False)
         try:
             data = json.loads(request.POST['tour_data'])
-            print(data)
             categoria_cod = data['categoria']
             categoria = Categoria.objects.get(codigo=categoria_cod)
             nuevo_tour = Tour(nombre=data['nombre'],
@@ -126,7 +125,9 @@ def registrar_tour(request):
                               duracion=len(data['itinerario']),
                               precio=float(data['precio']),
                               token=Salida.generar_token(),
-                              categoria=categoria)
+                              categoria=categoria,
+                              activo=data['activo'],
+                              abordaje_dia_anterior=data['trasnoche'])
             nuevo_tour.save()
 
             registrar_extras(data,nuevo_tour)
@@ -199,6 +200,8 @@ def editar_tour(request, slug):
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
             tour.categoria = categoria
+            tour.activo = data['activo']
+            tour.abordaje_dia_anterior = data['trasnoche']
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
             tour.eliminar_itinerarios()
