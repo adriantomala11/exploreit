@@ -245,7 +245,7 @@
                         </div><!-- end section-tab -->
                     </div><!-- end form-content -->
                     <div class="btn-box pt-2" style="text-align: center;">
-                        <a style="color: white;" onclick="confirmarReserva()" class="theme-btn text-center w-25 mb-5">Confirmar Reserva</a>
+                        <button style="color: white;" onclick="confirmarReserva(this)" class="theme-btn text-center w-25 mb-5">Confirmar Reserva</button>
                     </div>
                 </div><!-- end form-box -->
             </div><!-- end col-lg-8 -->
@@ -330,8 +330,9 @@
 <script src=»https://pay.payphonetodoesposible.com/api/button/js?appId=Iz7xRtMgDkKG9gQW6I41BA»></script>
 <script>
     var metodo_pago = 'PAP';
-    function confirmarReserva(){
-        var noHayErrores = true
+    function confirmarReserva(btn){
+        btn.disabled = true;
+        var noHayErrores = true;
         requestDic = {facturacion: {}, pasajeros: [], salida: '{{ salida.id}}', metodo_pago: metodo_pago, valor: '{{detalle_orden.total | floatformat:2 }}'}
         var allForms = document.forms
         for(var i=0; i<allForms.length; i++){
@@ -371,6 +372,7 @@
         }
         if(!noHayErrores){
             alert('Revise los datos ingresados')
+            btn.disabled = false;
         }else{
             $.ajax({
               type: "POST",
@@ -379,7 +381,9 @@
               success:function(response){
                 if(response.status == 200){
                     window.location.href = '{{settings.URL}}'+response.url
-                }else{}
+                }else{
+                    btn.disabled = false;
+                }
               },
             });
         }
