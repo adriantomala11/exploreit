@@ -146,6 +146,7 @@
                             </div>
                             <a href="{% url 'editar_tour' tour.token %}"><p>Ver/Editar</p></a>
                             <a href="javascript:void(0)" onclick="copiarTour('{{tour.token}}')"><p>Crear Copia</p></a>
+                            <a href="javascript:void(0)" onclick="eliminarTour('{{tour.token}}')"><p>Eliminar</p></a>
                         </div>
                     </div><!-- end card-item -->
                     {% endfor %}
@@ -233,6 +234,17 @@
         $.ajax({
           type: "POST",
           url: "{% url 'copiar_tour' %}",
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_token: token},
+          success:function(response){
+            window.location.reload()
+          },
+        });
+    }
+
+    function eliminarTour(token){
+        $.ajax({
+          type: "POST",
+          url: "{% url 'eliminar_tour' %}",
           data: {csrfmiddlewaretoken: '{{ csrf_token }}', tour_token: token},
           success:function(response){
             window.location.reload()

@@ -29,7 +29,7 @@ def salidas_programadas(request):
 
 @login_required(login_url='/login/')
 def tours_registrados(request):
-    tours = Tour.objects.filter(activo=True)
+    tours = Tour.objects.all()
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
@@ -38,10 +38,10 @@ def tours_registrados(request):
         #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
         if params.__contains__('tipo'):
             tipo = params['tipo']
-            tours = Tour.objects.filter(tipo=tipo, activo=True)
+            tours = Tour.objects.filter(tipo=tipo)
             tags['tipo'] = {'nombre': 'Tipo', 'valor': tipo, 'valor_string': dict(Tour.TIPO_CHOICES).get(tipo)}
         else:
-            tours = Tour.objects.filter(activo=True)
+            tours = Tour.objects.all()
 
         #FILTRO POR NOMBRE
         if params.__contains__('nombre'):
@@ -110,6 +110,7 @@ def registrar_tour(request):
         transaction.set_autocommit(False)
         try:
             data = json.loads(request.POST['tour_data'])
+            print(data)
             categoria_cod = data['categoria']
             categoria = Categoria.objects.get(codigo=categoria_cod)
             nuevo_tour = Tour(nombre=data['nombre'],
@@ -126,10 +127,7 @@ def registrar_tour(request):
                               categoria=categoria)
             nuevo_tour.save()
 
-            
             registrar_extras(data,nuevo_tour)
-            
-            
 
             try:
                 imagen = data['imagen']['data']
@@ -291,6 +289,19 @@ def copiar_tour(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
+@login_required(login_url='/login/')
+def eliminar_tour(request):
+    if request.method == 'POST':
+        try:
+            tour = Tour.objects.get(token=request.POST['tour_token'])
+            tour.delete()
+            response = JsonResponse({'status': 200, 'msg': 'Success'})
+        except Exception as e:
+            print(e)
+            response = JsonResponse({'status': 500, 'msg': str(e)})
+    else:
+        response = JsonResponse({'status': 500, 'msg': 'Error'})
+    return response
 
 @login_required(login_url='/login/')
 def reserva_dar_de_baja(request):

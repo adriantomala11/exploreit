@@ -49,6 +49,7 @@ urlpatterns = [
     path('administrador/reserva-dar-de-baja/', admin_views.reserva_dar_de_baja, name='reserva_dar_de_baja'),
     path('administrador/aumentar-capacidad/', admin_views.aumentar_capacidad, name='aumentar_capacidad'),
     path('administrador/copiar-tour/', admin_views.copiar_tour, name='copiar_tour'),
+    path('administrador/eliminar-tour/', admin_views.eliminar_tour, name='eliminar_tour'),
     path('administrador/categorias/', admin_views.categorias, name='categorias'),
 
     path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),

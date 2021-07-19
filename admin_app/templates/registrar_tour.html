@@ -110,12 +110,18 @@
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
-                            <div class="col-lg-6 responsive-column">
+                            <div class="col-lg-12 responsive-column" style="margin-top: 30px;">
+                                <p style="color: black;">Configuración del Tour</p>
                                 <div class="input-box">
-<!--                                    <label class="label-text">Salida Tranoche</label>-->
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Marcar en caso de que la salida de este tour se realice el día anterior.</label>
+                                        <input name="trasnoche" type="checkbox" class="form-check-input" id="activo" style="margin-top: 7px;" {% if tour.activo %}checked{% endif %}>
+                                        <label class="form-check-label" for="activo">Tour activo (El tour sera visible para todos los usuarios).</label>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <div class="form-check">
+                                        <input name="activo" type="checkbox" class="form-check-input" id="trasnoche" style="margin-top: 7px;" {% if tour.abordaje_dia_anterior %}checked{% endif %}>
+                                        <label class="form-check-label" for="trasnoche">Incluye salida trasnoche (La salida parte el dia anterior del que se indica).</label>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -238,12 +244,12 @@
             precio: '',
             duracion: 1,
             descripcion: '',
-            incluye:[
-            ],
-            no_incluye:[
-            ],
+            incluye:[],
+            no_incluye:[],
             itinerario: [[],],
-            imagen: {nombre: '', data: ''}
+            imagen: {nombre: '', data: ''},
+            activo: false,
+            transoche: false,
 
             {% else %}
 
@@ -321,6 +327,9 @@
     })
 
     function guardarTour(){
+        console.log(document.getElementById('activo').value)
+        console.log(document.getElementById('trasnoche').value)
+
         var noHayErrores = true;
         var elements = document.querySelectorAll('input')
         console.log(elements)
@@ -343,6 +352,8 @@
                 descripcion: document.getElementById('descripcion').value,
                 lugar_salida: document.getElementById('lugar_salida').value,
                 categoria: document.getElementById('categoria').value,
+                activo: document.getElementById('activo').checked,
+                trasnoche: document.getElementById('trasnoche').checked,
                 incluye: vm.incluye,
                 no_incluye: vm.no_incluye,
                 itinerario: vm.itinerario,
