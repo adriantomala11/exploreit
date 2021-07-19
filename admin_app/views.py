@@ -33,7 +33,6 @@ def tours_registrados(request):
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
-
     try:
         #FILTRO POR TIPO (NACIONAL, INTERNACIONAL)
         if params.__contains__('tipo'):
@@ -60,12 +59,15 @@ def tours_registrados(request):
         elif params.__contains__('precio-max') or params.__contains__('precio-min'):
             tours = tours.filter(precio__range=[precio_min, precio_max])
 
-        tours.order_by('pk')
+        tours.order_by('-pk')
         context = {'tours': tours, 'tags': tags, 'settings': settings}
-        return render(request, 'tours_registrados.html', context)
+
+        response = render(request, 'tours_registrados.html', context)
+        return response
+
     except Exception as e:
         print(e)
-        redirect('/tours/')
+        return redirect('/administrador/')
 
 @login_required(login_url='/login/')
 def obtener_listado_pasajeros(request, token):
@@ -177,7 +179,7 @@ def editar_tour(request, slug):
             return render(request, 'registrar_tour.html', context)
         except:
             print_exception()
-            redirect('/administrador/registrar-tour/')
+            return redirect('/administrador/registrar-tour/')
 
     elif request.method == 'POST':
         transaction.set_autocommit(False)
