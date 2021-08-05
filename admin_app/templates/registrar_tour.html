@@ -359,7 +359,7 @@
                 itinerario: vm.itinerario,
                 imagen: vm.imagen
             }
-
+            console.log(dataTour)
             $.ajax({
               type: "POST",
               url: "{% if not tour %}{% url 'registrar_tour' %}{% else %}{% url 'editar_tour' tour.token %}{% endif %}",
@@ -371,6 +371,8 @@
                     $.notify(response.msg, "error", {globalPosition: 'bottom right'});
                 }
               },
+              error:function(data){console.log(data)},
+              complete:function(data){console.log(data)}
             });
         }
     }

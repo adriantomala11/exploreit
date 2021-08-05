@@ -7026,7 +7026,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../images/color-bg2.png");
+    /*background-image: url("../images/color-bg2.png");*/
     background-size: cover;
     background-position: center;
     z-index: -1;
@@ -8652,7 +8652,7 @@ button{
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("../images/color-bg3.png");
+    /*background-image: url("../images/color-bg3.png");*/
     background-size: cover;
     background-position: center;
     opacity: 0.2; }

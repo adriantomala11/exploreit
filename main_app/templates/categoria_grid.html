@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START BREADCRUMB AREA
+================================= -->
+<section class="breadcrumb-area" style="background-image: url('{{categoria.imagen_url}}'); background-size: cover; background-position: center; ">
+    <div class="breadcrumb-wrap">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title">{{categoria.nombre}}</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list">
+                        <ul class="list-items d-flex justify-content-end">
+                            <li><a href="index.html">Exploreit</a></li>
+                            <li>{{categoria.nombre}}</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end breadcrumb-wrap -->
+</section><!-- end breadcrumb-area -->
+<!-- ================================
+    END BREADCRUMB AREA
+================================= -->
+
+<!-- ================================
+    START CARD AREA
+================================= -->
+<section class="card-area section--padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="filter-wrap margin-bottom-30px">
+                    {% comment %}
+                    <div class="filter-top d-flex align-items-center justify-content-between pb-4">
+                        <div>
+                            <h3 class="title font-size-24">22 Salidas Encontradas</h3>
+                            <p class="font-size-14 line-height-20 pt-1">No se cobran tarifas adicionales por reservar<p>
+                        </div>
+
+                        <div class="layout-view d-flex align-items-center">
+                            <a href="tour-grid.html" data-toggle="tooltip" data-placement="top" title="Grid View" class="active"><i class="la la-th-large"></i></a>
+                            <a href="tour-list.html" data-toggle="tooltip" data-placement="top" title="List View"><i class="la la-th-list"></i></a>
+                        </div>
+                    </div><!-- end filter-top -->
+
+                    <div class="filter-bar d-flex align-items-center justify-content-between">
+                        <div class="filter-bar-filter d-flex flex-wrap align-items-center">
+                            <div class="filter-option">
+                                <h3 class="title font-size-16">Filtros:</h3>
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
+                                        Precio
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de Precio</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto" style="display: flex;">
+                                                    <input name="precio-min" class="form-control" type="number" id="precio-min" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Min.">
+                                                    <div style="width: 6%;"></div>
+                                                    <input name="precio-max" class="form-control" type="number" id="precio-max" style="width: 47%; padding: 10px 7px; font-size: 0.9rem;" placeholder="Precio Max.">
+                                                </div><!-- end price-slider-amount -->
+                                            </div><!-- end slider-range-wrap -->
+                                            <button onclick="aplicarFiltros(['precio-min', 'precio-max'])" class="theme-btn w-100 text-center">Aplicar</button>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
+                                        Tipo
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="form-check">
+                                              <input value="NAC" class="form-check-input" type="radio" name="tipo" id="tiponac" style="margin-top: 6px;">
+                                              <label class="form-check-label" for="tiponac">
+                                                Nacional
+                                              </label>
+                                            </div>
+                                            <div class="form-check">
+                                              <input value="INT" class="form-check-input" type="radio" name="tipo" id="tipoint" style="margin-top: 6px;">
+                                              <label class="form-check-label" for="tipoint">
+                                                Internacional
+                                              </label>
+                                            </div>
+                                            <button onclick="aplicarFiltros(['tipo'])" class="theme-btn w-100 text-center mt-2">Aplicar</button>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
+                                        Fecha Salida
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Rango de fechas</label>
+                                                <div class="form-group">
+                                                    <input onclick="addCalendarListener();" class="date-range form-control" type="text" name="daterange" id="daterange">
+                                                </div>
+                                            </div>
+<!--                                            <button onclick="aplicarFiltros(['daterange'])" class="theme-btn w-100 text-center">Aplicar</button>-->
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                            <div class="filter-option">
+                                <div class="dropdown dropdown-contain">
+                                    <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button">
+                                        Categoría
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-wrap">
+                                        <div class="dropdown-item">
+                                            <div class="input-box">
+                                                <label class="label-text">Categoria</label>
+                                                <div class="form-group select-contain select-contain-shadow w-auto">
+                                                    <select name="categoria" class="select-contain-select" id="categoria">
+                                                        <option value="ALL" selected>Todo</option>
+                                                        {% for categoria in categorias %}
+                                                        <option value="{{categoria.codigo}}">{{categoria.nombre}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <button onclick="aplicarFiltros(['categoria'])" class="theme-btn w-100 text-center mt-2">Aplicar</button>
+                                            </div>
+                                        </div><!-- end dropdown-item -->
+                                    </div><!-- end dropdown-menu -->
+                                </div><!-- end dropdown -->
+                            </div>
+                        </div><!-- end filter-bar-filter -->
+                    </div><!-- end filter-bar -->
+                    <div style="overflow: overlay;">
+                        <div style="display: flex; padding: 10px 5px; width: max-content; overflow: auto;">
+                            {% for key,tag in tags.items %}
+                            <div class="tags-section" style="display: inline-flex; margin-right: 10px; margin-right: 10px; background-color: #7b00ff; padding: 3px 10px 3px 10px; border-radius: 50px; color: white;">
+                                <p style="font-weight: bold;">{{tag.nombre}}:</p>
+                                <p style="padding-left: 5px;">{{tag.valor_string}}</p>
+                                <p onclick="eliminarFiltro('{{key}}')" style="cursor: pointer; padding-left: 7px; font-weight: bold;"><i style="font-weight: bold;" class="las la-times"></i></p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endcomment %}
+                </div><!-- end filter-wrap -->
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+        <div class="row">
+            {% if tours %}
+            {% for tour in tours %}
+            <div class="col-lg-4 responsive-column" style="padding-bottom: 40px;">
+                <div class="card-item mb-0">
+                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;">
+                        {% if not tour.esta_disponible %}
+                        <span class="badge" style="background-color: #b32f2f;">NO DISPONIBLE</span>
+                        {% endif %}
+                    </div></a>
+                    <div class="card-body">
+                        <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
+                        <p class="card-meta">{{tour.ubicacion}}</p>
+                        <div class="card-price d-flex align-items-center justify-content-between">
+                            <p>
+                                <span class="price__num">${{tour.precio|floatformat:2}}</span>
+                                <span class="price__text">Por persona</span>
+                            </p>
+                            <a href="{% url 'tour_info' tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div><!-- end card-item -->
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="p-5" style="width: 100%; text-align: center;">
+                <h4>Lo sentimos, no se han encontrado coincidencias de Salidas :(</h4>
+            </div>
+            {% endif %}
+        </div><!-- end row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="btn-box mt-3 text-center">
+                    {%comment%}
+                    <button type="button" class="theme-btn"><i class="la la-refresh mr-1"></i>Cargar Mas</button>
+
+                    <p class="font-size-13 pt-2">Mostrando 1 - 9 de 22 Salidas</p>
+                    {%endcomment%}
+                </div><!-- end btn-box -->
+            </div><!-- end col-lg-12 -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end card-area -->
+<!-- ================================
+    END CARD AREA
+================================= -->
+{% endblock %}
+
+
+{% block footer_code %}
+<script>
+    var filtros = {{tags|safe}}
+    function aplicarFiltros(filtros_ls){
+        setTimeout(function () {
+            var new_url = ''
+            for(var i=0; i<filtros_ls.length; i++){
+                if(filtros_ls[i] == 'tipo'){
+                    try{
+                        filtros[filtros_ls[i]].valor = document.querySelector('input[name="tipo"]:checked').value;
+                    }catch{
+                        filtros[filtros_ls[i]] = { valor : document.querySelector('input[name="tipo"]:checked').value};
+                    }
+                }else{
+                    try{
+                        filtros[filtros_ls[i]].valor = document.getElementById(filtros_ls[i]).value;
+                    }catch{
+                        filtros[filtros_ls[i]] = {valor: document.getElementById(filtros_ls[i]).value};
+                    }
+                }
+            }
+            window.location.href = '{% url 'tours' %}'+ cambiarURL();
+        }, 200);
+    }
+
+    function cambiarURL(){
+        var new_url = '?'
+        let keys = Object.keys(filtros)
+        for(var i=0; i<keys.length; i++){
+            new_url = new_url + String(keys[i]) + '=' + String(filtros[keys[i]].valor)
+            if(i!=keys.length-1){
+                new_url = new_url + '&'
+            }
+        }
+        return (new_url.replaceAll("/", "%2F").replaceAll(" - ", "+-+"));
+    }
+
+    function eliminarFiltro(key){
+        delete filtros[key]
+        window.location.href = '{% url 'tours' %}'+ cambiarURL();
+    }
+
+    function addCalendarListener(){
+        let button = document.querySelector('.applyBtn.btn.btn-sm.btn-primary')
+        button.addEventListener("click", function(){ aplicarFiltros(['daterange']); false;})
+    }
+
+    function abrirDropdownMenu(el){
+        let node = el.nextSibling.nextSibling;
+        let elementos = document.querySelectorAll('.dropdown-menu.dropdown-menu-wrap')
+        for(var i=0; i<elementos.length; i++){
+            elementos[i].style.display = "none";
+        }
+        if (node.style.display != "block") {
+            node.style.display = "block";
+        } else {
+            node.style.display = "none";
+        }
+    }
+
+</script>
+<style>
+    .tags-section p{
+        font-size: 13px;
+    }
+</style>
+{% endblock %}
