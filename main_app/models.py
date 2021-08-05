@@ -4,6 +4,7 @@ import string
 import datetime
 from enum import Enum
 
+from PIL import Image
 from django.db import models
 
 # Create your models here.
@@ -14,7 +15,7 @@ from exploreit import settings
 import boto3
 from botocore.exceptions import NoCredentialsError
 
-from exploreit.helpers import decode_base64_file, send_html_email
+from exploreit.helpers import decode_base64_file, send_html_email, print_exception
 
 
 class Categoria(models.Model):
@@ -26,9 +27,15 @@ class Categoria(models.Model):
     nombre          = models.CharField(max_length=30, null=True)
     tipo            = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
     activa          = models.BooleanField(default=True)
+    codigo_url      = models.CharField(max_length=30, unique=True, null=True)
+    mostrar_en_menu = models.BooleanField(default=False)
+    imagen          = models.ImageField(upload_to=os.path.join('categorias', str(id)), null=True)
 
     def obtener_tipo_str(self):
         return dict(Tour.TIPO_CHOICES).get(self.tipo)
+
+    def imagen_url(self):
+        return os.path.join(settings.MEDIA_URL, 'categorias', str(self.id), str(self.imagen))
 
 class Tour(models.Model):
     TIPO_CHOICES = (
@@ -51,6 +58,37 @@ class Tour(models.Model):
     categoria               = models.ForeignKey(Categoria, on_delete=models.PROTECT, null=True)
     abordaje_dia_anterior   = models.BooleanField(default=True)
     activo                  = models.BooleanField(default=False)
+
+    THUMB_WIDTH = 562
+    THUMB_HEIGHT = 330
+
+    def get_imagen_path(self):
+        return 'media/tours/'+str(self.pk)+'/'+str(self.imagen)
+
+    def get_thumb_size(self):
+        return self.THUMB_WIDTH+'x'+self.THUMB_HEIGHT
+
+    def crear_thumbnail(self):
+        try:
+            infile = os.path.join(settings.BASE_DIR, self.get_imagen_path())
+            outfile = os.path.splitext(infile)[0] + ".thumbnail"
+            extension = os.path.splitext(infile)[-1]
+            size = self.THUMB_WIDTH, self.THUMB_HEIGHT
+            if infile != outfile:
+                try:
+                    im = Image.open(infile)
+                    im.thumbnail(size)
+                    if(extension=='.png'):
+                        im.save(outfile, "PNG")
+                    else:
+                        im.save(outfile, "JPEG")
+                except IOError:
+                    print("cannot create thumbnail for", infile)
+        except Exception as e:
+            print_exception()
+
+    def obtener_thumbnail(self):
+        pass
 
     def obtener_info(self):
         incluye = Incluye.objects.filter(tour=self)
@@ -81,6 +119,9 @@ class Tour(models.Model):
 
     def imagen_url(self):
         return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), str(self.imagen))
+
+    def imagen_thumbnail(self):
+        return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), os.path.splitext(str(self.imagen))[0] + ".thumbnail")
 
     def get_interesados(self):
         return InteresadoTour.objects.filter(tour=self).count()

@@ -31,6 +31,7 @@ urlpatterns = [
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),
     path('tours/', main_views.tours, name='tours'),
+    path('ct/<slug:slug>/', main_views.categoria, name='categoria'),
     path('subir-comprobante/', main_views.subir_comprobante, name='subir_comprobante'),
     path('mostrar-interes', main_views.mostrar_interes, name='mostrar_interes'),
 
@@ -43,6 +44,8 @@ urlpatterns = [
     path('administrador/programar-salida/', admin_views.programar_salida, name='programar_salida'),
     path('administrador/registrar-tour/', admin_views.registrar_tour, name='registrar_tour'),
     path('administrador/editar-tour/<slug:slug>/', admin_views.editar_tour, name='editar_tour'),
+    path('administrador/registrar-categoria/', admin_views.registrar_categoria, name='registrar_categoria'),
+    path('administrador/editar-categoria/<slug:slug>/', admin_views.editar_categoria, name='editar_categoria'),
     path('administrador/tours-registrados/', admin_views.tours_registrados, name='tours_registrados'),
     path('administrador/historial-salidas/', admin_views.historial_salidas, name='historial_salidas'),
     path('administrador/reserva-aprobar/', admin_views.reserva_aprobar, name='reserva_aprobar'),

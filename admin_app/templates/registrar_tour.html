@@ -114,13 +114,13 @@
                                 <p style="color: black;">Configuración del Tour</p>
                                 <div class="input-box">
                                     <div class="form-check">
-                                        <input name="trasnoche" type="checkbox" class="form-check-input" id="activo" style="margin-top: 7px;" {% if tour.activo %}checked{% endif %}>
+                                        <input name="activo" type="checkbox" class="form-check-input" id="activo" style="margin-top: 7px;" {% if tour.activo %}checked{% endif %}>
                                         <label class="form-check-label" for="activo">Tour activo (El tour sera visible para todos los usuarios).</label>
                                     </div>
                                 </div>
                                 <div class="input-box">
                                     <div class="form-check">
-                                        <input name="activo" type="checkbox" class="form-check-input" id="trasnoche" style="margin-top: 7px;" {% if tour.abordaje_dia_anterior %}checked{% endif %}>
+                                        <input name="trasnoche" type="checkbox" class="form-check-input" id="trasnoche" style="margin-top: 7px;" {% if tour.abordaje_dia_anterior %}checked{% endif %}>
                                         <label class="form-check-label" for="trasnoche">Incluye salida trasnoche (La salida parte el dia anterior del que se indica).</label>
                                     </div>
                                 </div>
@@ -405,4 +405,9 @@
         return returnValue
     }
 </script>
+<style>
+    .dropdown.bootstrap-select.select-contain-select button{
+        border-radius: 5px !important;
+    }
+</style>
 {% endblock %}

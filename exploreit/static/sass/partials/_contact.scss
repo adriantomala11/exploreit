@@ -361,7 +361,7 @@
 /*================== form-box ===================*/
 .form-box {
   border: 1px solid rgba(128, 137, 150, 0.1);
-  @include border-radius(5px);
+  @include border-radius(20px);
   margin-bottom: 30px;
   background-color: $white;
   @include box-shadow(0 0 40px rgba(82, 85, 90, 0.1));

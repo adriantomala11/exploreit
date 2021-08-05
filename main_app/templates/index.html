@@ -5,24 +5,21 @@
 <!-- ================================
     START HERO-WRAPPER AREA
 ================================= -->
-<section class="hero-wrapper">
-    <div class="hero-box hero-bg" style="min-height: 95vh; max-height: max-content;">
+<section class="hero-wrapper" style="margin-top: -75px;">
+    <div style="width: 100%; height: 75px; background-color: #ff000000; z-index: 2;"></div>
+    <div class="hero-box hero-bg" style="min-height: 100vh; max-height: max-content; z-index: 1; margin-top: -75px;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-10 mx-auto responsive--column-l">
-                    <div class="hero-content pb-5">
-                        <div class="section-heading">
-                            <h3 class="sec__title cd-headline zoom">
-                                Descubre los mejores destinos nacionales e internacionales
-                            </h3>
-                        </div>
-                    </div><!-- end hero-content -->
+            <div class="row pb-4">
+                <div class="col-lg-10 mx-auto">
+                    <h3 class="sec__title cd-headline zoom">
+                        Más Que Un Viaje, <br>Una Aventura
+                    </h3>
                 </div><!-- end col-lg-12 -->
             </div><!-- end row -->
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <div class="search-fields-container">
-                        <div class="section-tab section-tab-2 pb-3">
+                    <div class="search-fields-container" style="background-color: #fff0;">
+                        <div class="section-tab section-tab-2">
                             <ul class="nav nav-tabs" id="myTab3" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="one-way-tab" data-toggle="tab" href="#one-way" role="tab" aria-controls="one-way" aria-selected="true">
@@ -54,7 +51,7 @@
                                             <div class="input-box">
                                                 <label class="label-text">Categoria</label>
                                                 <div class="form-group select-contain select-contain-shadow w-auto">
-                                                    <select name="categoria" class="select-contain-select">
+                                                    <select name="categoria" class="select-contain-select categoria-opt">
                                                         <option value="ALL" selected>Todo</option>
                                                         {% for categoria in categorias_nacionales %}
                                                         <option value="{{categoria.codigo}}">{{categoria.nombre}}</option>
@@ -133,229 +130,131 @@
 ================================= -->
 
 <!-- ================================
-    START INFO AREA
-================================= -->
-<section class="info-area info-bg padding-bottom-50px text-center" style="display: none !important;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="icon-box">
-                    <div class="info-icon">
-                        <i class="las la-mountain"></i>
-                    </div><!-- end info-icon-->
-                    <div class="info-content">
-                        <h4 class="info__title">Destinos Nacionales</h4>
-                        <p class="info__desc">
-                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        </p>
-                    </div><!-- end info-content -->
-                </div><!-- end icon-box -->
-            </div><!-- end col-lg-4 -->
-            <div class="col-lg-4">
-                <div class="icon-box margin-top-50px">
-                    <div class="info-icon">
-                       <i class="la la-globe"></i>
-                    </div><!-- end info-icon-->
-                    <div class="info-content">
-                        <h4 class="info__title">Destinos Internacionales</h4>
-                        <p class="info__desc">
-                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        </p>
-                    </div><!-- end info-content -->
-                </div><!-- end icon-box -->
-            </div><!-- end col-lg-4 -->
-            <div class="col-lg-4">
-                <div class="icon-box">
-                    <div class="info-icon">
-                       <i class="la la-thumbs-up"></i>
-                    </div><!-- end info-icon-->
-                    <div class="info-content">
-                        <h4 class="info__title">Síguenos en Nuestras Redes</h4>
-                        <p class="info__desc">
-                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        </p>
-                    </div><!-- end info-content -->
-                </div><!-- end icon-box -->
-            </div><!-- end col-lg-4 -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end info-area -->
-<!-- ================================
-    END INFO AREA
-================================= -->
-
-<div class="section-block"></div>
-
-<!-- ================================
     START SALIDAS AREA
 ================================= -->
-<section class="hotel-area section-bg section-padding overflow-hidden padding-right-100px padding-left-100px">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading text-center" style="height: fit-content !important; padding-bottom: 25px;">
-                    <h2 class="sec__title line-height-55">Conoce Nuestros Destinos <br> </h2>
-                    <p>Reserva ahora y empieza una nueva aventura con nosotros de inmediato.</p>
-                </div><!-- end section-heading -->
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="hotel-card-wrap">
-                    <div class="hotel-card-carousel carousel-action">
-                        {% for tour in tours %}
-                        <div class="card-item mb-0">
-                            <a href="{% url 'tour_info' tour.token %}"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
-                            <div class="card-body">
-                                <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
-                                <p class="card-meta">{{tour.ubicacion}}</p>
-                                <div class="card-price d-flex align-items-center justify-content-between">
-                                    <p>
-                                        <span class="price__num">${{tour.precio|floatformat:2}}</span>
-                                        <span class="price__text">Por persona</span>
-                                    </p>
-                                    <a href="{% url 'tour_info' tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
-                                </div>
-                            </div>
-                        </div><!-- end card-item -->
-                        {% endfor %}
-                    </div><!-- end hotel-card-carousel -->
+<div style="min-height: 100vh;background-image: url('{% static 'images/background11.png' %}'); background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: cover;">
+    <section class="hotel-area section-padding overflow-hidden padding-right-100px padding-left-100px padding-top-150px" style="padding-bottom: 0; background-color: transparent; height: fit-content;">
+        <div class="container-fluid" style="margin-bottom: 0px;"><!-- margin-bottom: -150px -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading text-center" style="height: fit-content !important; padding-bottom: 25px;">
+                        <h2 class="sec__title line-height-55 pb-5">Visita los lugares que más Te Gustan</h2>
+                    </div><!-- end section-heading -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+            <div class="row special-row">
+                <div class="col-xl-3 xl-none" style="color: black; margin: auto;">
+                    <h4 style="font-size: 28px;" class="mb-2">Próximas Salidas</h4>
+                    <p class="mb-3" style="font-size: 20px;">Reserva ahora y empieza una nueva aventura con nosotros de inmediato.</p>
+                    <a style="font-size: 20px; color: #7b00ff !important" href="{% url 'tours' %}">Ver más</a>
                 </div>
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="btn-box mt-4 text-center">
-                    <a href="{% url 'tours' %}" class="theme-btn">Ver Mas</a>
-                </div><!-- end btn-box
-                -->
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-    </div><!-- end container-fluid -->
-</section><!-- end salidas-area -->
+                <div class="cards-container" style="display: flex; margin: auto;">
+                    <div class="container">
+                        <input type="radio" name="slider" id="item-1" value="1" checked>
+                        <input type="radio" name="slider" id="item-2" value="2">
+                        <input type="radio" name="slider" id="item-3" value="3">
+                        <div class="cards">
+                            {% if tours %}
+                                {% for tour in tours %}
+                                <label class="card" for="item-{{forloop.counter}}" id="song-{{forloop.counter}}">
+                                    <div class="card-item special mb-0" style=" border-radius: 20px">
+                                        <a href="javascript:void(0)"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 420px; border-radius: 20px 20px 0 0;"></div></a>
+                                        <div class="card-body" style="width: 100%;">
+                                            <h3 class="card-title"><a href="javascript:void(0)">{{tour.nombre}}</a></h3>
+                                            <p class="card-meta">Guayaquil, Ecuador</p>
+                                            <div class="card-price d-flex align-items-center justify-content-between">
+                                                <p>
+                                                    <span class="price__num">$45,00</span>
+                                                    <span class="price__text">Por persona</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card-item -->
+                                </label>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+        {% comment %}
+        <div style="width: 100%; position: relative; position: relative; bottom: -300px; z-index:1">
+            <div class="section-heading text-center">
+                <h2 class="sec__title line-height-55 pb-5">Hermosos lugares explorados</h2>
+            </div>
+            <div class="lugares-visitados-container" style="border-radius: 20px; margin: auto; display: flex;">
+                <div style="width: 40%; height: 600px; background-image:url('{{tours.0.imagen_url}}');border-radius: 20px 0 0 20px; background-size: cover; background-position: center;"></div>
+                <div style="width: 60%; background-color: white; border-radius: 0px 20px 20px 0px;"></div>
+            </div>
+        </div>
+        <div class="container-3 hero-box" style="width: 100%; z-index:0;  background-image:url('{{tours.1.imagen_url}}'); background-size: cover; background-position: center; width: 100vw; min-height: 70vh;"></div>
+        {% endcomment %}
+        <div class="container-3 hero-box mt-4" style="width: 100%; z-index:0; background-image:url('{{tours.1.imagen_url}}'); background-size: cover; background-position: center; width: 100vw;">
+            <div class="section-heading text-center">
+                <h2 class="sec__title line-height-55" style="color: white;">Hermosos lugares explorados</h2>
+                <p>Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
+            </div>
+        </div>
+        <section class="info-area padding-top-50px padding-bottom-50px text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                                <i class="la la-bullhorn"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">You'll never roam alone</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                               <i class="la la-globe"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">A world of choice – anytime, anywhere</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                               <i class="la la-thumbs-up"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">Peace of mind, wherever you wander</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+
+    </section><!-- end salidas-area -->
+<!--    <div style="background-image:url('{{tours.1.imagen_url}}'); background-size: cover; background-position: center; width: 100vw;">-->
+<!--        <div class="row">-->
+<!--            <div class="section-heading text-center" style="margin:auto;">-->
+<!--                <h2 class="sec__title line-height-55 pb-5" style="color: white;">Hermosos lugares explorados</h2>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
 <!-- ================================
     END SALIDAS AREA
 ================================= -->
 
-<!-- ================================
-    START DESTINATION AREA
-================================= -->
-{% comment %}
-<section class="destination-area section--padding">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <div class="section-heading">
-                    <h2 class="sec__title">Nuestros Destinos</h2>
-                </div><!-- end section-heading -->
-            </div><!-- end col-lg-8 -->
-            <div class="col-lg-4">
-                <div class="btn-box btn--box text-right">
-                    <a href="tour-grid.html" class="theme-btn">Ver Más</a>
-                </div>
-            </div>
-        </div><!-- end row -->
-        <div class="row padding-top-50px">
-            <div class="col-lg-4">
-                <div class="card-item destination-card">
-                    <div class="card-img">
-                        <img src="images/destination-img2.jpg' %}" alt="destination-img">
-                        <span class="badge">new york</span>
-                    </div>
-
-                </div><!-- end card-item -->
-            </div><!-- end col-lg-4 -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end destination-area -->
-{% endcomment %}
-<!-- ================================
-    END DESTINATION AREA
-================================= -->
-<!-- ================================
-       START BLOG AREA
-================================= -->
-<section class="blog-area padding-top-50px padding-bottom-90px">
-    <div class="container">
-        <div class="row" style="margin: 0px;">
-            <div class="col-lg-12">
-                <div class="section-heading text-center" style="height: fit-content !important; padding-bottom: 25px">
-                    <h2 class="sec__title line-height-55">Algunas Publicaciones Que <br> Podrían Interesarte</h2>
-                </div><!-- end section-heading -->
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-        <div class="row blog-area" style="margin: 0px;">
-            <div data-mc-src="f9bf5523-f23e-42c8-b9e1-02fb78c02994#instagram"></div>
-            <script
-              src="https://cdn2.woxo.tech/a.js#60482debce5a9700157eb14b"
-              async data-usrc>
-            </script>
-        </div><!-- end row -->
-<!--        <div style="width: 100% !important; z-index: 999; margin-top: -65px; height: 70px; background-color: white; position: absolute; left: 0px;">-->
-        </div>
-    </div><!-- end container -->
-</section><!-- end blog-area -->
-<!-- ================================
-       START BLOG AREA
-================================= -->
-
-<!-- ================================
-    START CTA AREA
-================================= -->
-<section class="cta-area padding-top-100px padding-bottom-180px text-center" style="background: url(https://ec.viajandox.com/uploads_2/image_275.jpg); background-repeat: no-repeat; background-size: cover;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading" style="height: fit-content;">
-                    <h2 class="sec__title text-white line-height-55">Regístrate y empieza a acumular puntos de<br> Viajero Frecuente para obtener Promociones Exclusivas</h2>
-                </div><!-- end section-heading -->
-                <div class="btn-box padding-top-35px">
-                    <a href="become-local-expert.html" class="theme-btn border-0">Regístrate Ahora</a>
-                </div>
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end cta-area -->
-<!-- ================================
-    END CTA AREA
-================================= -->
-<!-- ================================
-    START MOBILE AREA
-================================= -->
-<section class="mobile-app padding-top-70px padding-bottom-70px section-bg" style="background-color: white !important;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="mobile-app-content">
-                    <div class="section-heading">
-                        <h2 class="sec__title line-height-55">Explore It App disponible en iOS y Android Próximamente</h2>
-                    </div><!-- end section-heading -->
-                    <ul class="info-list padding-top-30px">
-                        <li class="d-flex align-items-center mb-3"><span class="la la-check icon-element flex-shrink-0 ml-0"></span> Promociones exclusivas para viajeros frecuentes</li>
-                        <li class="d-flex align-items-center mb-3"><span class="la la-check icon-element flex-shrink-0 ml-0"></span> Tus tickets de abordake en la palma de tu mano</li>
-                        <li class="d-flex align-items-center mb-3"><span class="la la-check icon-element flex-shrink-0 ml-0"></span> Notificaciones para tus destinos favoritos</li>
-                    </ul>
-                    <div class="btn-box padding-top-30px">
-                        <a  class="d-inline-block mr-3">
-                            <img src="" alt="">
-                        </a>
-                        <a  class="d-inline-block">
-                            <img src="" alt="">
-                        </a>
-                    </div><!-- end btn-box -->
-                </div>
-            </div><!-- end col-lg-6 -->
-            <div class="col-lg-6">
-                <div class="mobile-img">
-                    <img src="" alt="mobile-img">
-                </div>
-            </div><!-- end col-lg-5 -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end mobile-app -->
-<!-- ================================
-    END MOBILE AREA
-================================= -->
 {% endblock %}
 
 {% block footer_code %}
@@ -376,5 +275,196 @@
         width: 100% !important;
     }
 
+    .hero-box.hero-bg{
+        padding-top: 200px;
+    }
+
+    .main-menu-content ul li {
+        padding-right: 40px !important;
+    }
+
+
+input[type=radio] {
+  display: none;
+}
+
+.card {
+  position: absolute;
+  width: fit-content;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transition: transform .7s ease;
+  cursor: pointer;
+  border-radius: 20px;
+  max-width: 360px;
+
+}
+
+.cards {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  margin-bottom: 20px;
+}
+
+label img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.card-item.special{
+    cursor: inherit;
+}
+#item-1:checked ~ .cards #song-3, #item-2:checked ~ .cards #song-1, #item-3:checked ~ .cards #song-2 {
+  transform: translatex(-80%) scale(.8);
+  opacity: .6;
+  z-index: 0;
+}
+
+#item-1:checked ~ .cards #song-2, #item-2:checked ~ .cards #song-3, #item-3:checked ~ .cards #song-1 {
+  transform: translatex(80%) scale(.8);
+  opacity: .6;
+  z-index: 0;
+}
+
+#item-1:checked ~ .cards #song-1, #item-2:checked ~ .cards #song-2, #item-3:checked ~ .cards #song-3 {
+  transform: translatex(0) scale(1);
+  opacity: 1;
+  z-index: 2;
+
+  img {
+    box-shadow: 0px 0px 5px 0px rgba(81, 81, 81, 0.47);
+  }
+}
+
+.categoria-opt button{
+    border-radius: .25rem !important;
+}
+
+.theme-btn {
+    border-radius: 100px !important;
+}
+
+#myTabContent3{
+    padding: 30px 50px 30px 50px;
+    background-color: white;
+    border-radius: 0px 25px 25px 25px;
+}
+
+.cards{
+    width: 100%;
+}
+
+.cards .card{
+    width: 40%;
+    border: none;
+}
+
+.sec__title.cd-headline.zoom{
+    color: white;
+    font-size: 75px;
+    font-weight: bolder;
+}
+
+.cards-container{
+     width: 964px;
+}
+
+.lugares-visitados-container{
+    width: 900px;
+}
+
+.container-3{
+    margin-left: -100px;
+}
+
+@media (max-width: 575px) {
+    .container-3{
+        margin-left: 0px !important;
+    }
+}
+@media (max-width: 1300px) {
+    .cards-container{
+         width: 100%;
+    }
+
+    .lugares-visitados-container{
+        width: 100%;
+    }
+}
+
+@media (max-width: 991px) {
+    .main-menu-content{
+        height: 100vh;
+    }
+
+    #myTabContent3{
+    padding: 15px 25px 25px 25px;}
+
+    .cards .card{
+        width: 100%;
+    }
+
+    .sec__title.cd-headline.zoom{
+        color: white;
+        font-size: 45px;
+        font-weight: bolder;
+    }
+
+    .hero-box.hero-bg {
+        padding-top: 120px;
+    }
+
+}
+
+.special-row{
+    display: flex !important;
+}
+
+@media (max-width: 1500px) {
+    .special-row{
+        display: block !important;
+    }
+
+    .xl-none{
+        display: none !important;
+    }
+
+    .cards{
+        width: 100%;
+        margin-left: 0px !important;
+    }
+}
+
 </style>
+
+<script>
+var currentSlide = $('input')
+
+$('input').on('change', function() {
+  $('body').toggleClass('blue');
+});
+
+var intervalId = window.setInterval(function(){
+    $(function() {
+        var $radios = $('input:radio[name=slider]');
+        var current_slider = $('input[name="slider"]:checked').val();
+        if(current_slider==='1'){
+            $radios.filter('[value=1]').prop('checked', false);
+            $radios.filter('[value=2]').prop('checked', true);
+        }else if(current_slider==='2'){
+            $radios.filter('[value=2]').prop('checked', false);
+            $radios.filter('[value=3]').prop('checked', true);
+        }else if(current_slider==='3'){
+            $radios.filter('[value=3]').prop('checked', false);
+            $radios.filter('[value=1]').prop('checked', true);
+        }
+        //if($radios.is(':checked') === false) {
+        //    $radios.filter('[value=Male]').prop('checked', true);
+        //}
+    });
+}, 4000);
+</script>
 {% endblock %}

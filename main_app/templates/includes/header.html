@@ -3,37 +3,36 @@
             START HEADER AREA
 ================================= -->
 <header class="header-area">
-    <div class="header-menu-wrapper padding-right-100px padding-left-100px" style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 20px 0px;">
+    <div class="header-menu-wrapper padding-right-100px padding-left-100px" style="box-shadow: rgb(0 0 0 / 25%) 0px 4px 20px 0px; height: 75px;">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12" style="padding-left: 30px !important;">
+            <div class="row responsive-menu-2">
+                <div class="col-lg-12" style="padding-left: 30px !important; background-color: #7b00ff !important;">
                     <div class="menu-wrapper">
                         <a  class="down-button"><i class="la la-angle-down"></i></a>
                         <div class="logo">
-                            <a href="/"><img src="{% static 'images/LOGO-n.png' %}" alt="logo"
-                            width="170px" height="50px"></a>
-                            <div class="menu-toggler">
+                            <a href="/"><img src="{% static 'images/logo.png' %}" alt="logo" style="width: auto; height: 55px; margin: 10px 0 10px 0;"></a>
+                            <div class="menu-toggler" style="color: white;">
                                 <i class="la la-bars"></i>
                                 <i class="la la-times"></i>
                             </div><!-- end menu-toggler -->
                         </div><!-- end logo -->
-                        <div class="main-menu-content">
+                        <div class="main-menu-content" style="z-index: 2;">
                             <nav>
                               <ul>
                                   <li>
-                                    <a href="{% url 'tours' %}">Tours</a>
+                                    <a href="/">Inicio</a>
                                   </li>
                                   <li>
-                                    <a href="{% url 'ver_reserva' %}">Mi Reserva</a>
+                                    <a href="{% url 'tours' %}">Mi Reserva</a>
                                   </li>
-                                  {% comment %}
+                                  {% for categoria in categorias_menu %}
                                   <li>
-                                    <a href="{% url 'admin_dashboard' %}">Admin</a>
+                                    <a href="{% url 'categoria' categoria.codigo_url %}">{{categoria.nombre}}</a>
                                   </li>
+                                  {% endfor %}
                                   <li>
-                                    <a >FAQs</a>
+                                    <a href="{% url 'ver_reserva' %}">Nosotros</a>
                                   </li>
-                                  {% endcomment %}
                               </ul>
                             </nav>
                         </div><!-- end main-menu-content -->
@@ -51,10 +50,22 @@
 ================================= -->
 <style>
     .main-menu-content ul li a{
-        color: black !important;
+        color: white !important;
     }
 
     .header-menu-wrapper{
-        background-color: white !important;
+        background-color: #7b00ff !important;
+    }
+    nav ul li a:hover{
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    nav ul li a{
+        font-size: 18px;
+    }
+
+    .responsive-menu-2.active-menu{
+        height: 100vh;
     }
 </style>

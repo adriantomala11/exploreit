@@ -59,9 +59,11 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Nombre</th>
-                                                <th scope="col">Código</th>
                                                 <th scope="col">Tipo</th>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Codigo URL</th>
                                                 <th scope="col">Estado</th>
+                                                <th scope="col">Mostrar en Menu</th>
                                                 <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
@@ -69,14 +71,12 @@
                                         {% for categoria in categorias %}
                                             <tr>
                                                 <td>{{categoria.nombre}}</td>
-                                                <td>{{categoria.codigo}}</td>
                                                 <td>{{categoria.tipo}}</td>
-                                                <td>{{categoria.activo}}</td>
-                                                {% if categoria.activo %}
-                                                <td><a href="javascript:void(0);" onclick="cambiarEstadoCategoria({{categoria.id}})">Desabilitar</a></td>
-                                                {% else %}
-                                                <td><a href="javascript:void(0);" onclick="cambiarEstadoCategoria({{categoria.id}})">Habilitar</a></td>
-                                                {% endif %}
+                                                <td>{{categoria.codigo}}</td>
+                                                <td>{{categoria.codigo_url}}</td>
+                                                <td>{% if categoria.activa %}Activa{% else %}Inactiva{% endif %}</td>
+                                                <td>{% if categoria.mostrar_en_menu %}Si{% else %}No{% endif %}</td>
+                                                <td><a href="{% url 'editar_categoria' categoria.codigo_url %}">Editar</a></td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

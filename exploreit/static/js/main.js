@@ -157,8 +157,10 @@ Author Email:   contact@tecydevs.com
 
         $window.on('scroll', function () {
 
-            if ($window.scrollTop() >= topOfNav) {
+            if ($window.scrollTop() >= '80') {
+                try{
                 document.body.style.paddingTop = topNav.offsetHeight + 'px';
+                }catch{}
                 document.body.classList.add('fixed-nav');
             }
             else {

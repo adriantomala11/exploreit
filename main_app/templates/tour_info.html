@@ -4,7 +4,7 @@
 <!-- ================================
     START BREADCRUMB TOP BAR
 ================================= -->
-<section class="breadcrumb-top-bar">
+<section class="breadcrumb-top-bar" style="display: none;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -27,7 +27,7 @@
     START BREADCRUMB AREA
 ================================= -->
 <section class="breadcrumb-area bread-bg-2 py-0">
-    <div class="breadcrumb-wrap" style="background-image: url('{{tour_info.tour.imagen_url}}'); background-size: cover; background-position: center;">
+    <div class="breadcrumb-wrap hero-box" style="background-image: url('{{tour_info.tour.imagen_url}}'); background-size: cover; background-position: center; padding-bottom: 0px !important;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -255,7 +255,7 @@
             {% for tour in similares %}
             <div class="col-lg-4 responsive-column">
                 <div class="card-item mb-0">
-                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
+                    <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
                         <p class="card-meta">{{tour.ubicacion}}</p>
@@ -338,7 +338,7 @@
     }
 
     .bread-bg-2 {
-        background-image: url('{% if tour_info.tour.imagen %}{{settings.MEDIA_URL}}{{ tour_info.tour.imagen }}{% else %}{% static 'images/LOGO-n.png' %}{% endif %}') !important;
+        background-image: url('{% if tour_info.tour.imagen %}{{settings.MEDIA_URL}}{{ tour_info.tour.imagen }}{% else %}{% static 'images/logo.png' %}{% endif %}') !important;
     }
 
     .btn-box a{

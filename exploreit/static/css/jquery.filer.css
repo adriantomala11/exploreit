@@ -16,7 +16,7 @@
 
 .jFiler {
     font-family: 'Work Sans', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     color: #494949;
 }
 
@@ -47,7 +47,7 @@ span.jFiler-icon-file {
     text-align: center;
     margin: 0 auto;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     overflow: hidden;
 }

@@ -3,7 +3,7 @@
  ====================================================*/
 .accordion-item {
   .card {
-    @include box-shadow(0 0 14px rgba(82, 85, 90, 0.01));
+    @include box-shadow(0 0 16px rgba(82, 85, 90, 0.01));
     border-color: rgba(128, 137, 150, 0.2);
     @include border-radius(8px);
     margin-bottom: 10px;
@@ -25,7 +25,7 @@
       font-size: $display-31;
       font-weight: $font-weight-medium;
       text-decoration: none;
-      padding: 14px 20px;
+      padding: 16px 20px;
       @media #{$small_mobile_five} {
         font-size: $default-font;
       }

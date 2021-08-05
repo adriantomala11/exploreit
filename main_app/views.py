@@ -21,14 +21,21 @@ from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserv
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    tours = Tour.objects.all()
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
+    tours = list(Tour.objects.all().order_by('?')[:3])
+    if len(tours) > 0:
+        while len(tours) < 3 :
+            tours.append(tours[0])
+    else:
+        tours = None
     categorias_nacionales = Categoria.objects.filter(tipo='NAC', activa=True)
     categorias_internacionales = Categoria.objects.filter(tipo='INT', activa=True)
-    context = {'tours': tours, 'settings': settings, 'categorias_nacionales':categorias_nacionales, 'categorias_internacionales':categorias_internacionales}
+    context = {'tours': tours, 'settings': settings, 'categorias_nacionales':categorias_nacionales, 'categorias_internacionales':categorias_internacionales, 'categorias_menu': categorias_menu}
     return render(request, 'index.html', context)
 
 def tour_info(request, token):
-    context = {'settings':settings}
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
+    context = {'settings':settings, 'categorias_menu': categorias_menu}
     tour = get_object_or_404(Tour, token=token)
     tour_info = tour.obtener_info()
     similares = tour.obtener_similares()
@@ -37,8 +44,9 @@ def tour_info(request, token):
     return render(request, 'tour_info.html', context)
 
 def tour_booking(request, token):
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
     if request.method == 'GET':
-        context = {'settings':settings}
+        context = {'settings':settings, 'categorias_menu': categorias_menu}
         tour = get_object_or_404(Tour, token=token)
         salida = Salida.objects.get(pk=request.GET['sal'], tour=tour)
         context['salida'] = salida
@@ -94,7 +102,8 @@ def tour_booking(request, token):
         return response
 
 def tour_booked(request, token):
-    context = {'settings':settings}
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
+    context = {'settings':settings, 'categorias_menu': categorias_menu}
     reserva = get_object_or_404(Reserva, token=token)
     pasajeros = ReservaPasajero.objects.filter(reserva=reserva)
     context['reserva'] = reserva
@@ -103,6 +112,7 @@ def tour_booked(request, token):
     return render(request, 'tour_booked.html', context)
 
 def tours(request):
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
     params = request.GET
     fecha_inicio, fecha_fin, precio_min, precio_max, tipo, categoria, continente = (None, None, 0, 10000, None, None, None)
     tags = {}
@@ -161,7 +171,7 @@ def tours(request):
             if not tours.__contains__(str(salida.tour.id)):
                 tours[str(salida.tour.id)] = salida.tour
 
-        context = {'settings':settings, 'tags': tags, 'tours': tours, 'categorias': categorias}
+        context = {'settings':settings, 'tags': tags, 'tours': tours, 'categorias': categorias, 'categorias_menu': categorias_menu}
         return render(request, 'tour_grid.html', context)
         #if params.__contains__('mobile'):
         #    tipo = params['mobile']
@@ -174,11 +184,19 @@ def tours(request):
         print(e)
         return redirect('/tours/')
 
+def categoria(request, slug):
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
+    categoria = get_object_or_404(Categoria, codigo_url=slug)
+    tours = Tour.objects.filter(categoria=categoria)
+    context = {'settings': settings, 'tours': tours, 'categorias_menu': categorias_menu, 'categoria': categoria}
+    return render(request, 'categoria_grid.html', context)
+
 def ver_reserva(request):
+    categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
     if request.method == 'GET':
         codigo = request.GET.get('tok')
         if codigo:
-            context = {}
+            context = {'categorias_menu': categorias_menu}
             reserva = get_object_or_404(Reserva, token=codigo)
             pasajeros = ReservaPasajero.objects.filter(reserva=reserva)
             context['reserva'] = reserva

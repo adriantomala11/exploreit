@@ -145,6 +145,7 @@ def registrar_tour(request):
                 with open(ruta, 'wb+') as f:
                     f.write(imgdata)
                 nuevo_tour.save()
+                nuevo_tour.crear_thumbnail()
             except:
                 print_exception()
 
@@ -206,7 +207,7 @@ def editar_tour(request, slug):
             tour.eliminar_no_incluyes()
             tour.eliminar_itinerarios()
             tour.save()
-            registrar_extras(data,tour)
+            registrar_extras(data, tour)
             try:
                 imagen = data['imagen']['data']
                 imgdata = base64.b64decode(imagen.split(',')[1])
@@ -216,14 +217,111 @@ def editar_tour(request, slug):
 
                 if not (os.path.exists(ruta)):
                     os.makedirs(ruta)
+
+                for fn in os.listdir(ruta):
+                    file_path = os.path.join(ruta, fn)
+                    os.remove(file_path)
+
                 ruta = os.path.join(ruta, filename)
                 with open(ruta, 'wb+') as f:
                     f.write(imgdata)
                 tour.save()
+                tour.crear_thumbnail()
             except:
                 print_exception()
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
+            transaction.commit()
+            return response
+
+        except Exception as e:
+            transaction.rollback()
+            msg = str(e)
+            response = JsonResponse({'status': 500, 'msg': msg})
+            return response
+
+@login_required(login_url='/login/')
+def registrar_categoria(request):
+    if request.method == 'GET':
+        context = {'tour_class': Tour()}
+        return render(request, 'registrar_categoria.html', context)
+
+    elif request.method == 'POST':
+        transaction.set_autocommit(False)
+        try:
+            data = json.loads(request.POST['tour_data'])
+            nuevo_categoria = Tour(nombre=data['nombre'],
+                              tipo=data['tipo'],
+                              activa=data['activo'],
+                              mostrar_en_menu=data['mostrar_en_menu'])
+            codigo = str(nuevo_categoria.nombre[0:3]).upper()
+            try:
+                cat = get_object_or_404(Categoria, codigo=codigo)
+                codigo = codigo + str(int(cat.pk) + 1)
+            except:
+                pass
+            nuevo_categoria.codigo = codigo
+            nuevo_categoria.save()
+            try:
+                imagen = data['imagen']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen']['nombre']
+                nuevo_categoria.imagen = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'categorias', str(nuevo_categoria.id))
+
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                nuevo_categoria.save()
+            except:
+                print_exception()
+
+            response_url = '/administrador/categorias/'
+            response = JsonResponse({'status': 200, 'url': response_url})
+            transaction.commit()
+            return response
+        except Exception as e:
+            transaction.rollback()
+            msg = str(e)
+            response = JsonResponse({'status': 500, 'msg': msg})
+            return response
+
+def editar_categoria(request, slug):
+    if request.method == 'GET':
+        categoria = Categoria.objects.get(codigo_url=slug)
+        context = {'categoria': categoria, 'tour_class': Tour()}
+        return render(request, 'registrar_categoria.html', context)
+
+    elif request.method == 'POST':
+        transaction.set_autocommit(False)
+        try:
+            categoria = Categoria.objects.get(codigo_url=slug)
+            data = json.loads(request.POST['categoria_data'])
+            categoria.nombre = data['nombre']
+            categoria.codigo_url = data['codigo_url']
+            categoria.tipo = data['tipo']
+            categoria.activa = data['activo']
+            categoria.mostrar_en_menu = data['mostrar_en_menu']
+            categoria.save()
+            try:
+                imagen = data['imagen']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen']['nombre']
+                categoria.imagen = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'categorias', str(categoria.id))
+
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                categoria.save()
+            except:
+                print_exception()
+            response_url = '/administrador/categorias/'
+            response = JsonResponse({'status': 200, 'url': response_url})
             transaction.commit()
             return response
 

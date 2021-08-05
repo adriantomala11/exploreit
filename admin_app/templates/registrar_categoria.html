@@ -1,0 +1,208 @@
+{% extends "admin_base.html" %}
+{% load static %}
+{% block main_content %}
+<!-- ================================
+    START DASHBOARD AREA
+================================= -->
+<section class="dashboard-area" id="app">
+    <div style="padding: 30px">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="listing-header pb-4">
+                <div class="form-box">
+                    <div class="form-title-wrap">
+                        <h3 class="title"><i class="la la-gear mr-2 text-gray"></i>Informacion de la Categoría</h3>
+                    </div><!-- form-title-wrap -->
+                    <div class="form-content contact-form-action">
+                        <form method="post" class="row" autocomplete="off">
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Nombre de la categoria</label>
+                                    <div class="form-group">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input v-model="nombre" id="nombre" class="form-control" type="text" name="nombre_tour" placeholder="Ingresar nombre del tour" required>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Código URL de la Categoria (Debe ser UNICO y SIN ESPACIOS)</label>
+                                    <div class="form-group">
+                                        <span class="la la-map form-icon"></span>
+                                        <input v-model="codigo_url" id="codigo_url" class="form-control" type="text" name="text" placeholder="Código URL" required>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Tipo de Categoria</label>
+                                    <div class="form-group select-contain w-100">
+                                        <select v-model="tipo" id="tipo" class="select-contain-select" required>
+                                            {% for key, value in tour_class.TIPO_CHOICES %}
+                                            <option class="tipo-option" value="{{key}}">{{value}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Imagen </label>
+                                    <div class="form-group">
+                                        <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-12 responsive-column" style="margin-top: 30px;">
+                                <p style="color: black;">Configuración de la Categoria</p>
+                                <div class="input-box">
+                                    <div class="form-check">
+                                        <input name="activo" type="checkbox" class="form-check-input" id="activo" style="margin-top: 7px;" {% if categoria.activa %}checked{% endif %}>
+                                        <label class="form-check-label" for="activo">Categoria activa (Los usuarios podran filtrar tours por esta categoria).</label>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <div class="form-check">
+                                        <input name="mostrar_en_menu" type="checkbox" class="form-check-input" id="mostrar_en_menu" style="margin-top: 7px;" {% if categoria.mostrar_en_menu %}checked{% endif %}>
+                                        <label class="form-check-label" for="mostrar_en_menu">Mostrar en menu (Esta categoria se moostrara en el menu principal).</label>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                        </form>
+                    </div><!-- end form-content -->
+                </div><!-- end form-box -->
+                <div class="submit-box">
+                    <div class="btn-box pt-3">
+                        <a onclick="guardarCategoria()" class="theme-btn" style="color: white; cursor: pointer;">Guardar</a>
+                    </div>
+                </div><!-- end submit-box -->
+            </div><!-- end col-lg-9 -->
+        </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end dashboard-area -->
+<!-- ================================
+    END DASHBOARD AREA
+================================= -->
+{% endblock %}
+{% block footer_code %}
+<style>
+    .form-error{
+        background-color: #ffeaea !important;
+        border-color: #cc5d5d !important;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="{% static 'js/notify.min.js' %}"></script>
+<script>
+    document.getElementById('nav_registrar_tour').classList.add('page-active')
+    document.getElementById('nav_tours').classList.add('page-active')
+    document.getElementById('nav_tours_content').classList.add('show')
+
+    var vm = new Vue({
+        el: '#app',
+        delimiters:['[[',']]'] ,
+        data:{
+            {% if not categoria %}
+
+            nombre: '',
+            tipo: '',
+            codigo_url: '',
+            activo: false,
+            mostrar_en_menu: false,
+            imagen:{nombre: '', data: ''},
+
+            {% else %}
+
+            nombre: '{{categoria.nombre}}',
+            codigo_url: '{{categoria.codigo_url}}',
+            tipo: '{{categoria.tipo}}',
+            activo: {{categoria.activa|yesno:"true,false"}},
+            mostrar_en_menu: {{categoria.mostrar_en_menu|yesno:"true,false"}},
+            imagen: {nombre: '', data: ''},
+            {% endif %}
+        },
+        methods:{
+        },
+        components:{
+        },
+        computed: {
+        },
+        mounted(){
+        }
+    })
+
+    function guardarCategoria(){
+
+        var noHayErrores = true;
+        var elements = document.querySelectorAll('input')
+        console.log(elements)
+        var hayErrores = validarCampos(elements)
+        if(!hayErrores){
+            noHayErrores = false
+        }
+
+        if(!noHayErrores){
+            $.notify('Revise los datos ingresados', "error", {globalPosition: 'bottom right'});
+        }else{
+            var dataCategoria ={
+                nombre: document.getElementById('nombre').value,
+                tipo: document.getElementById('tipo').value,
+                codigo_url: document.getElementById('codigo_url').value,
+                activo: document.getElementById('activo').checked,
+                mostrar_en_menu: document.getElementById('mostrar_en_menu').checked,
+                imagen: vm.imagen
+            }
+
+            $.ajax({
+              type: "POST",
+              url: "{% if not categoria %}{% url 'registrar_categoria' %}{% else %}{% url 'editar_categoria' categoria.codigo_url %}{% endif %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', categoria_data: JSON.stringify(dataCategoria)},
+              success:function(response){
+                if(response.status == 200){
+                    window.location.href = '{{settings.URL}}'+response.url
+                }else{
+                    $.notify(response.msg, "error", {globalPosition: 'bottom right'});
+                }
+              },
+            });
+        }
+    }
+
+    function getImageData(){
+        var input = document.getElementById('fileinput');
+        var file = input.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            vm.imagen.data = reader.result;
+            vm.imagen.nombre = file.name;
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
+
+    function validarCampos(elements){
+        var returnValue = true
+        for(var j=0; j<elements.length; j++){
+            console.log(elements[j])
+            if(!elements[j].checkValidity()){
+                returnValue = false
+                elements[j].classList.add('form-error')
+            }else{
+                try{
+                    elements[j].classList.remove('form-error')
+                }catch{}
+            }
+        }
+        return returnValue
+    }
+</script>
+<style>
+.dropdown.bootstrap-select.select-contain-select button{
+        border-radius: 5px !important;
+    }
+</style>
+{% endblock %}
