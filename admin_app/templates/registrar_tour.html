@@ -380,15 +380,21 @@
     function getImageData(){
         var input = document.getElementById('fileinput');
         var file = input.files[0];
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-            vm.imagen.data = reader.result;
-            vm.imagen.nombre = file.name;
-        };
-        reader.onerror = function (error) {
-            console.log('Error: ', error);
-        };
+        if(file.size < 5000000){
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                vm.imagen.data = reader.result;
+                vm.imagen.nombre = file.name;
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }else{
+            alert('La imagen supera el limite establecido de 5MB. Intente utilizando otra imagen')
+            input.files = []
+            input.val = ''
+        }
     }
 
     function validarCampos(elements){

@@ -20,18 +20,18 @@
                             <nav>
                               <ul>
                                   <li>
-                                    <a href="/">Inicio</a>
-                                  </li>
-                                  <li>
-                                    <a href="{% url 'tours' %}">Mi Reserva</a>
+                                    <a href="/"><i class="las la-home"></i>  Inicio</a>
                                   </li>
                                   {% for categoria in categorias_menu %}
                                   <li>
-                                    <a href="{% url 'categoria' categoria.codigo_url %}">{{categoria.nombre}}</a>
+                                    <a href="{% url 'categoria' categoria.codigo_url %}"><i class="{{categoria.icono}}"></i>  {{categoria.nombre}}</a>
                                   </li>
                                   {% endfor %}
                                   <li>
-                                    <a href="{% url 'ver_reserva' %}">Nosotros</a>
+                                    <a href="{% url 'tours' %}"><i class="las la-passport"></i>  Explorar</a>
+                                  </li>
+                                  <li>
+                                    <a href="{% url 'ver_reserva' %}"><i class="las la-passport"></i>  Mi Reserva</a>
                                   </li>
                               </ul>
                             </nav>
@@ -49,6 +49,10 @@
          END HEADER AREA
 ================================= -->
 <style>
+    .main-menu-content nav ul li a i{
+        margin-right: 10px;
+    }
+
     .main-menu-content ul li a{
         color: white !important;
     }

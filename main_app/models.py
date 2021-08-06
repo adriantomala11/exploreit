@@ -30,6 +30,7 @@ class Categoria(models.Model):
     codigo_url      = models.CharField(max_length=30, unique=True, null=True)
     mostrar_en_menu = models.BooleanField(default=False)
     imagen          = models.ImageField(upload_to=os.path.join('categorias', str(id)), null=True)
+    icono           = models.CharField(max_length=50, default='las la-map-marked')
 
     def obtener_tipo_str(self):
         return dict(Tour.TIPO_CHOICES).get(self.tipo)
@@ -263,21 +264,22 @@ class Reserva(models.Model):
         ('DBC', 'DE BAJA POR CLIENTE'),
         ('DBA', 'DE BAJA POR ADMIN'),
     )
-    token           = models.CharField(max_length=30, null=True)
-    fecha_creacion  = models.DateTimeField(default=timezone.now)
-    salida          = models.ForeignKey(Salida, on_delete=models.PROTECT)
-    acomodacion     = models.CharField(max_length=10, null=True)
-    correo          = models.CharField(max_length=40)
-    nombre          = models.CharField(max_length=40)
-    apellido        = models.CharField(max_length=40)
-    cedula          = models.CharField(max_length=15)
-    telefono        = models.CharField(max_length=20, null=True)
-    comprobante     = models.CharField(max_length=100, null=True)
-    metodo_de_pago  = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
-    valor           = models.IntegerField(default=100)
-    estado          = models.CharField(max_length=3, default='PEN', choices=ESTADO_CHOICES)
-    pagado          = models.BooleanField(default=False)
-    de_baja         = models.BooleanField(default=False)
+    token               = models.CharField(max_length=30, null=True)
+    fecha_creacion      = models.DateTimeField(default=timezone.now)
+    salida              = models.ForeignKey(Salida, on_delete=models.PROTECT)
+    acomodacion         = models.CharField(max_length=10, null=True)
+    correo              = models.CharField(max_length=40)
+    nombre              = models.CharField(max_length=40)
+    apellido            = models.CharField(max_length=40)
+    cedula              = models.CharField(max_length=15)
+    telefono            = models.CharField(max_length=20, null=True)
+    comprobante         = models.CharField(max_length=100, null=True)
+    metodo_de_pago      = models.CharField(max_length=3, default='PAP', choices=PAGO_CHOICES)
+    valor               = models.IntegerField(default=100)
+    estado              = models.CharField(max_length=3, default='PEN', choices=ESTADO_CHOICES)
+    pagado              = models.BooleanField(default=False)
+    de_baja             = models.BooleanField(default=False)
+    codigo_cancelacion  = models.CharField(max_length=100, null=True)
 
     @classmethod
     def generar_token(cls):

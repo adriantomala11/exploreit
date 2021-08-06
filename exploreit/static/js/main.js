@@ -85,6 +85,9 @@ Author Email:   contact@tecydevs.com
 
         /*=========== Responsive Mobile menu ============*/
         $document.on('click', '.menu-toggler', function () {
+            if(!$('body').hasClass('fixed-nav')){
+                $('body').addClass('fixed-nav')
+            }
             $(this).toggleClass('active');
             $('.main-menu-content').slideToggle(200);
         });

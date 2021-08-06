@@ -18,9 +18,8 @@
                 <div class="col-lg-6">
                     <div class="breadcrumb-list">
                         <ul class="list-items d-flex justify-content-end">
-                            <li><a href="index.html">Home</a></li>
-                            <li>Tour</li>
-                            <li>Tour Grid</li>
+                            <li><a href="index.html">Explore It</a></li>
+                            <li>Tours</li>
                         </ul>
                     </div><!-- end breadcrumb-list -->
                 </div><!-- end col-lg-6 -->
@@ -171,7 +170,7 @@
                     </div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
-                        <p class="card-meta">{{tour.ubicacion}}</p>
+                        <p class="card-meta"><i class="las la-map-marker-alt"></i> {{tour.ubicacion}}</p>
                         <div class="card-price d-flex align-items-center justify-content-between">
                             <p>
                                 <span class="price__num">${{tour.precio|floatformat:2}}</span>

@@ -28,9 +28,10 @@ def index(request):
             tours.append(tours[0])
     else:
         tours = None
+    tours_recientes = Tour.objects.all().order_by('-id')[:5]
     categorias_nacionales = Categoria.objects.filter(tipo='NAC', activa=True)
     categorias_internacionales = Categoria.objects.filter(tipo='INT', activa=True)
-    context = {'tours': tours, 'settings': settings, 'categorias_nacionales':categorias_nacionales, 'categorias_internacionales':categorias_internacionales, 'categorias_menu': categorias_menu}
+    context = {'tours_recientes':tours_recientes, 'tours': tours, 'settings': settings, 'categorias_nacionales':categorias_nacionales, 'categorias_internacionales':categorias_internacionales, 'categorias_menu': categorias_menu}
     return render(request, 'index.html', context)
 
 def tour_info(request, token):

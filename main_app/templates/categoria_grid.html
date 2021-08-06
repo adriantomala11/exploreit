@@ -171,7 +171,7 @@
                     </div></a>
                     <div class="card-body">
                         <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
-                        <p class="card-meta">{{tour.ubicacion}}</p>
+                        <p class="card-meta"><i class="las la-map-marker-alt"></i> {{tour.ubicacion}}</p>
                         <div class="card-price d-flex align-items-center justify-content-between">
                             <p>
                                 <span class="price__num">${{tour.precio|floatformat:2}}</span>
@@ -185,7 +185,7 @@
             {% endfor %}
             {% else %}
             <div class="p-5" style="width: 100%; text-align: center;">
-                <h4>Lo sentimos, no se han encontrado coincidencias de Salidas :(</h4>
+                <h4>Lo sentimos, esta categoría aun no cuenta con Tours disponibles. Prueba explorando otros tours <a href="{% url 'tours' %}">aquí</a></h4>
             </div>
             {% endif %}
         </div><!-- end row -->
@@ -273,5 +273,16 @@
     .tags-section p{
         font-size: 13px;
     }
+@media (max-width: 575px) {
+    .card-item{
+        width: 85%;
+        margin-auto;
+    }
+
+    .card-item .card-img{
+        height: 350px;
+    }
+
+}
 </style>
 {% endblock %}
