@@ -27,6 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_views.index, name='index'),
     path('ver-reserva/', main_views.ver_reserva, name='ver_reserva'),
+    path('cancelar-reserva/', main_views.cancelar_reserva, name='cancelar_reserva'),
+    path('confirmar-cancelacion/', main_views.confirmar_cancelacion, name='confirmar_cancelacion'),
     path('tour-info/<slug:token>/', main_views.tour_info, name='tour_info'),
     path('tour-booking/<slug:token>/', main_views.tour_booking, name='tour_booking'),
     path('tour-booked/<slug:token>/', main_views.tour_booked, name='tour_booked'),

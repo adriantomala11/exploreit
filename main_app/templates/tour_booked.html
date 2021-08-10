@@ -12,69 +12,100 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                <h3 class="col-12 pb-4" style="margin: auto; text-align: center;">Detalles de la Reserva</h3>
                 <div class="form-box payment-received-wrap mb-0">
                     <div class="form-content">
-                        <div class="payment-received-list">
-                            <div class="d-flex align-items-center">
-                                    <h3 class="title" style="margin: auto;">Detalles de la Reserva</h3>
+                        <div class="row" style="width: 100%; margin: 0; padding-top:15px;">
+                            <div class="col-lg-4">
+                                <div style="min-height: 300px; max-height: 352px; height: 100%; width: 100%; border-radius: 20px !important; background-image: url('{{reserva.salida.tour.imagen_url}}'); background-size: cover; background-position: center;"></div>
                             </div>
-                            <ul class="list-items pt-4" style="width: 50%; margin: auto;">
-                                <li style="font-weight: bold;">Codigo de Reserva<p style="float: right;font-weight: 300;">{{reserva.token}}</p></li>
-                                <li style="font-weight: bold;">Tour<p style="float: right;font-weight: 300;">{{reserva.salida.tour.nombre}}</p></li>
-                                <li style="font-weight: bold;">Fecha de Salida<p style="float: right;font-weight: 300;">{{reserva.salida.fecha_salida}}</p></li>
-                                <li style="font-weight: bold;">Hora Checkin<p style="float: right;font-weight: 300;">{{reserva.salida.tour.hora_checkin}}</p></li>
-                                <li style="font-weight: bold;">Pagar antes de<p style="float: right;font-weight: 300;">{{ fecha_pago }}</p></li>
-                            </ul>
-
-                            <div class="pb-3" style="text-align: center;">
-                                <p style="font-weight: bold;">Lugar Salida</p>
-                                <p style="font-weight: 300;">{{reserva.salida.tour.lugar_salida}}</p>
+                            <div class="col-lg-4">
+                                <div style="display: flex;">
+                                    <div class="info-icon" style="background-color: #ecc22a;">
+                                        <i class="las la-map-marked-alt"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="title">Tour</h3>
+                                        <p>{{reserva.salida.tour.nombre}}</p><br>
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="info-icon" style="background-color: #2e6ca0;">
+                                        <i class="las la-clock"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="title">Hora Checkin</h3>
+                                        <p>{{reserva.salida.tour.hora_checkin}} - {{reserva.salida.tour.hora_salida}}</p><br>
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="info-icon" style="background-color: #a02e58;">
+                                        <i class="las la-map-pin"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="title">Lugar del Checkin</h3>
+                                        <p>{{reserva.salida.tour.lugar_salida}}</p><br>
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="info-icon" style="background-color: #50a97b;">
+                                        <i class="las la-dollar-sign"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="title">Pagar Antes De</h3>
+                                        <p>{{fecha_pago}}</p><br>
+                                    </div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div class="info-icon" style="background-color: #8c50ce;">
+                                        <i class="las la-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="title">Estado</h3>
+                                        <p>{{ reserva.obtener_estado_str }}</p><br>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="pb-3" style="text-align: center;">
-                                <p style="font-weight: bold;">Estado de la Reserva</p>
-                                <p style="font-weight: 400;">{{ reserva.obtener_estado_str }}</p>
-                            </div>
-
-                            <div class="pb-5" style="text-align: center;">
-                                {% if reserva.metodo_de_pago == 'PAP' %}
-                                    {% if reserva.estado == 'PEN' %}
-                                    <div id="pp-button"></div>
-                                    {% endif %}
-                                {% else %}
-                                    <p style="font-weight: bold;">Comprobante de pago</p>
-                                    <div style="width: fit-content; margin: auto;">
-                                        <div class="input-box">
-                                            <div class="form-group" style=" display: flex;">
-                                                <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
-                                                <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
-                                            </div>
+                            <div class="col-lg-4">
+                                {% for pasajero in pasajeros %}
+                                    <div style="display: flex;">
+                                        <div class="info-icon" style="background-color: #7b00ff;">
+                                            <i class="las la-user"></i>
                                         </div>
-                                    </div><!-- end col-lg-6 -->
-                                    {% if reserva.comprobante_es_imagen %}
-                                    <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
-                                    {% elif reserva.comprobante_es_documento%}
-                                    <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
-                                    {% endif %}
-                                {% endif %}
+                                        <div>
+                                            <h3 class="title">Pasajero {{forloop.counter}}</h3>
+                                            <p>{{pasajero.cedula}} - {{pasajero.nombres}}</p><br>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             </div>
 
                         </div>
-                        <div class="d-flex align-items-center pb-4">
-                                <h3 class="title" style="margin: auto;">Información de Pasajeros</h3>
+                        {% if reserva.estado == 'PEN' %}
+                        <div style="text-align: center; margin-top:40px;">
+                            {% if reserva.metodo_de_pago == 'PAP' %}
+                                <div id="pp-button"></div>
+                            {% else %}
+                                <p style="font-weight: bold;">Comprobante de pago</p>
+                                <div style="width: fit-content; margin: auto;">
+                                    <div class="input-box">
+                                        <div class="form-group" style=" display: flex;">
+                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
+                                            <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
+                                        </div>
+                                    </div>
+                                </div><!-- end col-lg-6 -->
+                                {% if reserva.comprobante_es_imagen %}
+                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                {% elif reserva.comprobante_es_documento%}
+                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                {% endif %}
+                            {% endif %}
                         </div>
-                        {% for pasajero in pasajeros %}
-                        <div class="mb-3" style="width: 50%; margin: auto; padding: 1rem; border: solid 1px lightgrey; border-radius: 5px;">
-                            <ul class="list-items">
-                                <li style="font-weight: bold;">Cedula del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.cedula}}</p></li>
-                                <li style="font-weight: bold;">Nombre del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.nombres}}</p></li>
-                                <li style="font-weight: bold;">Apellido del Pasajero<p style="float: right;font-weight: 300;">{{pasajero.apellidos}}</p></li>
-                            </ul>
-                        </div>
-                        {% endfor %}
                         <div class="btn-box" style="width: fit-content; margin: auto;">
-                            <a  class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
+                            <a onclick="cancelar_reserva()" class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
                         </div>
+                        {% endif %}
                     </div>
                 </div><!-- end payment-card -->
             </div><!-- end col-lg-12 -->
@@ -99,6 +130,21 @@
 
 .section-heading h2{
   text-align: center;
+}
+
+.info-icon{
+    height: 41px;
+    width: 41px;
+    border-radius: 10px;
+    background-color: aquamarine;
+    margin-right: 15px;
+    margin-top: 3px;
+}
+
+.info-icon i{
+    font-size: 30px;
+    color: white;
+    padding: 6px;
 }
 </style>
 
@@ -188,6 +234,24 @@
     }
     }).render("#pp-button");
     {% endif %}
+}
+
+function cancelar_reserva(){
+    $.ajax({
+      type: "POST",
+      url: "{% url 'cancelar_reserva' %}",
+      data: {csrfmiddlewaretoken: '{{ csrf_token }}', token: '{{reserva.token}}'},
+      success:function(response){
+        if(response.status == 200){
+            Swal.fire({
+              icon: 'success',
+              title: 'Solicitud de Cancelación Enviada!',
+              text: 'Se ha enviado un correo al titular de la reserva con el enlace para confirmar la cancelación de esta reserva.',
+            })
+            setTimeout(function(){ window.location.reload(); }, 3000);
+        }else{}
+      },
+    });
 }
 </script>
 {% endblock %}

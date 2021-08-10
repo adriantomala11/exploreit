@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 from exploreit import settings
 from exploreit.helpers import send_html_email, Payphone, print_exception
 from main_app.models import Salida, Tour, Incluye, NoIncluye, Importante, Reserva, ReservaPasajero, InteresadoTour, \
-    Categoria
+    Categoria, Factura
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
@@ -77,11 +77,13 @@ def tour_booking(request, token):
     elif request.method == 'POST':
         data = json.loads(request.POST['booking_data'])
         valor = int(data['valor'].replace(',', ''))
-        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], apellido=data['contacto']['apellidos'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
+        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
         reserva.save()
+        factura = Factura(nombre=data['facturacion']['nombres'], cedula=data['facturacion']['nombres'], correo=data['facturacion']['correo'], telefono=data['facturacion']['tlf'], direccion=data['facturacion']['domicilio'], reserva=reserva)
+        factura.save()
         pasajeros = data['pasajeros']
         for pasajero in pasajeros:
-            pasajero = ReservaPasajero(reserva=reserva, nombres=pasajero['nombres'], apellidos=pasajero['apellidos'], cedula=pasajero['cedula'])
+            pasajero = ReservaPasajero(reserva=reserva, nombres=pasajero['nombres'], cedula=pasajero['cedula'])
             pasajero.save()
 
         #ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
@@ -232,6 +234,26 @@ def mostrar_interes(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
+def cancelar_reserva(request):
+    reserva_token = request.POST['token']
+    reserva = Reserva.objects.get(token=reserva_token)
+    reserva.codigo_cancelacion = Reserva.generar_token()
+    reserva.save()
+    recipient_list = [reserva.correo, ]
+    context = {'url': settings.URL, 'link': settings.URL + '/confirmar-cancelacion/?codigo_cancelacion=' + reserva.codigo_cancelacion, 'reserva': reserva}
+    send_html_email(recipient_list, 'Cancelación de Reserva', 'email_templates/cancelar.html', context, settings.DEFAULT_FROM_EMAIL)
+    response = JsonResponse({'status': 200, 'msg': 'Success'})
+    return response
+
+def confirmar_cancelacion(request):
+    codigo = request.GET.get('codigo_cancelacion')
+    reserva = Reserva.objects.get(codigo_cancelacion=codigo)
+    if(reserva.de_baja):
+        reserva.de_baja = True
+        reserva.estado = 'DBC'
+        reserva.save()
+    return redirect(settings.URL+'/ver-reserva/?tok='+str(reserva.token))
+
 @api_view()
 def recibir_pagos(request):
     url = 'https://pay.payphonetodoesposible.com/api'
@@ -254,10 +276,3 @@ def recibir_pagos(request):
         print_exception()
         response = HttpResponse()
     return response
-
-#from django.http import StreamingHttpResponse
-#def validate_certificate(request):
-#    content = open('/Users/adriantomala/Desktop/Proyecto Exploreit/exploreit/main_app/6E1AA5227777D3E36CCEF7FB5B85D88A.txt', 'r').read()
-#    response = StreamingHttpResponse(content)
-#    response['Content-Type'] = 'text/plain; charset=utf8'
-#    return response

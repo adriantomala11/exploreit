@@ -275,7 +275,7 @@
                         <div class="hotel-card-carousel carousel-action">
                             {% for tour in tours_recientes %}
                             <div class="card-item mb-0" style="width: 85%; margin: auto;">
-                                <a href="{% url 'tour_info' tour.token %}"><div class="card-img" style="height: 350px !important; background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
+                                <a href="{% url 'tour_info' tour.token %}"><div class="card-img" style="height: 350px !important; background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
                                 <div class="card-body">
                                     <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
                                     <p class="card-meta"><i class="las la-map-marker-alt"></i> {{tour.ubicacion}}</p>
@@ -382,7 +382,6 @@
         border-radius: 100px;
         height: 50px;
         width: 100%;
-        padding-left: 20px;
         font-size: 18px;
         border: 1px solid;
         text-align: center

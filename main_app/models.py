@@ -343,6 +343,15 @@ class Reserva(models.Model):
         context = {'url': settings.URL, 'link': settings.URL + '/ver-reserva/?tok=' + self.token, 'reserva': self}
         send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context,
                         settings.DEFAULT_FROM_EMAIL)
+
+class Factura(models.Model):
+    nombre          = models.CharField(max_length=100, null=True)
+    cedula          = models.CharField(max_length=20, null=True)
+    correo          = models.CharField(max_length=100, null=True)
+    direccion       = models.CharField(max_length=150, null=True)
+    telefono        = models.CharField(max_length=20, null=True)
+    reserva = models.OneToOneField(Reserva, on_delete=models.CASCADE)
+
 class ReservaPasajero(models.Model):
     token           = models.CharField(max_length=25, null=True)
     reserva         = models.ForeignKey(Reserva, on_delete=models.CASCADE)

@@ -65,19 +65,10 @@
                                 <div class="row">
                                     <div class="col-lg-6 responsive-column">
                                         <div class="input-box">
-                                            <label class="label-text">Nombres</label>
+                                            <label class="label-text">Nombre y Apellido</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
                                                 <input class="form-control" type="text" name="text" placeholder="Nombres" maxlength="20" required>
-                                            </div>
-                                        </div>
-                                    </div><!-- end col-lg-6 -->
-                                    <div class="col-lg-6 responsive-column">
-                                        <div class="input-box">
-                                            <label class="label-text">Apellidos</label>
-                                            <div class="form-group">
-                                                <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" maxlength="20" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -104,21 +95,12 @@
                         <div class="contact-form-action">
                             <form id="facturacion">
                                 <div class="row">
-                                    <div class="col-lg-6 responsive-column">
+                                    <div class="col-lg-12 responsive-column">
                                         <div class="input-box">
-                                            <label class="label-text">Nombres</label>
+                                            <label class="label-text">Nombre</label>
                                             <div class="form-group">
                                                 <span class="la la-user form-icon"></span>
                                                 <input class="form-control" type="text" name="text" placeholder="Nombres" required>
-                                            </div>
-                                        </div>
-                                    </div><!-- end col-lg-6 -->
-                                    <div class="col-lg-6 responsive-column">
-                                        <div class="input-box">
-                                            <label class="label-text">Apellidos</label>
-                                            <div class="form-group">
-                                                <span class="la la-user form-icon"></span>
-                                                <input class="form-control" type="text" name="text" placeholder="Apellidos" required>
                                             </div>
                                         </div>
                                     </div><!-- end col-lg-6 -->
@@ -178,21 +160,12 @@
                             <form id="contacto">
                                 <div class="row">
                                     <div id="otro-titular-form" class="row" style="display: flex; width: 100%; margin: 0;">
-                                        <div class="col-lg-6 responsive-column">
+                                        <div class="col-lg-12 responsive-column">
                                             <div class="input-box">
                                                 <label class="label-text">Nombres</label>
                                                 <div class="form-group">
                                                     <span class="la la-user form-icon"></span>
                                                     <input class="form-control" type="text" name="text" placeholder="Nombres">
-                                                </div>
-                                            </div>
-                                        </div><!-- end col-lg-6 -->
-                                        <div class="col-lg-6 responsive-column">
-                                            <div class="input-box">
-                                                <label class="label-text">Apellidos</label>
-                                                <div class="form-group">
-                                                    <span class="la la-user form-icon"></span>
-                                                    <input class="form-control" type="text" name="text" placeholder="Apellidos">
                                                 </div>
                                             </div>
                                         </div><!-- end col-lg-6 -->
@@ -346,7 +319,7 @@
             }
 
             if(allForms[i].id == 'facturacion'){
-                var facturacion = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value, domicilio:elements[4].value, cedula: elements[5].value}
+                var facturacion = {nombres:elements[0].value, correo:elements[1].value, tlf:elements[2].value, domicilio:elements[3].value, cedula: elements[4].value}
                 requestDic.facturacion = facturacion
             }else if(allForms[i].id == 'contacto'){
                 var radios = document.getElementsByName('titular');
@@ -354,19 +327,19 @@
                     if (radios[i].checked) {
                         var otroTitularForm = document.getElementById("otro-titular-form");
                         if(radios[i].value == 'otro'){
-                            var contacto = {nombres:elements[0].value, apellidos:elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                            var contacto = {nombres:elements[0].value, correo:elements[1].value, tlf:elements[1].value}
                             requestDic.contacto = contacto
                         }else{
                             let pasajeroId = 'pasajero'+String(radios[i].value)
                             var pasajeroForm = document.getElementById(pasajeroId)
-                            var contacto = {nombres:pasajeroForm.elements[0].value, apellidos: pasajeroForm.elements[1].value, correo:elements[2].value, tlf:elements[3].value}
+                            var contacto = {nombres:pasajeroForm.elements[0].value, correo:elements[1].value, tlf:elements[2].value}
                             requestDic.contacto = contacto
                         }
                     }
                 }
                 requestDic.contacto = contacto
             }else if(allForms[i].classList.contains('pasajero')){
-                var pasajero = {nombres: elements[0].value, apellidos: elements[1].value, cedula: elements[2].value}
+                var pasajero = {nombres: elements[0].value, cedula: elements[1].value}
                 requestDic.pasajeros.push(pasajero)
             }
         }
@@ -385,6 +358,14 @@
                     btn.disabled = false;
                 }
               },
+              error:function(response){
+                btn.disabled = false;
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Ha ocurrido un error',
+                  text: 'Lo sentimos, ha ocurrido un error al realizar su reserva. Vuelva a intentarlo más tarde, estamos trabajando en ello.',
+                })
+              }
             });
         }
     }
