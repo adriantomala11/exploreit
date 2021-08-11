@@ -200,7 +200,19 @@ def ver_reserva(request):
         codigo = request.GET.get('tok')
         if codigo:
             context = {'categorias_menu': categorias_menu}
-            reserva = get_object_or_404(Reserva, token=codigo)
+            reserva = Reserva.objects.filter(token=codigo).order_by('-id')
+            if len(reserva) > 0:
+                reserva = reserva[0]
+            else:
+                reserva = Reserva.objects.filter(correo=codigo).order_by('-id')
+                if len(reserva) > 0:
+                    reserva = reserva[0]
+                else:
+                    reserva = Reserva.objects.filter(cedula=codigo).order_by('-id')
+                    if len(reserva) > 0:
+                        reserva = reserva[0]
+                    else:
+                        return redirect('/ver-reserva/')
             pasajeros = ReservaPasajero.objects.filter(reserva=reserva)
             context['reserva'] = reserva
             context['pasajeros'] = pasajeros

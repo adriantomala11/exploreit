@@ -26,10 +26,19 @@
 {% block footer_code %}
 {% endblock %}
 <style>
+    *{
+        color: #77798D;
+    }
+
     .show-md{
         display: none;
     }
 
+    @media (max-width: 991px) {
+        .show-md{
+            display: initial;
+        }
+    }
     .main-menu-content ul li {
         padding-right: 27px !important;
     }
@@ -40,7 +49,7 @@
     }
 
     .card-img{
-        min-height: 400px;
+        min-height: 350px;
         border-radius: 20px 20px 0 0 !important;
     }
 
@@ -51,6 +60,7 @@
     .alert{
         border-radius: 20px !important;
     }
+
 
     #whatsapp-btn{
         right: 30px;
@@ -70,6 +80,17 @@
         font-size: 18px;
         transition: all 0.3s;
         cursor: pointer;
+    }
+
+    section.fondo-mundi{
+        min-height: 100vh;
+        background-image: url('{% static 'images/background11.png' %}');
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #EFEFF0 !important;
+
     }
 </style>
 </html>

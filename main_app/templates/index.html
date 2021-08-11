@@ -7,7 +7,7 @@
 ================================= -->
 <section class="hero-wrapper" style="margin-top: -75px;">
     <div style="width: 100%; height: 75px; background-color: #ff000000; z-index: 2;"></div>
-    <div class="hero-box hero-bg" style="min-height: 100vh; max-height: max-content; z-index: 1; margin-top: -75px;">
+    <div class="hero-box hero-bg" style="min-height: 90vh; max-height: max-content; z-index: 1; margin-top: -75px;">
         <div class="container">
             <div class="row pb-4">
                 <div class="col-lg-10 mx-auto">
@@ -16,6 +16,7 @@
                     </h3>
                 </div><!-- end col-lg-12 -->
             </div><!-- end row -->
+            {% comment %}
             <div class="row">
                 <div class="col-lg-10 mx-auto">
                     <div class="search-fields-container" style="background-color: #fff0;">
@@ -122,6 +123,7 @@
                     </div><!-- end main-search-input -->
                 </div>
             </div><!-- end row -->
+            {% endcomment %}
         </div><!-- end container -->
     </div>
 </section><!-- end hero-wrapper -->
@@ -157,9 +159,9 @@
                         <div class="cards">
                             {% if tours %}
                                 {% for tour in tours %}
-                                <label class="card" for="item-{{forloop.counter}}" id="song-{{forloop.counter}}">
+                                <label class="card" for="item-{{forloop.counter}}" id="song-{{forloop.counter}}" style="cursor: auto;">
                                     <div class="card-item special mb-0" style=" border-radius: 20px">
-                                        <a href="javascript:void(0)"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 420px; border-radius: 20px 20px 0 0;"></div></a>
+                                        <div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 420px; border-radius: 20px 20px 0 0;"></div>
                                         <div class="card-body" style="width: 100%;">
                                             <h3 class="card-title"><a href="javascript:void(0)">{{tour.nombre}}</a></h3>
                                             <p class="card-meta"><i class="las la-map-marker-alt"></i>Guayaquil, Ecuador</p>
@@ -437,11 +439,6 @@
         padding-top: 200px;
     }
 
-    .main-menu-content ul li {
-        padding-right: 40px !important;
-    }
-
-
 input[type=radio] {
   display: none;
 }
@@ -567,6 +564,7 @@ label img {
         min-height: 300px !important;
     }
 }
+
 @media (max-width: 1300px) {
     .cards-container{
          width: 100%;
@@ -578,6 +576,10 @@ label img {
 }
 
 @media (max-width: 991px) {
+    .show-md{
+        display: block;
+    }
+
     .main-menu-content{
         height: 100vh;
     }

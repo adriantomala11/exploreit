@@ -8,29 +8,30 @@
 <!-- ================================
     START PAYMENT AREA
 ================================= -->
-<section class="payment-area section-bg section-padding" style="padding-top: 50px !important;">
-    <div class="container">
+<section class="payment-area section-bg section-padding fondo-mundi" style="padding-top: 50px !important;">
+    <div class="container custom">
         <div class="row">
             <div class="col-lg-12">
-                <h3 class="col-12 pb-4" style="margin: auto; text-align: center;">Detalles de la Reserva</h3>
+                <h2 class="col-12 pb-4" style="margin: auto; text-align: center;">Detalles de la Reserva</h2>
                 <div class="form-box payment-received-wrap mb-0">
-                    <div class="form-content">
+                    <div class="form-content" style="padding-bottom: 35px;">
                         <div class="row" style="width: 100%; margin: 0; padding-top:15px;">
-                            <div class="col-lg-4">
-                                <div style="min-height: 300px; max-height: 352px; height: 100%; width: 100%; border-radius: 20px !important; background-image: url('{{reserva.salida.tour.imagen_url}}'); background-size: cover; background-position: center;"></div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div style="display: flex;">
-                                    <div class="info-icon" style="background-color: #ecc22a;">
-                                        <i class="las la-map-marked-alt"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="title">Tour</h3>
-                                        <p>{{reserva.salida.tour.nombre}}</p><br>
-                                    </div>
+                            <div class="col-lg-6">
+                                <div class="reserva-card">
+                                <div class="reserva-card-img" style="min-height: 220px; max-height: 350px; width: 100%; border-radius: 20px !important; background-image: url('{{reserva.salida.tour.imagen_url}}'); background-size: cover; background-position: center;"></div>
+                                <h3 class="title">Tour - {{reserva.salida.tour.nombre}}</h3>
+                                <p class="description">{{reserva.salida.fecha_salida}}</p>
+                                <h3 class="title">Estado de la Reserva</h3>
+                                <p class="description">{{ reserva.obtener_estado_str }}</p>
+                                <h3 class="title">Pasajeros</h3>
+                                {% for pasajero in pasajeros %}
+                                    <p class="description-pasajero">{{pasajero.cedula}} - {{pasajero.nombres}}</p>
+                                {% endfor %}
                                 </div>
+                            </div>
+                            <div class="col-lg-6 reserva-info">
                                 <div style="display: flex;">
-                                    <div class="info-icon" style="background-color: #2e6ca0;">
+                                    <div class="info-icon" style="background-color: #ecc228;">
                                         <i class="las la-clock"></i>
                                     </div>
                                     <div>
@@ -38,8 +39,8 @@
                                         <p>{{reserva.salida.tour.hora_checkin}} - {{reserva.salida.tour.hora_salida}}</p><br>
                                     </div>
                                 </div>
-                                <div style="display: flex;">
-                                    <div class="info-icon" style="background-color: #a02e58;">
+                                <div style="display: flex; margin-top:10px;">
+                                    <div class="info-icon" style="background-color: #3f75b7;">
                                         <i class="las la-map-pin"></i>
                                     </div>
                                     <div>
@@ -47,7 +48,7 @@
                                         <p>{{reserva.salida.tour.lugar_salida}}</p><br>
                                     </div>
                                 </div>
-                                <div style="display: flex;">
+                                <div style="display: flex; margin-top:10px;">
                                     <div class="info-icon" style="background-color: #50a97b;">
                                         <i class="las la-dollar-sign"></i>
                                     </div>
@@ -56,56 +57,56 @@
                                         <p>{{fecha_pago}}</p><br>
                                     </div>
                                 </div>
-                                <div style="display: flex;">
-                                    <div class="info-icon" style="background-color: #8c50ce;">
-                                        <i class="las la-check-circle"></i>
+                                <div class="mt-4" style="width: 100%">
+                                    <p style="width: 100%; text-align: center;">Valor Total</p>
+                                    <h1 style="width: 100%; text-align: center;">${{ reserva.obtener_valor_decimal }}</h1>
+                                </div>
+                                <div class="row" style="width: 100%; margin: 10px 0 !important; padding-top: 15px;">
+                                    {% if reserva.estado == 'PEN' %}
+                                    <div class="col-lg-6 pago-box">
+                                        <div style="text-align: center;">
+                                            {% if reserva.metodo_de_pago == 'PAP' %}
+                                                <p style="margin-bottom: 5px;">Pagar</p>
+                                                <div id="pp-button"></div>
+                                            {% else %}
+                                                <p style="margin-bottom: 5px;">Pagar</p>
+                                                <div style="width: fit-content; margin: auto;">
+                                                    <div class="input-box">
+                                                        <div class="form-group">
+                                                            <p id="input-text"></p>
+                                                            <label id="input-label" class="theme-btn" for="fileinput" style="cursor: pointer; text-overflox: ellipsis;">Subir Comprobante</label>
+                                                            <label id="input-upload" onclick="subirImagen()" class="theme-btn" style="cursor: pointer; text-overflox: ellipsis; display: none;">Subir</label>
+                                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="display: none; visibility:hidden; height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
+                                                        </div>
+                                                    </div>
+                                                </div><!-- end col-lg-6 -->
+                                                {% if reserva.comprobante_es_imagen %}
+                                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
+                                                {% elif reserva.comprobante_es_documento%}
+                                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 class="title">Estado</h3>
-                                        <p>{{ reserva.obtener_estado_str }}</p><br>
+                                    <div class="col-lg-6">
+                                        <p style="margin-bottom: 5px; width: 100%; text-align: center;">Anular</p>
+                                        <div class="btn-box" style="width: fit-content; margin: auto;">
+                                            <a onclick="cancelar_reserva()" class="theme-btn border-0 text-white bg-7">Anular Reserva</a>
+                                        </div>
                                     </div>
+                                    {% else %}
+                                    <div class="col-lg-12">
+                                        <p style="width: 100%; text-align: center;">ESTADO DE LA RESERVA</p>
+                                        <p style="width: 100%; text-align: center; font-size: 20px !important; font-weight: 600; margin-top: 15px; color: {% if reserva.de_baja %}red{% else %}green{% endif %}">{{ reserva.obtener_estado_str }}</p>
+                                    </div>
+                                    {% endif %}
+                                    {% if reserva.metodo_de_pago == 'PAP' and reserva.estado == 'PEN' %}
+                                        <p style="margin-top: 15px; display: inline; text-align: justify;">El pago con PayPhone suele tardar hasta un minuto en verse reflejado en el sistema. Para verificar si ya se ha hecho efectivo, refrescar la página <a style="display: inline; cursor: pointer; color: blue; text-decoration: underline;" onclick="javascript:window.location.reload()">aquí</a>.</p>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                {% for pasajero in pasajeros %}
-                                    <div style="display: flex;">
-                                        <div class="info-icon" style="background-color: #7b00ff;">
-                                            <i class="las la-user"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="title">Pasajero {{forloop.counter}}</h3>
-                                            <p>{{pasajero.cedula}} - {{pasajero.nombres}}</p><br>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                        </div>
 
-                        </div>
-                        {% if reserva.estado == 'PEN' %}
-                        <div style="text-align: center; margin-top:40px;">
-                            {% if reserva.metodo_de_pago == 'PAP' %}
-                                <div id="pp-button"></div>
-                            {% else %}
-                                <p style="font-weight: bold;">Comprobante de pago</p>
-                                <div style="width: fit-content; margin: auto;">
-                                    <div class="input-box">
-                                        <div class="form-group" style=" display: flex;">
-                                            <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="height: 52px; padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png, .pdf">
-                                            <button class="theme-btn border-0 text-white" onclick="subirImagen()" style="margin-left: 10px;">Subir</button>
-                                        </div>
-                                    </div>
-                                </div><!-- end col-lg-6 -->
-                                {% if reserva.comprobante_es_imagen %}
-                                <a href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" data-lightbox="image-1">Ver Comprobante</a>
-                                {% elif reserva.comprobante_es_documento%}
-                                <a target="_blank" href="{{settings.AWS_S3_BUCKET_URL}}{{reserva.comprobante}}" >Ver Comprobante</a><br>
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                        <div class="btn-box" style="width: fit-content; margin: auto;">
-                            <a onclick="cancelar_reserva()" class="theme-btn border-0 text-white bg-7">Cancelar Reserva</a>
-                        </div>
-                        {% endif %}
                     </div>
                 </div><!-- end payment-card -->
             </div><!-- end col-lg-12 -->
@@ -120,6 +121,24 @@
 {% block footer_code %}
 
 <style>
+.reserva-info{
+    margin-top: 0;
+}
+
+.theme-btn{
+    border-radius: 50px;
+    line-height: 18px;
+    padding: 10px;
+}
+
+.payphone.btn-container p{
+    display: none !important;
+}
+
+.pago-box{
+    border-right: 1px solid #77798D;
+}
+
 .card-item.destination-card .card-body{
   display: none !important;
 }
@@ -133,18 +152,68 @@
 }
 
 .info-icon{
-    height: 41px;
-    width: 41px;
+    height: 54px;
+    width: 54px;
     border-radius: 10px;
     background-color: aquamarine;
-    margin-right: 15px;
-    margin-top: 3px;
+    margin: 2px 25px 0 15px;
 }
 
 .info-icon i{
-    font-size: 30px;
+    font-size: 44px;
     color: white;
     padding: 6px;
+}
+
+.reserva-card{
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px #ccc;
+    height: 100%;
+}
+
+.reserva-card-img{
+    margin-bottom: 20px;
+}
+
+.description{
+    margin-bottom: 10px
+}
+
+.description-pasajero{
+    margin-bottom: 5px
+}
+
+h3{
+    font-size: 18px !important;
+    font-weight: 500;
+}
+
+p{
+    font-size: 15px !important;
+    line-height: 18px !important;
+}
+
+.container.custom{
+    max-width: 950px;
+}
+
+@media (max-width: 991px) {
+    .container.custom{
+        max-width: 550px;
+    }
+
+    .reserva-info{
+        margin-top: 45px;
+    }
+}
+
+.payphone #payphone-btn {
+    color: #fff;
+    background-color: #F57E2D;
+    border-color: #F57E2D;
+    min-width: 150px !important;
+    min-height: 44px;
 }
 </style>
 
@@ -152,6 +221,8 @@
 <script src="{% static 'lightbox/js/lightbox.js' %}"></script>
 
 <script>
+    var semaforo = true;
+
     var imagen = ''
     var filename = ''
 
@@ -162,7 +233,10 @@
         reader.readAsDataURL(file);
         reader.onload = function () {
             imagen = reader.result;
-            filename = file.name
+            filename = file.name;
+            document.getElementById("input-text").innerHTML = filename;
+            document.getElementById("input-label").style.display = "none";
+            document.getElementById("input-upload").style.display = "block";
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
@@ -170,18 +244,27 @@
     }
 
     function subirImagen(){
-        console.log(imagen)
-        $.ajax({
-          type: "POST",
-          url: "{% url 'subir_comprobante' %}",
-          data: {csrfmiddlewaretoken: '{{ csrf_token }}', imagen: imagen, filename: filename, reserva: '{{ reserva.token }}'},
-          success:function(response){
-            window.location.reload()
-          },
-          error: function(err){
-            console.log(err)
-          }
-        });
+        if(semaforo = true){
+            semaforo = false;
+            $.ajax({
+              type: "POST",
+              url: "{% url 'subir_comprobante' %}",
+              data: {csrfmiddlewaretoken: '{{ csrf_token }}', imagen: imagen, filename: filename, reserva: '{{ reserva.token }}'},
+              success:function(response){
+                window.location.reload()
+                semaforo = true;
+              },
+              error: function(err){
+                console.log(err)
+                semaforo = true;
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Ha ocurrido un error',
+                  text: 'Lo sentimos, ha ocurrido un error. Vuelva a intentarlo más tarde, estamos trabajando en ello.',
+                })
+              }
+            });
+        }
     }
     try{
         lightbox.option({

@@ -253,7 +253,7 @@
         </div><!-- end row -->
         <div class="row padding-top-50px">
             {% for tour in similares %}
-            <div class="col-lg-4 responsive-column">
+            <div class="col-lg-4 responsive-column" style="padding: 0 40px 40px 40px;">
                 <div class="card-item mb-0">
                     <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_url}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
                     <div class="card-body">

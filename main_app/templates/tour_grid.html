@@ -161,7 +161,7 @@
         <div class="row">
             {% if tours %}
             {% for key, tour in tours.items %}
-            <div class="col-lg-4 responsive-column" style="padding-bottom: 40px;">
+            <div class="col-lg-4 responsive-column" style="padding: 0 40px 40px 40px;">
                 <div class="card-item mb-0">
                     <a href="{% url 'tour_info' tour.token %}" class="btn-text"><div class="card-img" style="background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;">
                         {% if not tour.esta_disponible %}

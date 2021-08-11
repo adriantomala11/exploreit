@@ -413,6 +413,7 @@ def reserva_dar_de_baja(request):
         reserva_token = request.POST['reserva_token']
         reserva = get_object_or_404(Reserva, token=reserva_token)
         reserva.de_baja = True
+        reserva.estado = 'DBA'
         reserva.save()
         transaction.commit()
         response = JsonResponse({'status': 200, 'msg': 'Success'})

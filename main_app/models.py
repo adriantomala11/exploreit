@@ -38,6 +38,9 @@ class Categoria(models.Model):
     def imagen_url(self):
         return os.path.join(settings.MEDIA_URL, 'categorias', str(self.id), str(self.imagen))
 
+    def nombre_mayus(self):
+        return str(self.nombre).upper()
+
 class Tour(models.Model):
     TIPO_CHOICES = (
         ('NAC', 'Nacional'),
@@ -62,6 +65,7 @@ class Tour(models.Model):
 
     THUMB_WIDTH = 562
     THUMB_HEIGHT = 330
+
 
     def get_imagen_path(self):
         return 'media/tours/'+str(self.pk)+'/'+str(self.imagen)
@@ -343,6 +347,9 @@ class Reserva(models.Model):
         context = {'url': settings.URL, 'link': settings.URL + '/ver-reserva/?tok=' + self.token, 'reserva': self}
         send_html_email(recipient_list, 'Su reserva ha sido aceptada', 'email_templates/index.html', context,
                         settings.DEFAULT_FROM_EMAIL)
+
+    def obtener_valor_decimal(self):
+        return "{:.2f}".format(round(int(self.valor) / 100), 2)
 
 class Factura(models.Model):
     nombre          = models.CharField(max_length=100, null=True)
