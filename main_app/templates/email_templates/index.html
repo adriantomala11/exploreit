@@ -90,7 +90,7 @@ a[x-apple-data-detectors] {
                    <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                      <tr style="border-collapse:collapse">
                      <a href="{{url}}">
-                         <td class="es-m-txt-c" align="left" style="padding:0;Margin:0"><h1 style="color: white; text-align: center; margin: 0 auto;">Exploreit</h1></td>
+                         <td class="es-m-txt-c" align="left" style="padding:0;Margin:0"><h1 style="color: white; text-align: center; margin: 0 auto;">Explore It</h1></td>
                      </a>
                      </tr>
                    </table>
@@ -117,7 +117,7 @@ a[x-apple-data-detectors] {
                      {% endcomment %}
                      </tr>
                      <tr style="border-collapse:collapse"> 
-                      <td align="center" style="padding:0;Margin:0;padding-bottom:15px"><h2 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#7b00ff">Solicitud de Cancelación de Reserva</h2></td>
+                       <td align="center" style="padding:0;Margin:0;padding-bottom:15px"><h2 style="Margin:0;line-height:36px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#7b00ff">Su reserva ha sido aceptada</h2></td>
                      </tr>
                      <tr>
                        <td align="center" style="padding:0;Margin:0;padding-bottom:15px">{% qr_from_text link size="t" image_format="png" error_correction="L" %}</td>
@@ -125,11 +125,11 @@ a[x-apple-data-detectors] {
                      <tr style="border-collapse:collapse"> 
                       <td class="es-m-txt-l" align="left" style="padding:0;Margin:0;padding-top:20px"><h3 style="Margin:0;line-height:22px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;font-style:normal;font-weight:bold;color:#333333">Hola {{reserva.nombre}},<br></h3></td>
                      </tr> 
+                     <tr style="border-collapse:collapse">
+                         <td align="left" style="padding:0;Margin:0;padding-bottom:10px;padding-top:15px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#777777">Le comunicamos que hemos recibido el pago de su reserva válida para {{reserva.get_num_pasajeros}} pasajeros y con destino a {{reserva.salida.tour}} para el día {{reserva.salida.fecha_salida}}. Para mas detalles haga click en "Ver Reserva".</p></td>
+                     </tr>
                      <tr style="border-collapse:collapse"> 
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;padding-top:15px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#777777">Para cancelar su reserva con destino a {{reserva.salida.tour}} para el día {{reserva.salida.fecha_salida}}, haga click en "Cancelar Reserva". Si usted no ha solicitado la cancelación de esta reserva, ignorar este mensaje.</p></td>
-                     </tr> 
-                     <tr style="border-collapse:collapse"> 
-                      <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-bottom:20px;padding-top:25px"><span class="es-button-border" style="border-style:solid;border-color:transparent;background:#ED8E20 none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:5px;width:auto"><a href="{{link}}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#7b00ff;border-width:15px 30px;display:inline-block;background:#7b00ff none repeat scroll 0% 0%;border-radius:5px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center"> Cancelar Reserva</a></span></td>
+                      <td align="center" style="Margin:0;padding-left:10px;padding-right:10px;padding-bottom:20px;padding-top:25px"><span class="es-button-border" style="border-style:solid;border-color:transparent;background:#ED8E20 none repeat scroll 0% 0%;border-width:0px;display:inline-block;border-radius:5px;width:auto"><a href="{{link}}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#7b00ff;border-width:15px 30px;display:inline-block;background:#7b00ff none repeat scroll 0% 0%;border-radius:5px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center"> Ver Reserva</a></span></td>
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -152,7 +152,7 @@ a[x-apple-data-detectors] {
                       <td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:16px;color:#333333"><strong>675 Massachusetts Avenue </strong></p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:16px;color:#333333"><strong>Cambridge, MA 02139</strong></p></td>
                      </tr>
                      <tr style="height: 20px;"></tr>
-                     <tr style="border-collapse:collapse"> 
+                     <tr style="border-collapse:collapse; display: none">
                       <td esdev-links-color="#777777" align="left" class="es-m-txt-c" style="padding:0;Margin:0;padding-bottom:5px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:21px;color:#777777">If you didn't create an account using this email address, please ignore this email or&nbsp;<u><a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:16px;text-decoration:none;color:#777777" class="unsubscribe" href="">unsubscribe</a></u>.</p></td>
                      </tr> 
                    </table></td> 

@@ -307,8 +307,7 @@ p{
               title: 'Pago realizado con éxito!',
               text: 'Estamos emitiendo y enviando el ticket de abordaje al correo electrónico del titular de la reserva. Gracias por elegir Explore It.',
             })
-            setTimeout(function(){ window.location.reload(); }, 3000);
-        alert("Pago " + value.transactionId + " recibido, estado " + value.transactionStatus );
+            setTimeout(function(){ window.location.reload(); }, 10000);
         }
     }).catch(function(err){
         console.log(err);
