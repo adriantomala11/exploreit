@@ -376,6 +376,7 @@ def copiar_tour(request):
     new_tour.pk = None
     new_tour.token = Salida.generar_token()
     new_tour.nombre = nombre + ' COPIA'
+    new_tour.activo = False
     new_tour.save()
     for item in incluyes:
         item.pk = None

@@ -1,41 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
 {% block main_content %}
-<!-- ================================
-    START BREADCRUMB TOP BAR
-================================= -->
-<section class="breadcrumb-top-bar" style="display: none;">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="breadcrumb-list breadcrumb-top-list">
-                    <ul class="list-items d-flex justify-content-start">
-                        <li><a href="index.html">Inicio</a></li>
-                        <li>{{ tour_info.tour.obtener_tipo_str }}</li>
-                        <li>{{ tour_info.tour.nombre }}</li>
-                    </ul>
-                </div><!-- end breadcrumb-list -->
-            </div><!-- end col-lg-12 -->
-        </div><!-- end row -->
-    </div><!-- end container -->
-</section><!-- end breadcrumb-top-bar -->
-<!-- ================================
-    END BREADCRUMB TOP BAR
-================================= -->
 
 <!-- ================================
     START BREADCRUMB AREA
 ================================= -->
-<section class="breadcrumb-area bread-bg-2 py-0">
-    <div class="breadcrumb-wrap hero-box" style="background-image: url('{{tour_info.tour.imagen_url}}'); background-size: cover; background-position: center; padding-bottom: 0px !important;">
+<section class="breadcrumb-area" style="background-image: url('{{tour_info.tour.imagen_url}}'); background-size: cover; background-position: center; ">
+    <div class="breadcrumb-wrap">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-lg-12">
-                    <div class="breadcrumb-btn">
-                        <div class="btn-box">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title" style="text-align: center; font-weight: 600; color: white; font-size: 50px;">{{ tour_info.tour.nombre }}</h2>
                         </div>
-                    </div><!-- end breadcrumb-btn -->
-                </div><!-- end col-lg-12 -->
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-12">
+                    <div class="breadcrumb-list" style="width: fit-content; margin: 10px auto">
+                        <ul class="list-items d-flex">
+                            <li><a href="/">Explore It</a></li>
+                            <li><a href="{% url 'categoria' tour_info.tour.categoria.codigo_url %}">{{tour_info.tour.categoria.nombre}}</a></li>
+                            <li>{{ tour_info.tour.nombre }}</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
             </div><!-- end row -->
         </div><!-- end container -->
     </div><!-- end breadcrumb-wrap -->
@@ -48,135 +37,19 @@
     START TOUR DETAIL AREA
 ================================= -->
 <section class="tour-detail-area padding-bottom-90px">
-    <div class="single-content-navbar-wrap menu section-bg" id="single-content-navbar">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="single-content-item pb-4 padding-top-40px">
-                        <h3 class="title font-size-26">{{ tour_info.tour.nombre }}</h3>
-                        <div class="d-flex flex-wrap align-items-center pt-2">
-                            <p class="mr-2">{{ tour_info.tour.ubicacion }}</p>
-                        </div>
-                    </div><!-- end single-content-item -->
-                </div>
-            </div>
-        </div>
-    </div><!-- end single-content-navbar-wrap -->
     <div class="single-content-box">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="single-content-wrap padding-top-60px">
+            <div class="row pt-5">
+                <div class="col-lg-8" style="border-bottom: 1px solid rgba(128, 137, 150, 0);">
+                    <div class="single-content-wrap">
                         <div id="description" class="page-scroll">
-
-                            <div class="section-block"></div>
-                            <div class="single-content-item py-4">
-                                <div class="row">
-                                    <div class="col-lg-4 responsive-column">
-                                        <div class="single-tour-feature d-flex align-items-center mb-3">
-                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
-                                                <i class="la la-clock-o"></i>
-                                            </div>
-                                            <div class="single-feature-titles">
-                                                <h3 class="title font-size-15 font-weight-medium">Duración</h3>
-                                                <span class="font-size-13">{{ tour_info.tour.obtener_duracion }} Día(s)</span>
-                                            </div>
-                                        </div><!-- end single-tour-feature -->
-                                    </div><!-- end col-lg-4 -->
-                                    <div class="col-lg-4 responsive-column">
-                                        <div class="single-tour-feature d-flex align-items-center mb-3">
-                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
-                                                <i class="la la-calendar"></i>
-                                            </div>
-                                            <div class="single-feature-titles">
-                                                <h3 class="title font-size-15 font-weight-medium">Próxima Salida</h3>
-                                                <span class="font-size-13">{% if tour_info.tour.esta_disponible %}{{ tour_info.proximas_salidas.0.fecha_salida }}{% else %}-{% endif %}</span>
-                                            </div>
-                                        </div><!-- end single-tour-feature -->
-                                    </div><!-- end col-lg-4 -->
-                                    <div class="col-lg-4 responsive-column">
-                                        <div class="single-tour-feature d-flex align-items-center mb-3">
-                                            <div class="single-feature-icon icon-element ml-0 flex-shrink-0 mr-3">
-                                                <i class="la la-file"></i>
-                                            </div>
-                                            <div class="single-feature-titles">
-                                                <h3 class="title font-size-15 font-weight-medium">Mas Información</h3>
-                                                <span class="font-size-13"><a href="#">Descargar PDF</a></span>
-                                            </div>
-                                        </div><!-- end single-tour-feature -->
-                                    </div><!-- end col-lg-4 -->
-
-
-                                </div><!-- end row -->
-                            </div><!-- end single-content-item -->
-                            <div class="section-block"></div>
-                            <div class="single-content-item padding-top-40px padding-bottom-40px">
-                                <h3 class="title font-size-20">Descripcion</h3>
-                                <p class="py-3" style="text-align: justify;">{{ tour_info.tour.descripcion }}</p>
-                                <div class="row">
-                                    <div class="col-lg-6 responsive-column">
-                                        <h3 class="title font-size-15 font-weight-medium pb-3">Incluye</h3>
-                                        <ul class="list-items">
-                                            {% for inc in tour_info.incluye %}<li><i class="fa fa-check text-success" aria-hidden="true"></i> {{ inc.nombre }}</li>{% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-6 responsive-column">
-                                        <h3 class="title font-size-15 font-weight-medium pb-3">No Incluye</h3>
-                                        <ul class="list-items">
-                                            {% for no_inc in tour_info.no_incluye %}<li><i class="fa fa-times" style="color: red;" aria-hidden="true"></i> {{ no_inc.nombre }}</li>{% endfor %}
-                                        </ul>
-                                    </div>
-                                </div><!-- end row -->
-                            </div><!-- end single-content-item -->
-                            <div class="section-block"></div>
-                        </div><!-- end description -->
-                        <div id="itinerary" class="page-scroll">
-                            <div class="single-content-item padding-top-40px padding-bottom-40px">
-                                <h3 class="title font-size-20" style="margin-bottom: 30px;">Itinerario</h3>
-                                {% for dia, actividades in tour_info.itinerario.items %}
-                                <div class="accordion accordion-item" id="accordionExample">
-                                    <div class="card" style="padding-bottom: 20px;">
-                                        <div class="card-header" id="faqHeadingOne">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link d-flex align-items-center justify-content-between font-size-16" data-toggle="collapse" data-target="#faqCollapseOne" aria-expanded="true" aria-controls="faqCollapseOne" style="cursor: unset; padding-bottom: 5px;">
-                                                    <span>Dia {{dia}}</span>
-                                                </button>
-                                            </h2>
-                                            {% for descripcion in actividades %}
-                                            <div id="faqCollapse{{forloop.counter}}" class="collapse show" aria-labelledby="faqHeadingOne" data-parent="#accordionExample">
-                                                <div class="card-body d-flex align-items-center" style="padding: 0px 0px 0px 20px;">
-                                                    <p><i class="fa fa-check" style="color: #7b00ff;" aria-hidden="true"></i> {{descripcion}}</p>
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                    </div><!-- end card -->
+                            <div class="single-content-item">
+                                <div class="section-heading col-lg-12 pl-0" style="height: fit-content !important;">
+                                    <h2 class="sec__title line-height-55 pb-1" style="text-align: left;">Descripcion</h2>
                                 </div>
-                                {% endfor %}
+                                <p class="py-3" style="text-align: justify;">{{ tour_info.tour.descripcion }}</p>
                             </div><!-- end single-content-item -->
-                            <div class="section-block"></div>
-                        </div><!-- end itinerary -->
-                        {% comment %}
-                        <div id="photo" class="page-scroll">
-                            <div class="single-content-item padding-top-40px padding-bottom-40px">
-                                <h3 class="title font-size-20">Fotografías</h3>
-                                <div class="gallery-carousel carousel-action padding-top-30px">
-                                    <div class="card-item mb-0">
-                                        <div class="card-img">
-                                            <img src="https://cdn.getyourguide.com/img/tour/5d2cff88117f8.jpeg/146.jpg" alt="Destination-img" style="height: 500px">
-                                        </div>
-                                    </div><!-- end card-item -->
-                                    <div class="card-item mb-0">
-                                        <div class="card-img">
-                                            <img src="https://www.elcomercio.com/files/content_thumbnail/uploads/2014/08/29/54012f02c4774.jpg" alt="Destination-img" style="height: 500px">
-                                        </div>
-                                    </div><!-- end card-item -->
-                                </div><!-- end gallery-carousel -->
-                            </div><!-- end single-content-item -->
-                            <div class="section-block"></div>
-                        </div><!-- end photo -->
-                        {% endcomment %}
+                        </div><!-- end description -->
                     </div><!-- end single-content-wrap -->
                 </div><!-- end col-lg-8 -->
                 <div class="col-lg-4">
@@ -217,27 +90,49 @@
                             </div>
                             {% endif %}
                         </div><!-- end sidebar-widget -->
-                        <div class="sidebar-widget single-content-widget">
-                            <h3 class="title stroke-shape">Necesitas ayuda?</h3>
-                            <p class="font-size-14 line-height-24">No dude en comunicarte con nostros. Uno de nuestros agentes te atenderá de inmediato.</p>
-                            <div class="sidebar-list pt-3">
-                                <ul class="list-items">
-                                    <li><i class="la la-phone icon-element mr-2"></i><a >+ 593 999537566</a></li>
-                                    <li><i class="la la-envelope icon-element mr-2"></i><a href="mailto:info@trizen.com">info@exploreit.ec</a></li>
-                                </ul>
-                            </div><!-- end sidebar-list -->
-                        </div><!-- end sidebar-widget -->
                     </div><!-- end sidebar -->
                 </div><!-- end col-lg-4 -->
             </div><!-- end row -->
+            <div class="row pb-5">
+                <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
+                    <h2 class="sec__title line-height-55 pb-1 pt-5">Todo lo que Incluye</h2>
+                </div>
+                {% for inc in tour_info.incluye %}
+                <div class="col-lg-2 col-sm-6 {%if forloop.counter == 1%}offset-lg-1{%endif%} text-center">
+                    <i style="font-size: 70px;" class="{{inc.icono}}"></i><br>
+                    {{inc.nombre}}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row pb-5">
+                <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
+                    <h2 class="sec__title line-height-55 pb-1 pt-5">Itinerario</h2>
+                </div>
+                <div id="itinerary" class="col-lg-10 row" style="box-shadow: 0 0 20px #cccccc7d; border-radius: 20px; padding: 25px; margin: auto;">
+                    <div class="single-content-item col-lg-8">
+                        {% for dia, actividades in tour_info.itinerario.items %}
+                                <p style="font-weight: bold;">Dia {{dia}}</p>
+                                {% for descripcion in actividades %}
+                                <div id="faqCollapse{{forloop.counter}}" class="collapse show" aria-labelledby="faqHeadingOne" data-parent="#accordionExample">
+                                    <div class="card-body d-flex align-items-center" style="padding: 0px;">
+                                        <p><i class="las la-minus"></i> {{descripcion}}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                        <br>
+                        {% endfor %}
+                    </div><!-- end single-content-item -->
+                    <div class="single-content-item col-lg-4 text-center">
+                        <i class="las la-clipboard-list" style="font-size: 150px;"></i>
+                    </div><!-- end single-content-item -->
+                </div><!-- end itinerary -->
+            </div>
         </div><!-- end container -->
     </div><!-- end single-content-box -->
 </section><!-- end tour-detail-area -->
 <!-- ================================
     END TOUR DETAIL AREA
 ================================= -->
-
-<div class="section-block"></div>
 
 <!-- ================================
     START RELATE TOUR AREA
@@ -321,6 +216,23 @@
 </script>
 
 <style>
+
+    .single-content-widget{
+        border-radius: 20px;
+    }
+
+    .single-content-sidebar{
+        margin-top: 0px;
+    }
+
+    .section-heading{
+        height: fit-content !important;
+    }
+
+    .title{
+        color: #77798D !important;
+    }
+
     .card-item.destination-card .card-body{
       display: none !important;
     }

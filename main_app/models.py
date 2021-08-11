@@ -150,7 +150,7 @@ class Tour(models.Model):
         return response_dict
 
     def obtener_similares(self):
-        return Tour.objects.filter(tipo=self.tipo, activo=True).exclude(pk=self.pk).order_by('?')[:3]
+        return Tour.objects.filter(categoria=self.categoria, activo=True).exclude(pk=self.pk).order_by('?')[:3]
 
     def obtener_duracion(self):
         itinerario = Itinerario.objects.filter(tour=self).order_by('-dia')
@@ -188,8 +188,9 @@ class Itinerario(models.Model):
 
 
 class Incluye(models.Model):
-    nombre     = models.CharField(max_length=150)
+    nombre          = models.CharField(max_length=150)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
+    icono           = models.CharField(max_length=100, default="las la-check-circle")
 
     @classmethod
     def queryset_to_dict(cls, queryset):

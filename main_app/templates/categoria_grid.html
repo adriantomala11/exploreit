@@ -8,16 +8,16 @@
     <div class="breadcrumb-wrap">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="breadcrumb-content">
                         <div class="section-heading">
-                            <h2 class="sec__title">{{categoria.nombre}}</h2>
+                            <h2 class="sec__title" style="text-align: center; font-weight: 600;">{{categoria.nombre}}</h2>
                         </div>
                     </div><!-- end breadcrumb-content -->
                 </div><!-- end col-lg-6 -->
-                <div class="col-lg-6">
-                    <div class="breadcrumb-list">
-                        <ul class="list-items d-flex justify-content-end">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-list" style="width: fit-content; margin: 10px auto">
+                        <ul class="list-items d-flex">
                             <li><a href="index.html">Exploreit</a></li>
                             <li>{{categoria.nombre}}</li>
                         </ul>
@@ -34,7 +34,7 @@
 <!-- ================================
     START CARD AREA
 ================================= -->
-<section class="card-area section--padding">
+<section class="card-area section--padding fondo-mundi">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -284,5 +284,13 @@
     }
 
 }
+
+.sec__title{
+    color: white !important;
+}
+
+.breadcrumb-area {
+    padding-top: 160px;
+    padding-bottom: 180px;
 </style>
 {% endblock %}
