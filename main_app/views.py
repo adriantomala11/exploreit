@@ -191,7 +191,7 @@ def tours(request):
 def categoria(request, slug):
     categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
     categoria = get_object_or_404(Categoria, codigo_url=slug)
-    tours = Tour.objects.filter(categoria=categoria)
+    tours = Tour.objects.filter(categoria=categoria, activo=True)
     context = {'settings': settings, 'tours': tours, 'categorias_menu': categorias_menu, 'categoria': categoria}
     return render(request, 'categoria_grid.html', context)
 

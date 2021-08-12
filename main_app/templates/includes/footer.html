@@ -1,3 +1,4 @@
+{% load static %}
 <!-- ================================
        START FOOTER AREA
 ================================= -->
@@ -7,6 +8,7 @@
         </div><!-- end row -->
         <div class="row align-items-center">
             <div class="col-lg-8">
+                <img src="{% static 'images/logo.png' %}" alt="logo" style="width: auto; height: 55px; margin: 10px 0; padding: 5px">
                 <div class="term-box footer-item">
                     <ul class="list-items list--items d-flex align-items-center">
                         <li><a >Términos y Condiciones</a></li>
@@ -31,7 +33,7 @@
         <div class="row align-items-center">
             <div class="col-lg-7">
                 <div class="copy-right padding-top-30px">
-                    <p class="copy__desc">
+                    <p class="copy__desc" style="color: white;">
                         &copy; Copyright Explore It {% now "Y" %}.
                     </p>
                 </div><!-- end copy-right -->
@@ -169,3 +171,23 @@
         </div>
     </div><!-- end modal-popup -->
     {% endcomment %}
+
+{% block footer_code %}
+<style>
+    .term-box .list-items li::before {
+        color: white !important;
+    }
+
+    .section-bg {
+        background-color: #343a40;
+    }
+
+    .list-items li a{
+        color: white;
+    }
+
+    li a i{
+        color: white;
+    }
+</style>
+{% endblock %}
