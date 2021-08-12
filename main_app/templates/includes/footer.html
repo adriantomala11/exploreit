@@ -8,7 +8,7 @@
         </div><!-- end row -->
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <img src="{% static 'images/logo.png' %}" alt="logo" style="width: auto; height: 55px; margin: 10px 0; padding: 5px">
+                <div class="footer-logo-container"><img src="{% static 'images/logo.png' %}" alt="logo" style="width: auto; height: 55px; margin: 10px 0; padding: 5px"></div>
                 <div class="term-box footer-item">
                     <ul class="list-items list--items d-flex align-items-center">
                         <li><a >Términos y Condiciones</a></li>
@@ -192,6 +192,17 @@
 
     ul li a i{
         color: white;
+    }
+
+    .footer-logo-container{
+        width: fit-content;
+    }
+
+    @media (max-width: 991px) {
+        .footer-logo-container{
+            margin: auto;
+            width: fit-content;
+        }
     }
 </style>
 {% endblock %}
