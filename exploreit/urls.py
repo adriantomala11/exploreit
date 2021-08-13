@@ -57,7 +57,6 @@ urlpatterns = [
     path('administrador/eliminar-tour/', admin_views.eliminar_tour, name='eliminar_tour'),
     path('administrador/categorias/', admin_views.categorias, name='categorias'),
 
-    path('prueba-mail/', main_views.enviar_mail, name='enviar_mail'),
     path('payphone/recibir-pagos/', main_views.recibir_pagos, name='recibir_pagos'),
 ]
 urlpatterns += staticfiles_urlpatterns()

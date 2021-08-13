@@ -14,6 +14,9 @@
                     <h3 class="sec__title cd-headline zoom">
                         Más Que Un Viaje, <br>Una Aventura
                     </h3>
+                    <div style="width: fit-content; margin: auto; margin-top: 30px;">
+                        <a class="conoce-btn" href="#destinos-recientes">Conoce Mas</a>
+                    </div>
                 </div><!-- end col-lg-12 -->
             </div><!-- end row -->
             {% comment %}
@@ -135,6 +138,105 @@
     START SALIDAS AREA
 ================================= -->
 <div style="min-height: 100vh;background-image: url('{% static 'images/background11.png' %}'); background-attachment: fixed; background-position: center; background-repeat: no-repeat; background-size: cover;">
+        <section id="destinos-recientes" class="pt-5 hotel-area section-padding overflow-hidden padding-right-100px padding-left-100px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading text-center pt-5" style="height: fit-content !important; padding-bottom: 25px;">
+                        <h2 class="sec__title line-height-55">Destinos Agregados Recientemente <br> </h2>
+                        <p>Reserva ahora y empieza una nueva aventura con nosotros de inmediato.</p>
+                    </div><!-- end section-heading -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+            <div class="row pt-4">
+                <div class="col-lg-12">
+                    <div class="hotel-card-wrap">
+                        <div class="hotel-card-carousel carousel-action">
+                            {% for tour in tours_recientes %}
+                            <div class="card-item mb-0" style="width: 85%; margin: auto;">
+                                <a href="{% url 'tour_info' tour.token %}"><div class="card-img" style="height: 350px !important; background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
+                                <div class="card-body">
+                                    <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
+                                    <p class="card-meta"><i class="las la-map-marker-alt"></i> {{tour.ubicacion}}</p>
+                                    <div class="card-price d-flex align-items-center justify-content-between">
+                                        <p>
+                                            <span class="price__num">${{tour.precio|floatformat:2}}</span>
+                                            <span class="price__text">Por persona</span>
+                                        </p>
+                                        <a href="{% url 'tour_info' tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div><!-- end card-item -->
+                            {% endfor %}
+                        </div><!-- end hotel-card-carousel -->
+                    </div>
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="btn-box mt-4 text-center">
+                        <a href="{% url 'tours' %}" class="theme-btn" style="padding-left: 40px; padding-right: 40px; margin-top: 30px;">Ver Mas</a>
+                    </div><!-- end btn-box
+                    -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </section><!-- end salidas-area -->
+    <!-- ================================
+        END SALIDAS AREA
+    ================================= -->
+        <div class="hero-box mt-4 newsletter-div" style="margin: 0px !important; padding: 80px 1.25rem 80px 1.25rem; width: 100%; z-index:0; background-image:url('{% static 'images/background8.jpg' %}'); background-size: cover; background-position: center;">
+        <div class="section-heading text-center">
+            <h2 class="sec__title line-height-55" style="color: white;">Lorem Ipsum</h2>
+            <p style="color: white;">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
+        </div>
+        <section class="info-area padding-top-50px text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                                <i class="la la-bullhorn"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">You'll never roam alone</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                               <i class="la la-globe"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">A world of choice – anytime, anywhere</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                    <div class="col-lg-4">
+                        <div class="icon-box">
+                            <div class="info-icon">
+                               <i class="la la-thumbs-up"></i>
+                            </div><!-- end info-icon-->
+                            <div class="info-content">
+                                <h4 class="info__title">Peace of mind, wherever you wander</h4>
+                                <p class="info__desc">
+                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                </p>
+                            </div><!-- end info-content -->
+                        </div><!-- end icon-box -->
+                    </div><!-- end col-lg-4 -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+    </div>
+
     <section class="hotel-area section-padding overflow-hidden padding-right-100px padding-left-100px padding-top-100px" style="padding-bottom: 0px; background-color: transparent; height: fit-content;">
         <div class="container-fluid" style="margin-bottom: 0px;"><!-- margin-bottom: -150px -->
             <div class="row">
@@ -186,139 +288,19 @@
                 </div>
             </div><!-- end row -->
         </div><!-- end container-fluid -->
-        {% comment %}
-        <div class="container-3 video-box" style="width: 100vw; background-color: black; padding: 0 !important; z-index: 2;">
-            <div style="height: 100%; width: fit-content; margin: auto;">
-                <video style="height: 100%;" autoplay muted loop id="myVideo">
-                  <source src="{% static 'videos/exploreit2.mp4' %}" type="video/mp4">
-                </video>
-            </div>
-            <div class="newsletter-section" style="width: 100%;">
-                <div class="newsletter-section-container section-heading text-center pt-5 mt-5" style="height: fit-content !important;">
-                    <h2 class="sec__title line-height-55" style="color: white;">Suscribete para no perderte ninguna promocion</h2>
-                    <p style="color: white;">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
-                </div>
-                <div class="newsletter-form">
-                    <input class="newsletter-input" type="email" placeholder="johndow@example.com">
-                    <div style="margin: auto; width: fit-content;">
-                    <button class="newsletter-button mt-3" >Enviar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endcomment %}
-        <div class="hero-box mt-4 newsletter-div" style="padding: 80px 1.25rem 80px 1.25rem; width: 100vw; z-index:0; background-image:url('{% static 'images/background8.jpg' %}'); background-size: cover; background-position: center;">
-            <div class="section-heading text-center">
-                <h2 class="sec__title line-height-55" style="color: white;">Lorem Ipsum</h2>
+    </section>
+    <div class="hero-box mt-4" style="padding: 80px 1.25rem 80px 1.25rem; width: 100%; z-index:0; background-image:url('{% static 'images/fondo7.png' %}'); background-size: cover; background-position: center;">
+            <div class="newsletter-section-container section-heading text-center pt-5 mt-5" style="height: fit-content !important;">
+                <h2 class="sec__title line-height-55" style="color: white;">Suscríbete para no perderte ninguna promoción</h2>
                 <p style="color: white;">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
             </div>
-            <section class="info-area padding-top-50px text-center">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="icon-box">
-                                <div class="info-icon">
-                                    <i class="la la-bullhorn"></i>
-                                </div><!-- end info-icon-->
-                                <div class="info-content">
-                                    <h4 class="info__title">You'll never roam alone</h4>
-                                    <p class="info__desc">
-                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    </p>
-                                </div><!-- end info-content -->
-                            </div><!-- end icon-box -->
-                        </div><!-- end col-lg-4 -->
-                        <div class="col-lg-4">
-                            <div class="icon-box">
-                                <div class="info-icon">
-                                   <i class="la la-globe"></i>
-                                </div><!-- end info-icon-->
-                                <div class="info-content">
-                                    <h4 class="info__title">A world of choice – anytime, anywhere</h4>
-                                    <p class="info__desc">
-                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    </p>
-                                </div><!-- end info-content -->
-                            </div><!-- end icon-box -->
-                        </div><!-- end col-lg-4 -->
-                        <div class="col-lg-4">
-                            <div class="icon-box">
-                                <div class="info-icon">
-                                   <i class="la la-thumbs-up"></i>
-                                </div><!-- end info-icon-->
-                                <div class="info-content">
-                                    <h4 class="info__title">Peace of mind, wherever you wander</h4>
-                                    <p class="info__desc">
-                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    </p>
-                                </div><!-- end info-content -->
-                            </div><!-- end icon-box -->
-                        </div><!-- end col-lg-4 -->
-                    </div><!-- end row -->
-                </div><!-- end container -->
-            </section>
-        </div>
-    </section>
-
-    <section class="pt-5 hotel-area section-padding overflow-hidden padding-right-100px padding-left-100px">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading text-center pt-5" style="height: fit-content !important; padding-bottom: 25px;">
-                        <h2 class="sec__title line-height-55">Destinos Agregados Recientemente <br> </h2>
-                        <p>Reserva ahora y empieza una nueva aventura con nosotros de inmediato.</p>
-                    </div><!-- end section-heading -->
-                </div><!-- end col-lg-12 -->
-            </div><!-- end row -->
-            <div class="row pt-4">
-                <div class="col-lg-12">
-                    <div class="hotel-card-wrap">
-                        <div class="hotel-card-carousel carousel-action">
-                            {% for tour in tours_recientes %}
-                            <div class="card-item mb-0" style="width: 85%; margin: auto;">
-                                <a href="{% url 'tour_info' tour.token %}"><div class="card-img" style="height: 350px !important; background-image: url('{% if tour.imagen %}{{tour.imagen_thumbnail}}{% else %}{% static 'images/logo.png' %}{% endif %}'); background-size: cover; background-position: center; height: 220px;"></div></a>
-                                <div class="card-body">
-                                    <h3 class="card-title"><a href="{% url 'tour_info' tour.token %}">{{tour.nombre}}</a></h3>
-                                    <p class="card-meta"><i class="las la-map-marker-alt"></i> {{tour.ubicacion}}</p>
-                                    <div class="card-price d-flex align-items-center justify-content-between">
-                                        <p>
-                                            <span class="price__num">${{tour.precio|floatformat:2}}</span>
-                                            <span class="price__text">Por persona</span>
-                                        </p>
-                                        <a href="{% url 'tour_info' tour.token %}" class="btn-text">Detalles<i class="la la-angle-right"></i></a>
-                                    </div>
-                                </div>
-                            </div><!-- end card-item -->
-                            {% endfor %}
-                        </div><!-- end hotel-card-carousel -->
-                    </div>
-                </div><!-- end col-lg-12 -->
-            </div><!-- end row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="btn-box mt-4 text-center">
-                        <a href="{% url 'tours' %}" class="theme-btn" style="padding-left: 40px; padding-right: 40px; margin-top: 30px;">Ver Mas</a>
-                    </div><!-- end btn-box
-                    -->
-                </div><!-- end col-lg-12 -->
-            </div><!-- end row -->
-        </div><!-- end container-fluid -->
-    </section><!-- end salidas-area -->
-    <!-- ================================
-        END SALIDAS AREA
-    ================================= -->
-    <div class="hero-box mt-4" style="padding: 80px 1.25rem 80px 1.25rem; width: 100%; z-index:0; background-image:url('{% static 'images/fondo7.png' %}'); background-size: cover; background-position: center;">
-        <div class="newsletter-section-container section-heading text-center pt-5 mt-5" style="height: fit-content !important;">
-            <h2 class="sec__title line-height-55" style="color: white;">Suscribete para no perderte ninguna promocion</h2>
-            <p style="color: white;">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</p>
-        </div>
-        <div class="newsletter-form">
-            <input class="newsletter-input" type="email" placeholder="johndow@example.com">
-            <div style="margin: auto; width: fit-content;">
-            <button class="newsletter-button mt-3" >Enviar</button>
+            <div class="newsletter-form">
+                <input class="newsletter-input" type="email" placeholder="joseperez@example.com">
+                <div style="margin: auto; width: fit-content;">
+                <button class="newsletter-button mt-3" >Enviar</button>
+                </div>
             </div>
         </div>
-    </div>
 </div>
 <!-- ================================
     END SALIDAS AREA
@@ -328,6 +310,23 @@
 
 {% block footer_code %}
 <style>
+    #destinos-recientes{
+        padding-bottom: 130px;
+    }
+
+    .conoce-btn{
+        padding: 15px 20px !important;
+        background-color: #dee2e626;
+        border-radius: 50px;
+        color: #ffffff;
+        transition: 300ms;
+    }
+
+    .conoce-btn:hover{
+        color: #7b00ff !important;
+        background-color: white;
+    }
+
     .newsletter-div{
         margin-left: -100px;
     }
@@ -645,5 +644,15 @@ var intervalId = window.setInterval(function(){
         //}
     });
 }, 4000);
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
 </script>
 {% endblock %}

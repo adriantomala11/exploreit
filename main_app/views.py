@@ -78,7 +78,7 @@ def tour_booking(request, token):
     elif request.method == 'POST':
         data = json.loads(request.POST['booking_data'])
         valor = int(data['valor'].replace(',', ''))
-        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
+        reserva = Reserva(salida_id=data['salida'], nombre=data['contacto']['nombres'], cedula=data['contacto']['cedula'], correo=data['contacto']['correo'], telefono=data['contacto']['tlf'], token=Reserva.generar_token(), metodo_de_pago=data['metodo_pago'], valor=valor)
         reserva.save()
         factura = Factura(nombre=data['facturacion']['nombres'], cedula=data['facturacion']['nombres'], correo=data['facturacion']['correo'], telefono=data['facturacion']['tlf'], direccion=data['facturacion']['domicilio'], reserva=reserva)
         factura.save()
@@ -197,10 +197,10 @@ def categoria(request, slug):
 
 def ver_reserva(request):
     categorias_menu = Categoria.objects.filter(mostrar_en_menu=True, activa=True)
+    context = {'categorias_menu': categorias_menu}
     if request.method == 'GET':
         codigo = request.GET.get('tok')
         if codigo:
-            context = {'categorias_menu': categorias_menu}
             reserva = Reserva.objects.filter(token=codigo).order_by('-id')
             if len(reserva) > 0:
                 reserva = reserva[0]
@@ -221,15 +221,9 @@ def ver_reserva(request):
             context['settings'] = settings
             return render(request, 'tour_booked.html', context)
         else:
-            return render(request, 'ver_reserva.html')
+            context = {'categorias_menu': categorias_menu}
+            return render(request, 'ver_reserva.html', context)
 
-def enviar_mail(request):
-    # ENVIO DE CORREO CON INSTRUCCIONES DE PAGO
-    subject = 'Explore It: Instrucciones de Pago para Reserva'
-    context = {subject}
-    recipient_list = ['luisadriant11@hotmail.com', ]
-    send_html_email(recipient_list, 'Good news', 'email_templates/index.html', context, settings.DEFAULT_FROM_EMAIL)
-    return HttpResponse()
 
 def subir_comprobante(request):
     reserva_token = request.POST['reserva']
