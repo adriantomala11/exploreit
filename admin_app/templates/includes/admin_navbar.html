@@ -16,6 +16,7 @@
             </div>
         </div>
         <div id="accordion">
+            {%comment%}
           <div class="card">
             <div class="card-header" id="heading3">
               <h5 class="mb-0">
@@ -39,6 +40,7 @@
               </div>
             </div>
           </div>
+            {% endcomment %}
           <div class="card">
             <div class="card-header" id="headingOne">
               <h5 class="mb-0">
@@ -102,13 +104,32 @@
           </div>
         </div>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" id="headingTwo">
               <h5 class="mb-0">
-                <a id="nav_categorias" class="btn btn-link" href="{% url 'categorias' %}" style="text-decoration: none; color: inherit;">
-                  <i class="las la-hiking"></i>Categorías
+                <a id="nav_categorias" class="btn btn-link collapsed" data-toggle="collapse" data-target="#nav_categorias_content" aria-expanded="false" aria-controls="collapseTwo">
+                  <i class="las la-bus"></i>Categorias
                 </a>
               </h5>
             </div>
+            <div id="nav_categorias_content" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div>
+                  <a id="nav_registrar_categoria" href="{% url 'registrar_categoria' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Registrar Categoria
+                        </div>
+                      </div>
+                  </a>
+                  <a id="nav_categorias_registradas" href="{% url 'categorias' %}">
+                      <div class="card">
+                        <div class="card-header sub">
+                            Categorias Registradas
+                        </div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card">
             <div class="card-header">

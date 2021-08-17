@@ -37,7 +37,7 @@
                                     <h3 class="title">Listado de Categorías</h3>
                                     <p class="font-size-14">Se han registrado {{ categorias|length }} categorias.</p>
                                 </div>
-                                <div style="width:30%; text-align: right;">
+                                <div style="width:30%; text-align: right; display: none;">
                                     <div class="filter-option" style="width: fit-content; float: right;">
                                         <div class="dropdown dropdown-contain">
                                             <a onclick="abrirDropdownMenu(this);" class="dropdown--btn" href="javascript:void(0);" role="button" style="font-size: 20px;">
@@ -150,7 +150,9 @@
 </style>
 
 <script>
+    document.getElementById('nav_categorias_registradas').classList.add('page-active')
     document.getElementById('nav_categorias').classList.add('page-active')
+    document.getElementById('nav_categorias_content').classList.add('show')
 
     function agregarCategoria(tipo){
         Swal.fire({
