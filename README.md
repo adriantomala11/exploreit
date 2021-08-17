@@ -4,7 +4,7 @@
 
 <h2>Installation</h2>
 <p>Run <code>pip install -r requirements.txt</code> to install requirements to run the program.</p>
-<p>Run <code>python manage.py makemimgrations</code> to prepare the necessary migrations to generate the tables.</p>
+<p>Run <code>python manage.py makemigrations</code> to prepare the necessary migrations to generate the tables.</p>
 <p>Run <code>python manage.py migrate</code> to do the migrations defined on the project.</p>
 <p>Run <code>python manage.py createsuperuser</code> to create a super user to sign in on django admin.</p>
 
@@ -21,3 +21,9 @@
 <p>Use <code>python manage.py test main_app</code> to execute all tests of the main module.</p>
 
 <p>Use <code>python manage.py test admin_app</code> to execute all tests of the admin module.</p>
+<h2>Tools from Software 2</h2>
+<p>Application profiling - CProfile</p>
+<p>To install: <code>pip install django-cprofile-middleware</code></p>
+
+<p>Continuous integration: Jenkins</p>
+<p>Acceptance testing: Behave</p>
