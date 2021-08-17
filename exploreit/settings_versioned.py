@@ -26,7 +26,7 @@ SECRET_KEY = 'n_fv9hhrg#3)h_^h@*138iw@i$y62r1uxi$j2d97$!tkn(bh%7'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -62,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django_cprofile_middleware.middleware.ProfilerMiddleware",
 ]
 
 ROOT_URLCONF = 'exploreit.urls'
@@ -160,3 +161,6 @@ AWS_ACCESS_KEY_ID = 'AKIA2V7KEKPOYMRA6AFO'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'exploreit-pruebas'
 AWS_S3_BUCKET_URL = 'https://exploreit-pruebas.s3-us-west-1.amazonaws.com/'
+
+#Profiler
+DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
