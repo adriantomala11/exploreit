@@ -253,7 +253,8 @@ def registrar_categoria(request):
             nuevo_categoria = Categoria(nombre=data['nombre'],
                               tipo=data['tipo'],
                               activa=data['activo'],
-                              mostrar_en_menu=data['mostrar_en_menu'])
+                              mostrar_en_menu=data['mostrar_en_menu'],
+                              codigo_url=data['codigo_url'])
             codigo = str(nuevo_categoria.nombre[0:3]).upper()
             try:
                 cat = get_object_or_404(Categoria, codigo=codigo)
