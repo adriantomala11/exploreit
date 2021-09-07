@@ -203,7 +203,7 @@ class Incluye(models.Model):
     def queryset_to_list(cls, queryset):
         list = []
         for item in queryset:
-            list.append({'id':item.id,'nombre': item.nombre})
+            list.append({'id':item.id,'nombre': item.nombre, 'icono': item.icono})
         return list
 
 class NoIncluye(models.Model):
