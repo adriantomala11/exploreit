@@ -250,7 +250,7 @@ def registrar_categoria(request):
         transaction.set_autocommit(False)
         try:
             data = json.loads(request.POST['categoria_data'])
-            nuevo_categoria = Tour(nombre=data['nombre'],
+            nuevo_categoria = Categoria(nombre=data['nombre'],
                               tipo=data['tipo'],
                               activa=data['activo'],
                               mostrar_en_menu=data['mostrar_en_menu'])
