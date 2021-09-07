@@ -2,5 +2,5 @@ projectKey=explore_it
 serverUrl=http://localhost:9000
 serverVersion=7.4.0.18908
 dashboardUrl=http://localhost:9000/dashboard?id=explore_it
-ceTaskId=AXpPOaLO3KWIW57lbf7U
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AXpPOaLO3KWIW57lbf7U
+ceTaskId=AXtWSdQt0mhjAMrF_19P
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXtWSdQt0mhjAMrF_19P
