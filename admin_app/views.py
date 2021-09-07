@@ -161,7 +161,7 @@ def registrar_tour(request):
 
 def registrar_extras(data,nuevo_tour):
     for inc in data['incluye']:
-        incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
+        incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'], icono=inc['icono'])
         incluye.save()
     for ninc in data['no_incluye']:
         no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])

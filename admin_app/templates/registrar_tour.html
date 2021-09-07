@@ -137,11 +137,13 @@
                             </div><!-- end col-lg-12 -->
                             <div class="col-lg-6">
                                 <div class="input-box">
-                                    <label class="label-text">Incluye</label>
+                                    <label class="label-text">Incluye (Iconos <a target="_blank" href="https://icons8.com/line-awesome">aquí</a>)</label>
                                     <div style="display: flex;"  v-for="inc in incluye" :id="inc.id">
                                         <div class="form-group" style="width:90%">
-                                            <span class="la la-map form-icon"></span>
-                                            <input v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc." required>
+                                            <div style="display: flex;">
+                                                <input style="width:60%" v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte" required>
+                                                <input style="width:40%" v-model="inc.icono" class="form-control incluye_input" type="text" name="text" placeholder="Ej: la-check-circle" required>
+                                            </div>
                                         </div>
                                         <div @click="eliminarIncluye(inc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                             <span class="la la-trash"></span>
@@ -273,7 +275,7 @@
         },
         methods:{
             agregarIncluye: function(){
-                this.incluye.push({id: Date.now(), nombre: ''});
+                this.incluye.push({id: Date.now(), nombre: '', icono: ''});
             },
             agregarNoIncluye: function(){
                 this.no_incluye.push({id: Date.now(), nombre: ''});
