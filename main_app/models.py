@@ -47,13 +47,13 @@ class Tour(models.Model):
         ('INT', 'Internacional'),
     )
 
-    nombre                  = models.CharField(max_length=150)
+    nombre                  = models.CharField(max_length=250)
     descripcion             = models.TextField()
     ubicacion               = models.CharField(max_length=60, null=True)
     hora_checkin            = models.CharField(max_length=10)
     hora_salida             = models.CharField(max_length=10)
     hora_retorno            = models.CharField(max_length=10)
-    lugar_salida            = models.CharField(max_length=150)
+    lugar_salida            = models.CharField(max_length=300)
     token                   = models.CharField(max_length=30, null=True)
     imagen                  = models.ImageField(upload_to=os.path.join('tours',str(id)))
     tipo                    = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
@@ -170,7 +170,7 @@ class Tour(models.Model):
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
     dia             = models.IntegerField(null=True)
-    descripcion     = models.CharField(max_length=300, null=True)
+    descripcion     = models.CharField(max_length=1000, null=True)
 
     @classmethod
     def queryset_to_dict(cls, queryset):
@@ -188,7 +188,7 @@ class Itinerario(models.Model):
 
 
 class Incluye(models.Model):
-    nombre          = models.CharField(max_length=150)
+    nombre          = models.CharField(max_length=500)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
     icono           = models.CharField(max_length=100, default="las la-check-circle")
 
@@ -207,7 +207,7 @@ class Incluye(models.Model):
         return list
 
 class NoIncluye(models.Model):
-    nombre          = models.CharField(max_length=150)
+    nombre          = models.CharField(max_length=500)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
 
     @classmethod
@@ -225,7 +225,7 @@ class NoIncluye(models.Model):
         return list
 
 class Importante(models.Model):
-    descripcion     = models.CharField(max_length=300)
+    descripcion     = models.CharField(max_length=500)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
 
 class Salida(models.Model):
@@ -273,9 +273,9 @@ class Reserva(models.Model):
     fecha_creacion      = models.DateTimeField(default=timezone.now)
     salida              = models.ForeignKey(Salida, on_delete=models.PROTECT)
     acomodacion         = models.CharField(max_length=10, null=True)
-    correo              = models.CharField(max_length=40)
-    nombre              = models.CharField(max_length=40)
-    apellido            = models.CharField(max_length=40)
+    correo              = models.CharField(max_length=80)
+    nombre              = models.CharField(max_length=80)
+    apellido            = models.CharField(max_length=80)
     cedula              = models.CharField(max_length=15)
     telefono            = models.CharField(max_length=20, null=True)
     comprobante         = models.CharField(max_length=100, null=True)
