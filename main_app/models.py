@@ -170,7 +170,7 @@ class Tour(models.Model):
 class Itinerario(models.Model):
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
     dia             = models.IntegerField(null=True)
-    descripcion     = models.CharField(max_length=1000, null=True)
+    descripcion     = models.CharField(max_length=3000, null=True)
 
     @classmethod
     def queryset_to_dict(cls, queryset):
