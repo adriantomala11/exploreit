@@ -57,7 +57,7 @@
                         <div class="sidebar-widget single-content-widget">
                             <div class="sidebar-widget-item">
                                 <div class="sidebar-book-title-wrap mb-3">
-                                    <p><span class="text-value mr-1">$45.00</span> Por Persona</p>
+                                    <p><span class="text-value mr-1">${{tour_info.tour.precio|floatformat:2}}</span> Por Persona</p>
                                 </div>
                             </div><!-- end sidebar-widget-item -->
                             {% if tour_info.tour.esta_disponible %}
@@ -93,17 +93,71 @@
                     </div><!-- end sidebar -->
                 </div><!-- end col-lg-4 -->
             </div><!-- end row -->
+            {% if tour_info.tour.imagen_descripcion %}
+            <div class="row pb-5 pt-4">
+                <img src="{{tour_info.tour.imagen_descripcion_url}}" style="width: 100%; height: auto;">
+            </div>
+            {% else %}
             <div class="row pb-5">
                 <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
                     <h2 class="sec__title line-height-55 pb-1 pt-5">Todo lo que Incluye</h2>
                 </div>
-                {% for inc in tour_info.incluye %}
-                <div class="col-lg-2 col-sm-6 {%if forloop.counter == 1%}offset-lg-1{%endif%} text-center">
-                    <i style="font-size: 70px;" class="las {{inc.icono}}"></i><br>
-                    {{inc.nombre}}
-                </div>
-                {% endfor %}
+                {% if tour_info.incluye|length == 5 %}
+                    {% for inc in tour_info.incluye %}
+                    <div class="col-lg-2 col-sm-6 {%if forloop.counter == 1%}offset-lg-1{%endif%} text-center">
+                         <i style="font-size: 70px;" class="las {{inc.icono}}"></i><br>
+                        {{inc.nombre}}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    {% for inc in tour_info.incluye %}
+                    <div class="col-lg-3 col-sm-6 text-center pb-4">
+                         <i style="font-size: 70px;" class="las {{inc.icono}}"></i><br>
+                        {{inc.nombre}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
             </div>
+            {% endif %}
+
+
+            {% if tour_info.tour.dificultad or tour_info.tour.altura or tour_info.tour.temperatura or tour_info.tour.trekking %}
+            <div class="row pb-5">
+                <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
+                    <h2 class="sec__title line-height-55 pb-1 pt-5">Detalles</h2>
+                </div>
+                {% if tour_info.tour.dificultad %}
+                <div class="col-lg-2 col-sm-6 offset-lg-1 text-center">
+                    <h3 style="min-height: 67px;">{{tour_info.tour.dificultad}}</h3><br>
+                    Dificultad
+                </div>
+                {% endif %}
+                {% if tour_info.tour.altura %}
+                <div class="col-lg-2 col-sm-6 text-center pb-4">
+                    <h3 style="min-height: 67px;">{{tour_info.tour.altura}}</h3><br>
+                    Altura Promedio
+                </div>
+                {% endif %}
+                {% if tour_info.tour.temperatura %}
+                <div class="col-lg-2 col-sm-6 text-center pb-4">
+                    <h3 style="min-height: 67px;">{{tour_info.tour.temperatura}}</h3><br>
+                    Temperatura Promedio
+                </div>
+                {% endif %}
+                {% if tour_info.tour.trekking %}
+                <div class="col-lg-2 col-sm-6 text-center pb-4">
+                    <h3 style="min-height: 67px;">{{tour_info.tour.trekking}}</h3><br>
+                    Tiempo de trekking
+                </div>
+                {% endif %}
+                <div class="col-lg-2 col-sm-6 text-center pb-4">
+                    <h3 style="min-height: 67px;">{% if tour_info.tour.pet_friendly %}SI{% else %}NO{% endif %}</h3><br>
+                    Pet Friendly
+                </div>
+            </div>
+            {% endif %}
+
+
             <div class="row pb-5">
                 <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
                     <h2 class="sec__title line-height-55 pb-1 pt-5">Itinerario</h2>

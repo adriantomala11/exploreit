@@ -77,7 +77,7 @@
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
                                 <div class="input-box">
-                                    <label class="label-text">Image </label>
+                                    <label class="label-text">Imagen </label>
                                     <div class="form-group">
                                         <input onchange="getImageData()" id="fileinput" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
                                     </div>
@@ -110,6 +110,56 @@
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
+                            {% comment %}
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Imagen Descripcion</label>
+                                    <div class="form-group">
+                                        <input onchange="getImageDescripcionData()" id="fileinput2" class="form-control" type="file" name="imagen" style="padding: 10px 20px 10px 20px !important;" accept=".jpg, .jpeg, .png">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            {% endcomment %}
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Dificultad</label>
+                                    <div class="form-group select-contain w-100">
+                                        <select v-model="dificultad" id="dificultad" class="select-contain-select" required>
+                                            <option class="tipo-option" value="N/A" selected>No Aplica</option>
+                                            <option class="tipo-option" value="FACIL">Facil</option>
+                                            <option class="tipo-option" value="MEDIO">Medio</option>
+                                            <option class="tipo-option" value="DIFICIL">Dificil</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-4 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Altura Promedio (Llenar solo si aplica)</label>
+                                    <div class="form-group">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input v-model="altura" id="altura" class="form-control" type="text" name="altura" placeholder="Ingresar altura promedio">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Temperatura Promedio (Llenar solo si aplica)</label>
+                                    <div class="form-group">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input v-model="temperatura" id="temperatura" class="form-control" type="text" name="temperatura" placeholder="Ingresar temperatura promedio">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6 responsive-column">
+                                <div class="input-box">
+                                    <label class="label-text">Tiempo del trekking (Llenar solo si aplica)</label>
+                                    <div class="form-group">
+                                        <span class="la la-briefcase form-icon"></span>
+                                        <input v-model="trekking" id="trekking" class="form-control" type="text" name="trekking" placeholder="Ingresar tiempo del trekking">
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
                             <div class="col-lg-12 responsive-column" style="margin-top: 30px;">
                                 <p style="color: black;">Configuración del Tour</p>
                                 <div class="input-box">
@@ -122,6 +172,12 @@
                                     <div class="form-check">
                                         <input name="trasnoche" type="checkbox" class="form-check-input" id="trasnoche" style="margin-top: 7px;" {% if tour.abordaje_dia_anterior %}checked{% endif %}>
                                         <label class="form-check-label" for="trasnoche">Incluye salida trasnoche (La salida parte el dia anterior del que se indica).</label>
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <div class="form-check">
+                                        <input name="pet_friendly" type="checkbox" class="form-check-input" id="pet_friendly" style="margin-top: 7px;" {% if tour.pet_friendly %}checked{% endif %}>
+                                        <label class="form-check-label" for="pet_friendly">Es Pet Friendly</label>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -250,8 +306,13 @@
             no_incluye:[],
             itinerario: [[],],
             imagen: {nombre: '', data: ''},
+            imagen_descripcion: {nombre: '', data: ''},
             activo: false,
             transoche: false,
+            dificultad: '',
+            altura: '',
+            temperatura: '',
+            trekking: '',
 
             {% else %}
 
@@ -269,7 +330,12 @@
             incluye:{{incluye|safe}},
             no_incluye:{{no_incluye|safe}},
             itinerario:{{itinerario|safe}},
-            imagen: {nombre: '', data: ''}
+            imagen: {nombre: '', data: ''},
+            imagen_descripcion: {nombre: '', data: ''},
+            dificultad: '{{tour.dificultad}}',
+            altura: '{{tour.altura}}',
+            temperatura: '{{tour.temperatura}}',
+            trekking: '{{tour.trekking}}',
 
             {% endif %}
         },
@@ -329,9 +395,6 @@
     })
 
     function guardarTour(){
-        console.log(document.getElementById('activo').value)
-        console.log(document.getElementById('trasnoche').value)
-
         var noHayErrores = true;
         var elements = document.querySelectorAll('input')
         console.log(elements)
@@ -354,12 +417,18 @@
                 descripcion: document.getElementById('descripcion').value,
                 lugar_salida: document.getElementById('lugar_salida').value,
                 categoria: document.getElementById('categoria').value,
+                dificultad: document.getElementById('dificultad').value,
+                altura: document.getElementById('altura').value,
+                temperatura: document.getElementById('temperatura').value,
+                trekking: document.getElementById('trekking').value,
                 activo: document.getElementById('activo').checked,
                 trasnoche: document.getElementById('trasnoche').checked,
+                pet_friendly: document.getElementById('pet_friendly').checked,
                 incluye: vm.incluye,
                 no_incluye: vm.no_incluye,
                 itinerario: vm.itinerario,
-                imagen: vm.imagen
+                imagen: vm.imagen,
+                imagen_descripcion: vm.imagen_descripcion,
             }
             console.log(dataTour)
             $.ajax({
@@ -388,6 +457,26 @@
             reader.onload = function () {
                 vm.imagen.data = reader.result;
                 vm.imagen.nombre = file.name;
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }else{
+            alert('La imagen supera el limite establecido de 5MB. Intente utilizando otra imagen')
+            input.files = []
+            input.val = ''
+        }
+    }
+
+    function getImageDescripcionData(){
+        var input = document.getElementById('fileinput2');
+        var file = input.files[0];
+        if(file.size < 5000000){
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                vm.imagen_descripcion.data = reader.result;
+                vm.imagen_descripcion.nombre = file.name;
             };
             reader.onerror = function (error) {
                 console.log('Error: ', error);

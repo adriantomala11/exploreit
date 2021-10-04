@@ -122,15 +122,20 @@ def registrar_tour(request):
                               hora_salida=data['hora_salida'],
                               hora_retorno=data['hora_retorno'],
                               lugar_salida=data['lugar_salida'],
+                              dificultad = data['dificultad'],
+                              altura = data['altura'],
+                              temperatura = data['temperatura'],
+                              trekking = data['trekking'],
                               duracion=len(data['itinerario']),
                               precio=float(data['precio']),
                               token=Salida.generar_token(),
                               categoria=categoria,
                               activo=data['activo'],
-                              abordaje_dia_anterior=data['trasnoche'])
+                              abordaje_dia_anterior=data['trasnoche'],
+                              pet_friendly=data['pet_friendly'])
             nuevo_tour.save()
 
-            registrar_extras(data,nuevo_tour)
+            registrar_extras(data, nuevo_tour)
 
             try:
                 imagen = data['imagen']['data']
@@ -146,6 +151,23 @@ def registrar_tour(request):
                     f.write(imgdata)
                 nuevo_tour.save()
                 nuevo_tour.crear_thumbnail()
+            except:
+                print_exception()
+
+
+            try:
+                imagen = data['imagen_descripcion']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen_descripcion']['nombre']
+                nuevo_tour.imagen_descripcion = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(nuevo_tour.id), 'descripcion')
+
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                nuevo_tour.save()
             except:
                 print_exception()
 
@@ -188,6 +210,7 @@ def editar_tour(request, slug):
         try:
             tour = Tour.objects.get(token=slug)
             data = json.loads(request.POST['tour_data'])
+            print(data)
             categoria_cod = data['categoria']
             categoria = Categoria.objects.get(codigo=categoria_cod)
             tour.nombre=data['nombre']
@@ -197,17 +220,23 @@ def editar_tour(request, slug):
             tour.hora_salida=data['hora_salida']
             tour.hora_retorno=data['hora_retorno']
             tour.lugar_salida=data['lugar_salida']
+            tour.dificultad=data['dificultad']
+            tour.altura = data['altura']
+            tour.temperatura = data['temperatura']
+            tour.trekking = data['trekking']
             tour.tipo=data['tipo']
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
             tour.categoria = categoria
             tour.activo = data['activo']
             tour.abordaje_dia_anterior = data['trasnoche']
+            tour.pet_friendly = data['pet_friendly']
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
             tour.eliminar_itinerarios()
             tour.save()
             registrar_extras(data, tour)
+
             try:
                 imagen = data['imagen']['data']
                 imgdata = base64.b64decode(imagen.split(',')[1])
@@ -229,6 +258,23 @@ def editar_tour(request, slug):
                 tour.crear_thumbnail()
             except:
                 print_exception()
+
+            try:
+                imagen = data['imagen_descripcion']['data']
+                imgdata = base64.b64decode(imagen.split(',')[1])
+                filename = data['imagen_descripcion']['nombre']
+                tour.imagen_descripcion = filename
+                ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(tour.id), 'descripcion')
+
+                if not (os.path.exists(ruta)):
+                    os.makedirs(ruta)
+                ruta = os.path.join(ruta, filename)
+                with open(ruta, 'wb+') as f:
+                    f.write(imgdata)
+                tour.save()
+            except:
+                print_exception()
+
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             transaction.commit()

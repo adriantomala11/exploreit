@@ -50,6 +50,10 @@ class Tour(models.Model):
     nombre                  = models.CharField(max_length=250)
     descripcion             = models.TextField()
     ubicacion               = models.CharField(max_length=60, null=True)
+    dificultad              = models.CharField(max_length=60, null=True)
+    altura                  = models.CharField(max_length=60, null=True)
+    temperatura             = models.CharField(max_length=60, null=True)
+    trekking                = models.CharField(max_length=60, null=True)
     hora_checkin            = models.CharField(max_length=10)
     hora_salida             = models.CharField(max_length=10)
     hora_retorno            = models.CharField(max_length=10)
@@ -62,6 +66,8 @@ class Tour(models.Model):
     categoria               = models.ForeignKey(Categoria, on_delete=models.PROTECT, null=True)
     abordaje_dia_anterior   = models.BooleanField(default=True)
     activo                  = models.BooleanField(default=False)
+    pet_friendly            = models.BooleanField(default=False)
+    imagen_descripcion      = models.ImageField(upload_to=os.path.join('tours', str(id),'descripcion'), null=True)
 
     THUMB_WIDTH = 562
     THUMB_HEIGHT = 330
@@ -127,6 +133,9 @@ class Tour(models.Model):
 
     def imagen_thumbnail(self):
         return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), os.path.splitext(str(self.imagen))[0] + ".thumbnail")
+
+    def imagen_descripcion_url(self):
+        return os.path.join(settings.MEDIA_URL, 'tours', str(self.id), 'descripcion', str(self.imagen_descripcion))
 
     def get_interesados(self):
         return InteresadoTour.objects.filter(tour=self).count()
