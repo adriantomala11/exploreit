@@ -50,10 +50,17 @@ class Tour(models.Model):
     nombre                  = models.CharField(max_length=250)
     descripcion             = models.TextField()
     ubicacion               = models.CharField(max_length=60, null=True)
+
     dificultad              = models.CharField(max_length=60, null=True)
     altura                  = models.CharField(max_length=60, null=True)
     temperatura             = models.CharField(max_length=60, null=True)
     trekking                = models.CharField(max_length=60, null=True)
+
+    aplica_dificultad       = models.BooleanField(default=False)
+    aplica_altura           = models.BooleanField(default=False)
+    aplica_temperatura      = models.BooleanField(default=False)
+    aplica_trekking         = models.BooleanField(default=False)
+
     hora_checkin            = models.CharField(max_length=10)
     hora_salida             = models.CharField(max_length=10)
     hora_retorno            = models.CharField(max_length=10)

@@ -121,7 +121,7 @@
             {% endif %}
 
 
-            {% if tour_info.tour.dificultad or tour_info.tour.altura or tour_info.tour.temperatura or tour_info.tour.trekking %}
+            {% if tour_info.tour.dificultad is not '' or tour_info.tour.altura is not '' or tour_info.tour.temperatura is not '' or tour_info.tour.trekking is not '' %}
             <div class="row pb-5">
                 <div class="section-heading text-center col-lg-12" style="height: fit-content !important; padding-bottom: 25px;">
                     <h2 class="sec__title line-height-55 pb-1 pt-5">Detalles</h2>
@@ -131,10 +131,20 @@
                     <h3 style="min-height: 67px;">{{tour_info.tour.dificultad}}</h3><br>
                     Dificultad
                 </div>
+                {% else %}
+                <div class="col-lg-2 col-sm-6 offset-lg-1 text-center">
+                    <h3 style="min-height: 67px;">N/A</h3><br>
+                    Dificultad
+                </div>
                 {% endif %}
                 {% if tour_info.tour.altura %}
                 <div class="col-lg-2 col-sm-6 text-center pb-4">
                     <h3 style="min-height: 67px;">{{tour_info.tour.altura}}</h3><br>
+                    Altura Promedio
+                </div>
+                {% else %}
+                <div class="col-lg-2 col-sm-6 text-center">
+                    <h3 style="min-height: 67px;">N/A</h3><br>
                     Altura Promedio
                 </div>
                 {% endif %}
@@ -143,10 +153,20 @@
                     <h3 style="min-height: 67px;">{{tour_info.tour.temperatura}}</h3><br>
                     Temperatura Promedio
                 </div>
+                {% else %}
+                <div class="col-lg-2 col-sm-6 text-center">
+                    <h3 style="min-height: 67px;">N/A</h3><br>
+                    Temperatura Promedio
+                </div>
                 {% endif %}
                 {% if tour_info.tour.trekking %}
                 <div class="col-lg-2 col-sm-6 text-center pb-4">
                     <h3 style="min-height: 67px;">{{tour_info.tour.trekking}}</h3><br>
+                    Tiempo de trekking
+                </div>
+                {% else %}
+                <div class="col-lg-2 col-sm-6 text-center">
+                    <h3 style="min-height: 67px;">N/A</h3><br>
                     Tiempo de trekking
                 </div>
                 {% endif %}

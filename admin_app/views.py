@@ -123,9 +123,12 @@ def registrar_tour(request):
                               hora_retorno=data['hora_retorno'],
                               lugar_salida=data['lugar_salida'],
                               dificultad = data['dificultad'],
-                              altura = data['altura'],
-                              temperatura = data['temperatura'],
-                              trekking = data['trekking'],
+                              altura = data['altura'] if data['aplica_altura'] else None,
+                              temperatura = data['temperatura'] if data['aplica_temperatura'] else None,
+                              trekking = data['trekking'] if data['aplica_trekking'] else None,
+                              aplica_altura= data['aplica_altura'],
+                              aplica_temperatura= data['aplica_temperatura'],
+                              aplica_trekking=data['aplica_trekking'],
                               duracion=len(data['itinerario']),
                               precio=float(data['precio']),
                               token=Salida.generar_token(),
@@ -210,7 +213,6 @@ def editar_tour(request, slug):
         try:
             tour = Tour.objects.get(token=slug)
             data = json.loads(request.POST['tour_data'])
-            print(data)
             categoria_cod = data['categoria']
             categoria = Categoria.objects.get(codigo=categoria_cod)
             tour.nombre=data['nombre']
@@ -221,9 +223,12 @@ def editar_tour(request, slug):
             tour.hora_retorno=data['hora_retorno']
             tour.lugar_salida=data['lugar_salida']
             tour.dificultad=data['dificultad']
-            tour.altura = data['altura']
-            tour.temperatura = data['temperatura']
-            tour.trekking = data['trekking']
+            tour.altura = data['altura'] if data['aplica_altura'] else None
+            tour.temperatura = data['temperatura'] if data['aplica_temperatura'] else None
+            tour.trekking = data['trekking'] if data['aplica_trekking'] else None
+            tour.aplica_altura = data['aplica_altura']
+            tour.aplica_temperatura = data['aplica_temperatura']
+            tour.aplica_trekking = data['aplica_trekking']
             tour.tipo=data['tipo']
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
@@ -282,6 +287,7 @@ def editar_tour(request, slug):
 
         except Exception as e:
             transaction.rollback()
+            print_exception()
             msg = str(e)
             response = JsonResponse({'status': 500, 'msg': msg})
             return response

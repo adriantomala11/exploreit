@@ -139,6 +139,8 @@
                                     <div class="form-group">
                                         <span class="la la-briefcase form-icon"></span>
                                         <input v-model="altura" id="altura" class="form-control" type="text" name="altura" placeholder="Ingresar altura promedio">
+                                        <input name="aplica_altura" type="checkbox" class="form-check-input" id="aplica_altura" style="margin-top: 7px; margin-left: 0px;" {% if tour.aplica_altura %}checked{% endif %}>
+                                        <label class="form-check-label" for="aplica_altura" style="margin-left: 20px;">Este campo si aplica</label>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -148,7 +150,10 @@
                                     <div class="form-group">
                                         <span class="la la-briefcase form-icon"></span>
                                         <input v-model="temperatura" id="temperatura" class="form-control" type="text" name="temperatura" placeholder="Ingresar temperatura promedio">
+                                        <input name="aplica_temperatura" type="checkbox" class="form-check-input" id="aplica_temperatura" style="margin-top: 7px; margin-left: 0px;" {% if tour.aplica_temperatura %}checked{% endif %}>
+                                        <label class="form-check-label" for="aplica_temperatura" style="margin-left: 20px;">Este campo si aplica</label>
                                     </div>
+
                                 </div>
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-6 responsive-column">
@@ -157,6 +162,8 @@
                                     <div class="form-group">
                                         <span class="la la-briefcase form-icon"></span>
                                         <input v-model="trekking" id="trekking" class="form-control" type="text" name="trekking" placeholder="Ingresar tiempo del trekking">
+                                        <input name="aplica_trekking" type="checkbox" class="form-check-input" id="aplica_trekking" style="margin-top: 7px; margin-left: 0px;" {% if tour.aplica_trekking %}checked{% endif %}>
+                                        <label class="form-check-label" for="aplica_trekking" style="margin-left: 20px;">Este campo si aplica</label>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -314,6 +321,10 @@
             temperatura: '',
             trekking: '',
 
+            aplica_altura: false,
+            aplica_temperatura: false,
+            aplica_trekking: false,
+
             {% else %}
 
             nombre: '{{tour.nombre}}',
@@ -424,6 +435,11 @@
                 activo: document.getElementById('activo').checked,
                 trasnoche: document.getElementById('trasnoche').checked,
                 pet_friendly: document.getElementById('pet_friendly').checked,
+
+                aplica_altura: document.getElementById('aplica_altura').checked,
+                aplica_temperatura: document.getElementById('aplica_temperatura').checked,
+                aplica_trekking: document.getElementById('aplica_trekking').checked,
+
                 incluye: vm.incluye,
                 no_incluye: vm.no_incluye,
                 itinerario: vm.itinerario,
