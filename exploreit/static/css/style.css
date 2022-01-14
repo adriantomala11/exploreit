@@ -7195,6 +7195,11 @@ body {
         transform: scale(0.9);
         background-color: #fff; }
 
+
+.sec__title.font-size-30{
+    color: white !important;
+    font-weight: 600 !important;
+}
 /*====================================================
     dashboard-nav
  ====================================================*/

@@ -9,25 +9,27 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 
+from admin_app.decorators import admins_only
 from exploreit import settings
 from exploreit.helpers import send_html_email, print_exception
-from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario, Categoria
+from main_app.models import Salida, ReservaPasajero, Tour, Reserva, Incluye, NoIncluye, Itinerario, Categoria, \
+    DetalleTour
 
 
-@login_required(login_url='/login/')
+@admins_only
 def dashboard(request):
     salidas_proximas = Salida.objects.all()
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'admin_dashboard.html', context)
 
-@login_required(login_url='/login/')
+@admins_only
 def salidas_programadas(request):
     hoy = datetime.date.today()
     salidas_proximas = Salida.objects.filter(fecha_salida__range=[hoy, '2030-12-31'])
     context = {'salidas_proximas': salidas_proximas, 'settings': settings}
     return render(request, 'salidas_programadas.html', context)
 
-@login_required(login_url='/login/')
+@admins_only
 def tours_registrados(request):
     tours = Tour.objects.all()
     params = request.GET
@@ -69,21 +71,21 @@ def tours_registrados(request):
         print(e)
         return redirect('/administrador/')
 
-@login_required(login_url='/login/')
+@admins_only
 def obtener_listado_pasajeros(request, token):
     salida = get_object_or_404(Salida, token=token)
     pasajeros = ReservaPasajero.objects.filter(reserva__salida=salida, reserva__pagado=True)
     context = {'salida': salida, 'pasajeros': pasajeros}
     return render(request, 'listado_pasajeros.html', context)
 
-@login_required(login_url='/login/')
+@admins_only
 def obtener_listado_reservas(request, token):
     salida = get_object_or_404(Salida, token=token)
     reservas = Reserva.objects.filter(salida=salida)
     context = {'salida': salida, 'reservas': reservas, 'settings':settings}
     return render(request, 'listado_reservas.html', context)
 
-@login_required(login_url='/login/')
+@admins_only
 def programar_salida(request):
     if request.method == 'GET':
         tours = Tour.objects.all()
@@ -101,7 +103,7 @@ def programar_salida(request):
         response = JsonResponse({'status':200, 'url': response_url})
         return response
 
-@login_required(login_url='/login/')
+@admins_only
 def registrar_tour(request):
     if request.method == 'GET':
         categorias = Categoria.objects.all().order_by('nombre')
@@ -122,20 +124,21 @@ def registrar_tour(request):
                               hora_salida=data['hora_salida'],
                               hora_retorno=data['hora_retorno'],
                               lugar_salida=data['lugar_salida'],
-                              dificultad = data['dificultad'],
-                              altura = data['altura'] if data['aplica_altura'] else None,
-                              temperatura = data['temperatura'] if data['aplica_temperatura'] else None,
-                              trekking = data['trekking'] if data['aplica_trekking'] else None,
-                              aplica_altura= data['aplica_altura'],
-                              aplica_temperatura= data['aplica_temperatura'],
-                              aplica_trekking=data['aplica_trekking'],
+                              # dificultad = data['dificultad'],
+                              # altura = data['altura'] if data['aplica_altura'] else None,
+                              # temperatura = data['temperatura'] if data['aplica_temperatura'] else None,
+                              # trekking = data['trekking'] if data['aplica_trekking'] else None,
+                              # aplica_altura= data['aplica_altura'],
+                              # aplica_temperatura= data['aplica_temperatura'],
+                              # aplica_trekking=data['aplica_trekking'],
                               duracion=len(data['itinerario']),
                               precio=float(data['precio']),
                               token=Salida.generar_token(),
                               categoria=categoria,
                               activo=data['activo'],
                               abordaje_dia_anterior=data['trasnoche'],
-                              pet_friendly=data['pet_friendly'])
+                              # pet_friendly=data['pet_friendly']
+                              )
             nuevo_tour.save()
 
             registrar_extras(data, nuevo_tour)
@@ -184,13 +187,17 @@ def registrar_tour(request):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
+
 def registrar_extras(data,nuevo_tour):
     for inc in data['incluye']:
-        incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'], icono=inc['icono'])
+        incluye = Incluye(tour=nuevo_tour, nombre=inc['nombre'])
         incluye.save()
     for ninc in data['no_incluye']:
         no_incluye = NoIncluye(tour=nuevo_tour, nombre=ninc['nombre'])
         no_incluye.save()
+    for det in data['detalles']:
+        detalle = DetalleTour(tour=nuevo_tour, detalle=det['detalle'], descripcion=det['descripcion'], icono=(det['icono'] if det['icono']!='' and det['icono']!=None else None))
+        detalle.save()
     counter = 0
     for dia in data['itinerario']:
         counter += 1
@@ -198,7 +205,7 @@ def registrar_extras(data,nuevo_tour):
             itinerario = Itinerario(tour=nuevo_tour, descripcion=iti['descripcion'], dia=counter)
             itinerario.save()
 
-@login_required(login_url='/login/')
+@admins_only
 def editar_tour(request, slug):
     if request.method == 'GET':
         try:
@@ -222,23 +229,24 @@ def editar_tour(request, slug):
             tour.hora_salida=data['hora_salida']
             tour.hora_retorno=data['hora_retorno']
             tour.lugar_salida=data['lugar_salida']
-            tour.dificultad=data['dificultad']
-            tour.altura = data['altura'] if data['aplica_altura'] else None
-            tour.temperatura = data['temperatura'] if data['aplica_temperatura'] else None
-            tour.trekking = data['trekking'] if data['aplica_trekking'] else None
-            tour.aplica_altura = data['aplica_altura']
-            tour.aplica_temperatura = data['aplica_temperatura']
-            tour.aplica_trekking = data['aplica_trekking']
+            # tour.dificultad=data['dificultad']
+            # tour.altura = data['altura'] if data['aplica_altura'] else None
+            # tour.temperatura = data['temperatura'] if data['aplica_temperatura'] else None
+            # tour.trekking = data['trekking'] if data['aplica_trekking'] else None
+            # tour.aplica_altura = data['aplica_altura']
+            # tour.aplica_temperatura = data['aplica_temperatura']
+            # tour.aplica_trekking = data['aplica_trekking']
             tour.tipo=data['tipo']
             tour.precio=float(data['precio'])
             tour.duracion=len(data['itinerario'])
             tour.categoria = categoria
             tour.activo = data['activo']
             tour.abordaje_dia_anterior = data['trasnoche']
-            tour.pet_friendly = data['pet_friendly']
+            # tour.pet_friendly = data['pet_friendly']
             tour.eliminar_incluyes()
             tour.eliminar_no_incluyes()
             tour.eliminar_itinerarios()
+            tour.eliminar_detalles()
             tour.save()
             registrar_extras(data, tour)
 
@@ -264,22 +272,6 @@ def editar_tour(request, slug):
             except:
                 print_exception()
 
-            try:
-                imagen = data['imagen_descripcion']['data']
-                imgdata = base64.b64decode(imagen.split(',')[1])
-                filename = data['imagen_descripcion']['nombre']
-                tour.imagen_descripcion = filename
-                ruta = os.path.join(settings.BASE_DIR, 'media', 'tours', str(tour.id), 'descripcion')
-
-                if not (os.path.exists(ruta)):
-                    os.makedirs(ruta)
-                ruta = os.path.join(ruta, filename)
-                with open(ruta, 'wb+') as f:
-                    f.write(imgdata)
-                tour.save()
-            except:
-                print_exception()
-
             response_url = '/administrador/tours-registrados/'
             response = JsonResponse({'status':200, 'url': response_url})
             transaction.commit()
@@ -292,7 +284,7 @@ def editar_tour(request, slug):
             response = JsonResponse({'status': 500, 'msg': msg})
             return response
 
-@login_required(login_url='/login/')
+@admins_only
 def registrar_categoria(request):
     if request.method == 'GET':
         context = {'tour_class': Tour()}
@@ -391,6 +383,10 @@ def get_editar_tour(slug):
 
     no_incluye = NoIncluye.objects.filter(tour=tour)
     no_incluye = NoIncluye.queryset_to_list(no_incluye)
+
+    detalles = DetalleTour.objects.filter(tour=tour)
+    detalles = DetalleTour.queryset_to_list(detalles)
+
     itinerario = Itinerario.objects.filter(tour=tour).order_by('dia')
     itinerario_ls = [[]]
     for iti in itinerario:
@@ -400,10 +396,10 @@ def get_editar_tour(slug):
             itinerario_ls.append([])
             itinerario_ls[iti.dia-1].append({'id': iti.id, 'descripcion':iti.descripcion})
     categorias = Categoria.objects.all()
-    context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour, 'tour_class': Tour(), 'categorias': categorias}
+    context = {'incluye':incluye, 'no_incluye':no_incluye, 'itinerario':itinerario_ls, 'tour': tour, 'tour_class': Tour(), 'categorias': categorias, 'detalles': detalles}
     return context
 
-@login_required(login_url='/login/')
+@admins_only
 def reserva_aprobar(request):
     transaction.set_autocommit(False)
     try:
@@ -418,7 +414,7 @@ def reserva_aprobar(request):
         response = JsonResponse({'status': 200, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/login/')
+@admins_only
 def copiar_tour(request):
     tour_token = request.POST['tour_token']
     new_tour = get_object_or_404(Tour, token=tour_token)
@@ -446,7 +442,7 @@ def copiar_tour(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
-@login_required(login_url='/login/')
+@admins_only
 def eliminar_tour(request):
     if request.method == 'POST':
         try:
@@ -460,7 +456,7 @@ def eliminar_tour(request):
         response = JsonResponse({'status': 500, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/login/')
+@admins_only
 def reserva_dar_de_baja(request):
     transaction.set_autocommit(False)
     try:
@@ -477,14 +473,14 @@ def reserva_dar_de_baja(request):
         response = JsonResponse({'status': 200, 'msg': 'Error'})
     return response
 
-@login_required(login_url='/login/')
+@admins_only
 def historial_salidas(request):
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     salidas = Salida.objects.filter(fecha_salida__range=['2021-01-01', yesterday])
     context = {'salidas': salidas}
     return render(request, 'historial_salidas.html', context)
 
-@login_required(login_url='/login/')
+@admins_only
 def aumentar_capacidad(request):
     salida_token = request.POST['salida']
     salida = get_object_or_404(Salida, token=salida_token)
@@ -493,7 +489,7 @@ def aumentar_capacidad(request):
     response = JsonResponse({'status': 200, 'msg': 'Success'})
     return response
 
-@login_required(login_url='/login/')
+@admins_only
 def categorias(request):
     if request.method == 'POST':
         categoria_nombre = request.POST['categoria']

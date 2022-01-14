@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
-                            {% endcomment %}
+
                             <div class="col-lg-6">
                                 <div class="input-box">
                                     <label class="label-text">Dificultad</label>
@@ -167,6 +167,7 @@
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
+                            {% endcomment %}
                             <div class="col-lg-12 responsive-column" style="margin-top: 30px;">
                                 <p style="color: black;">Configuración del Tour</p>
                                 <div class="input-box">
@@ -181,12 +182,14 @@
                                         <label class="form-check-label" for="trasnoche">Incluye salida trasnoche (La salida parte el dia anterior del que se indica).</label>
                                     </div>
                                 </div>
+                                {% comment %}
                                 <div class="input-box">
                                     <div class="form-check">
                                         <input name="pet_friendly" type="checkbox" class="form-check-input" id="pet_friendly" style="margin-top: 7px;" {% if tour.pet_friendly %}checked{% endif %}>
                                         <label class="form-check-label" for="pet_friendly">Es Pet Friendly</label>
                                     </div>
                                 </div>
+                                {% endcomment %}
                             </div><!-- end col-lg-6 -->
                             <div class="col-lg-12" style="margin-top: 30px;">
                                 <div class="input-box">
@@ -200,13 +203,11 @@
                             </div><!-- end col-lg-12 -->
                             <div class="col-lg-6">
                                 <div class="input-box">
-                                    <label class="label-text">Incluye (Iconos <a target="_blank" href="https://icons8.com/line-awesome">aquí</a>)</label>
+                                    <label class="label-text">Incluye</label>
                                     <div style="display: flex;"  v-for="inc in incluye" :id="inc.id">
                                         <div class="form-group" style="width:90%">
-                                            <div style="display: flex;">
-                                                <input style="width:60%" v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte" required>
-                                                <input style="width:40%" v-model="inc.icono" class="form-control incluye_input" type="text" name="text" placeholder="Ej: la-check-circle" required>
-                                            </div>
+                                            <span class="la la-map form-icon"></span>
+                                            <input v-model="inc.nombre" class="form-control incluye_input" type="text" name="text" placeholder="Ej: Transporte, Almuerzo, etc." required>
                                         </div>
                                         <div @click="eliminarIncluye(inc.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
                                             <span class="la la-trash"></span>
@@ -231,6 +232,26 @@
                                     </div>
                                     <div style="width: fit-content; margin: auto;">
                                         <a v-on:click="agregarNoIncluye()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div><!-- end col-lg-6 -->
+                            <div class="col-lg-6">
+                                <div class="input-box">
+                                    <label class="label-text">Detalles (Iconos <a target="_blank" href="https://icons8.com/line-awesome">aquí</a>)</label>
+                                    <div style="display: flex;"  v-for="det in detalles" :id="det.id">
+                                        <div class="form-group" style="width:90%">
+                                            <div style="display: flex;">
+                                                <input style="width:33%; padding: 12px !important;" v-model="det.detalle" class="form-control incluye_input" type="text" name="text" placeholder="Detalle" required>
+                                                <input style="width:33%; padding: 12px !important;" v-model="det.descripcion" class="form-control incluye_input" type="text" name="text" placeholder="Descripción" required>
+                                                <input style="width:33%; padding: 12px !important;" v-model="det.icono" class="form-control incluye_input" type="text" name="text" placeholder="Icono: la-check-circle" required>
+                                            </div>
+                                        </div>
+                                        <div @click="eliminarDetalle(det.id)" style="width: 8%; margin-left: 2%; height: 100%; background-color: #d63a3a; padding: 11px 6px; text-align: center; border-radius: 4px; color: white;">
+                                            <span class="la la-trash"></span>
+                                        </div>
+                                    </div>
+                                    <div style="width: fit-content; margin: auto;">
+                                        <a v-on:click="agregarDetalle()" class="btn" style="background-color: #7b00ff; color: white; border-radius: 100%;"><i class="las la-plus"></i></a>
                                     </div>
                                 </div>
                             </div><!-- end col-lg-6 -->
@@ -311,19 +332,12 @@
             descripcion: '',
             incluye:[],
             no_incluye:[],
+            detalles:[],
             itinerario: [[],],
             imagen: {nombre: '', data: ''},
             imagen_descripcion: {nombre: '', data: ''},
             activo: false,
             transoche: false,
-            dificultad: '',
-            altura: '',
-            temperatura: '',
-            trekking: '',
-
-            aplica_altura: false,
-            aplica_temperatura: false,
-            aplica_trekking: false,
 
             {% else %}
 
@@ -340,22 +354,22 @@
             descripcion: '{{tour.descripcion}}',
             incluye:{{incluye|safe}},
             no_incluye:{{no_incluye|safe}},
+            detalles:{{detalles|safe}},
             itinerario:{{itinerario|safe}},
             imagen: {nombre: '', data: ''},
             imagen_descripcion: {nombre: '', data: ''},
-            dificultad: '{{tour.dificultad}}',
-            altura: '{{tour.altura}}',
-            temperatura: '{{tour.temperatura}}',
-            trekking: '{{tour.trekking}}',
 
             {% endif %}
         },
         methods:{
             agregarIncluye: function(){
-                this.incluye.push({id: Date.now(), nombre: '', icono: ''});
+                this.incluye.push({id: Date.now(), nombre: ''});
             },
             agregarNoIncluye: function(){
                 this.no_incluye.push({id: Date.now(), nombre: ''});
+            },
+            agregarDetalle: function(){
+                this.detalles.push({id: Date.now(), nombre: '', detalle: '', icono: ''});
             },
             agregarItinerario: function(dia){
                 try{
@@ -382,6 +396,13 @@
                 for(var i=0; i<this.no_incluye.length; i++){
                     if(this.no_incluye[i].id == id){
                         this.no_incluye.splice(i,1)
+                    }
+                }
+            },
+            eliminarDetalle: function(id){
+                for(var i=0; i<this.detalles.length; i++){
+                    if(this.detalles[i].id == id){
+                        this.detalles.splice(i,1)
                     }
                 }
             },
@@ -428,23 +449,14 @@
                 descripcion: document.getElementById('descripcion').value,
                 lugar_salida: document.getElementById('lugar_salida').value,
                 categoria: document.getElementById('categoria').value,
-                dificultad: document.getElementById('dificultad').value,
-                altura: document.getElementById('altura').value,
-                temperatura: document.getElementById('temperatura').value,
-                trekking: document.getElementById('trekking').value,
                 activo: document.getElementById('activo').checked,
                 trasnoche: document.getElementById('trasnoche').checked,
-                pet_friendly: document.getElementById('pet_friendly').checked,
-
-                aplica_altura: document.getElementById('aplica_altura').checked,
-                aplica_temperatura: document.getElementById('aplica_temperatura').checked,
-                aplica_trekking: document.getElementById('aplica_trekking').checked,
 
                 incluye: vm.incluye,
                 no_incluye: vm.no_incluye,
+                detalles: vm.detalles,
                 itinerario: vm.itinerario,
                 imagen: vm.imagen,
-                imagen_descripcion: vm.imagen_descripcion,
             }
             console.log(dataTour)
             $.ajax({

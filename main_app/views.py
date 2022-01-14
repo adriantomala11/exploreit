@@ -40,7 +40,6 @@ def tour_info(request, token):
     tour = get_object_or_404(Tour, token=token)
     tour_info = tour.obtener_info()
     similares = tour.obtener_similares()
-    print(similares)
     context['tour_info'] = tour_info
     context['similares'] = similares
     return render(request, 'tour_info.html', context)

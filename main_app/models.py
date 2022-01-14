@@ -5,6 +5,7 @@ import datetime
 from enum import Enum
 
 from PIL import Image
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -27,7 +28,7 @@ class Categoria(models.Model):
     nombre          = models.CharField(max_length=30, null=True)
     tipo            = models.CharField(max_length=3, default='NAC', choices=TIPO_CHOICES)
     activa          = models.BooleanField(default=True)
-    codigo_url      = models.CharField(max_length=30, unique=True, null=True)
+    codigo_url      = models.CharField(max_length=35, unique=True, null=True)
     mostrar_en_menu = models.BooleanField(default=False)
     imagen          = models.ImageField(upload_to=os.path.join('categorias', str(id)), null=True)
     icono           = models.CharField(max_length=50, default='las la-map-marked')
@@ -41,6 +42,21 @@ class Categoria(models.Model):
     def nombre_mayus(self):
         return str(self.nombre).upper()
 
+
+class Agencia(models.Model):
+    subdominio      = models.CharField(max_length=31, null=True)
+    nombre          = models.CharField(max_length=50)
+    logo = models.ImageField(upload_to='agencias', null=True)
+
+    def get_logo(self):
+        return '/media/' + str(self.logo)
+
+
+class AgenciaUsuario(models.Model):
+    agencia         = models.ForeignKey(Agencia, on_delete=models.PROTECT)
+    usuario         = models.ForeignKey(User, on_delete=models.PROTECT)
+
+
 class Tour(models.Model):
     TIPO_CHOICES = (
         ('NAC', 'Nacional'),
@@ -51,15 +67,15 @@ class Tour(models.Model):
     descripcion             = models.TextField()
     ubicacion               = models.CharField(max_length=60, null=True)
 
-    dificultad              = models.CharField(max_length=60, null=True)
-    altura                  = models.CharField(max_length=60, null=True)
-    temperatura             = models.CharField(max_length=60, null=True)
-    trekking                = models.CharField(max_length=60, null=True)
+    # dificultad              = models.CharField(max_length=60, null=True)
+    # altura                  = models.CharField(max_length=60, null=True)
+    # temperatura             = models.CharField(max_length=60, null=True)
+    # trekking                = models.CharField(max_length=60, null=True)
 
-    aplica_dificultad       = models.BooleanField(default=False)
-    aplica_altura           = models.BooleanField(default=False)
-    aplica_temperatura      = models.BooleanField(default=False)
-    aplica_trekking         = models.BooleanField(default=False)
+    # aplica_dificultad       = models.BooleanField(default=False)
+    # aplica_altura           = models.BooleanField(default=False)
+    # aplica_temperatura      = models.BooleanField(default=False)
+    # aplica_trekking         = models.BooleanField(default=False)
 
     hora_checkin            = models.CharField(max_length=10)
     hora_salida             = models.CharField(max_length=10)
@@ -73,8 +89,9 @@ class Tour(models.Model):
     categoria               = models.ForeignKey(Categoria, on_delete=models.PROTECT, null=True)
     abordaje_dia_anterior   = models.BooleanField(default=True)
     activo                  = models.BooleanField(default=False)
-    pet_friendly            = models.BooleanField(default=False)
-    imagen_descripcion      = models.ImageField(upload_to=os.path.join('tours', str(id),'descripcion'), null=True)
+    # pet_friendly            = models.BooleanField(default=False)
+    # imagen_descripcion      = models.ImageField(upload_to=os.path.join('tours', str(id),'descripcion'), null=True)
+    agencia                 = models.ForeignKey(Agencia, on_delete=models.PROTECT, null=True)
 
     THUMB_WIDTH = 562
     THUMB_HEIGHT = 330
@@ -111,6 +128,7 @@ class Tour(models.Model):
     def obtener_info(self):
         incluye = Incluye.objects.filter(tour=self)
         no_incluye = NoIncluye.objects.filter(tour=self)
+        detalles = DetalleTour.objects.filter(tour=self)
         importante = Importante.objects.filter(tour=self)
         itinerario = Itinerario.objects.filter(tour=self).order_by('dia')
         itinerario_dict = {}
@@ -121,7 +139,7 @@ class Tour(models.Model):
                 itinerario_dict[str(iti.dia)] = []
                 itinerario_dict[str(iti.dia)].append(iti.descripcion)
         proximas_salidas = Salida.objects.filter(tour=self, fecha_salida__range=[datetime.date.today(), '2030-12-31']).order_by('fecha_salida')
-        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario_dict}
+        return {'tour':self, 'incluye':incluye, 'no_incluye':no_incluye, 'detalles':detalles,'importante':importante, 'proximas_salidas':proximas_salidas, 'itinerario': itinerario_dict}
 
     def eliminar_incluyes(self):
         items = Incluye.objects.filter(tour=self)
@@ -133,6 +151,10 @@ class Tour(models.Model):
 
     def eliminar_itinerarios(self):
         items = Itinerario.objects.filter(tour=self)
+        items.delete()
+
+    def eliminar_detalles(self):
+        items = DetalleTour.objects.filter(tour=self)
         items.delete()
 
     def imagen_url(self):
@@ -203,10 +225,29 @@ class Itinerario(models.Model):
         return list
 
 
+class DetalleTour(models.Model):
+    detalle          = models.CharField(max_length=100)
+    descripcion         = models.CharField(max_length=100)
+    icono           = models.CharField(max_length=100, default="las la-check-circle")
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE)
+
+    @classmethod
+    def queryset_to_dict(cls, queryset):
+        dict = {}
+        for item in queryset:
+            dict[str(item.id)] = {'detalle': item.detalle, 'descripcion': item.descripcion}
+        return dict
+
+    @classmethod
+    def queryset_to_list(cls, queryset):
+        list = []
+        for item in queryset:
+            list.append({'id': item.id, 'descripcion': item.descripcion, "detalle":item.detalle, 'icono': item.icono})
+        return list
+
 class Incluye(models.Model):
     nombre          = models.CharField(max_length=500)
     tour            = models.ForeignKey(Tour, on_delete=models.CASCADE)
-    icono           = models.CharField(max_length=100, default="las la-check-circle")
 
     @classmethod
     def queryset_to_dict(cls, queryset):
@@ -219,7 +260,7 @@ class Incluye(models.Model):
     def queryset_to_list(cls, queryset):
         list = []
         for item in queryset:
-            list.append({'id':item.id,'nombre': item.nombre, 'icono': item.icono})
+            list.append({'id':item.id,'nombre': item.nombre})
         return list
 
 class NoIncluye(models.Model):

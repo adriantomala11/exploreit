@@ -12,5 +12,7 @@ admin.site.register(NoIncluye)
 admin.site.register(Importante)
 admin.site.register(InteresadoTour)
 admin.site.register(Categoria)
+admin.site.register(Agencia)
+admin.site.register(AgenciaUsuario)
 
 # Register your models here.
